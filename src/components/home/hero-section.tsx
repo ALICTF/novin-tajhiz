@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, CheckCircle2, Wrench, ShieldCheck, PhoneCall, Star } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Wrench, ShieldCheck, PhoneCall, Star, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -10,7 +10,7 @@ export function HeroSection() {
   return (
     <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-slate-50 py-20 lg:py-32">
       
-      {/* --- 1. Background Engineering Grid (CSS Pure - No External Image) --- */}
+      {/* --- 1. Background Engineering Grid --- */}
       <div className="absolute inset-0 w-full h-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]">
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)]" />
       </div>
@@ -54,7 +54,7 @@ export function HeroSection() {
               </Button>
               
               <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg rounded-full border-slate-300 bg-white/60 backdrop-blur-sm hover:bg-white text-slate-700 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto gap-2">
-                <Link href="/services"> {/* لینک به خدمات/تعمیرات */}
+                <Link href="/services">
                   <Wrench className="w-5 h-5 text-slate-500" />
                   درخواست تعمیرات
                 </Link>
@@ -88,22 +88,25 @@ export function HeroSection() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-500/10 rounded-full blur-[80px]" />
 
                 <div className="relative z-10 w-full max-w-[500px] lg:max-w-[600px] -mb-12 md:-mb-24 transition-transform duration-700 ease-out group-hover:scale-[1.02]">
+                    {/* عکس اصلی محصول که دست نخورده باقی می‌ماند */}
                     <Image 
-                        src="https://placehold.co/800x600/png?text=Sleep+Device+Pro" 
+                        src="/images/sleep.jpg" 
                         alt="دستگاه تخصصی خواب"
                         width={800}
                         height={600}
-                        className="drop-shadow-2xl mx-auto" 
+                        className="drop-shadow-2xl mx-auto rounded-[32px]" 
                         priority
                     />
                 </div>
 
-                {/* Floating Card: Engineer Profile */}
+                {/* Floating Card: Engineer Profile (SVG Icon Replaced) */}
                 <div className="hidden lg:flex absolute -top-6 -right-6 z-20 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/60 w-[260px] hover:-translate-y-2 transition-transform duration-300 animate-in fade-in zoom-in duration-700 delay-300">
                     <div className="flex items-center gap-4 text-right w-full">
-                        <div className="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden relative shrink-0">
-                            <Image src="https://placehold.co/100x100/e2e8f0/1e293b?text=Eng" alt="Eng" fill className="object-cover" />
+                        {/* جایگزین عکس مهندس با آیکون SVG */}
+                        <div className="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden relative shrink-0 flex items-center justify-center bg-slate-100 text-slate-400">
+                            <User size={32} strokeWidth={1.5} />
                         </div>
+                        
                         <div className="flex flex-col flex-1">
                             <span className="text-sm font-bold text-slate-800">مهندس حاجی‌میرزایی</span>
                             <span className="text-[11px] text-slate-500 mt-0.5">مدیریت دپارتمان فنی</span>
@@ -115,7 +118,7 @@ export function HeroSection() {
                     </div>
                 </div>
 
-                {/* Floating Card: Reviews */}
+                {/* Floating Card: Reviews (SVG Icons Replaced) */}
                 <div className="hidden lg:flex absolute top-1/3 -left-8 z-20 bg-slate-900/95 backdrop-blur-xl text-white p-5 rounded-2xl shadow-2xl border border-slate-700 w-[220px] hover:-translate-y-2 transition-transform duration-300 animate-in fade-in zoom-in duration-700 delay-500">
                     <div className="flex flex-col items-center text-center gap-3 w-full">
                         <div className="flex gap-1 text-yellow-400">
@@ -129,9 +132,10 @@ export function HeroSection() {
                             انتخاب اول کلینیک‌های معتبر خواب کشور
                         </span>
                         <div className="flex -space-x-3 space-x-reverse mt-1">
+                            {/* جایگزین عکس‌های کوچک کاربر با آیکون SVG */}
                             {[1,2,3,4].map(i => (
-                                <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-600 overflow-hidden relative">
-                                    <Image src={`https://placehold.co/50x50/475569/ffffff?text=${i}`} alt="user" fill className="object-cover" />
+                                <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-800 bg-slate-700 flex items-center justify-center relative z-10">
+                                    <User size={14} className="text-slate-300" />
                                 </div>
                             ))}
                         </div>

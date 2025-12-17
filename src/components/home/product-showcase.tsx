@@ -1,19 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ShoppingCart, Eye, Sparkles } from "lucide-react";
+import { 
+  ArrowLeft, ShoppingCart, Eye, Sparkles, 
+  Activity, Zap, Brain, Cable, Wind, 
+  ScanFace, Layers, Stethoscope 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+// تغییر دیتا: جایگزینی image با icon
 const products = [
   {
     id: 1,
     name: "الکترود گیره گوش (Ear Clip)",
     price: "تماس بگیرید",
     category: "الکترودها",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Ear+Clip",
+    icon: Activity, // آیکون مرتبط
     isNew: false,
   },
   {
@@ -21,14 +25,14 @@ const products = [
     name: "اسنپ الکترود اورجینال",
     price: "1,200,000 تومان",
     category: "مصرفی",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Snap+Electrode",
+    icon: Zap,
   },
   {
     id: 3,
     name: "الکتروژل نوار مغز (EEG Paste)",
     price: "تماس بگیرید",
     category: "ژل و چسب",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=EEG+Gel",
+    icon: Brain,
     isNew: false,
   },
   {
@@ -36,35 +40,35 @@ const products = [
     name: "گاپ الکترود گلد (Gold Cup)",
     price: "تماس بگیرید",
     category: "الکترودها",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Gold+Cup",
+    icon: Activity,
   },
   {
     id: 5,
     name: "ماسک تمام صورت (Full Face)",
     price: "4,500,000 تومان",
     category: "ماسک‌ها",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Full+Mask",
+    icon: ScanFace,
   },
   {
     id: 6,
     name: "لوله خرطومی تنفسی",
     price: "تماس بگیرید",
     category: "لوازم جانبی",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Tube",
+    icon: Cable,
   },
   {
     id: 7,
     name: "فیلتر آنتی‌باکتریال",
     price: "تماس بگیرید",
     category: "فیلترها",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=Filter",
+    icon: Layers,
   },
   {
     id: 8,
     name: "دستگاه CPAP رسمد",
     price: "تماس بگیرید",
     category: "دستگاه‌ها",
-    image: "https://placehold.co/600x600/f8fafc/1e293b?text=CPAP+Resmed",
+    icon: Wind,
   },
 ];
 
@@ -101,48 +105,42 @@ export function ProductShowcase() {
                 className="group relative flex flex-col h-full bg-white rounded-[32px] border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-2 transition-all duration-500 ease-out overflow-visible"
             >
               
-              {/* --- Image Pod (بخش تصویر) --- */}
+              {/* --- Image Pod (SVG Version) --- */}
               <div className="relative w-full aspect-[1/1] p-4">
-                {/* کانتینر داخلی عکس با گوشه‌های گرد */}
+                {/* کانتینر داخلی */}
                 <div className="relative w-full h-full bg-slate-50 rounded-[24px] overflow-hidden flex items-center justify-center border border-slate-100 group-hover:border-primary/20 transition-colors duration-500">
                     
-                    {/* Ambient Glow (نور پشت محصول در هاور) */}
+                    {/* Ambient Glow */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl" />
                     
-                    {/* Product Image */}
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain p-8 mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-110 z-10"
-                    />
+                    {/* Product Icon (SVG Replacement) */}
+                    <div className="relative z-10 flex items-center justify-center w-24 h-24 rounded-full bg-white border border-slate-200 shadow-sm text-slate-400 group-hover:text-primary group-hover:scale-110 transition-all duration-500">
+                        <product.icon size={48} strokeWidth={1.5} />
+                    </div>
 
-                    {/* Action Capsule (دکمه‌های شناور وسط) */}
+                    {/* Action Capsule */}
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-20">
-                        {/* دکمه سبد خرید با cursor-pointer */}
                         <Button size="icon" className="h-12 w-12 rounded-full bg-slate-900 text-white hover:bg-primary shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
                             <ShoppingCart size={20} />
                         </Button>
                         
-                        {/* دکمه مشاهده با cursor-pointer */}
                         <Button size="icon" variant="secondary" className="h-12 w-12 rounded-full bg-white text-slate-700 hover:text-primary shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
                             <Eye size={20} />
                         </Button>
                     </div>
                 </div>
 
-                {/* Badges (خارج از کادر عکس برای تمیزی، اما روی کارت) */}
+                {/* Badges */}
                 <div className="absolute top-7 right-7 z-30 flex flex-col gap-2 pointer-events-none">
                     {product.isNew && (
                         <Badge className="bg-blue-600/90 backdrop-blur-md text-white border-none shadow-sm px-3 py-1 text-xs">
                             جدید
                         </Badge>
                     )}
-                    {/* اگر تگ دیگری هم باشد اینجا اضافه می‌شود */}
                 </div>
               </div>
 
-              {/* --- Content Pod (بخش محتوا) --- */}
+              {/* --- Content Pod --- */}
               <div className="px-6 pb-8 pt-2 flex flex-col flex-1 items-center text-center">
                 
                 <div className="text-[11px] font-bold text-primary/80 uppercase tracking-wider mb-2 bg-primary/5 px-2 py-1 rounded-md">

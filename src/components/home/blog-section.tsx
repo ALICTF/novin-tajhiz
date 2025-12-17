@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, ArrowLeft, BookOpen, UserCircle2 } from "lucide-react";
+import { Calendar, ArrowLeft, BookOpen, UserCircle2, Stethoscope, HeartPulse, GraduationCap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -15,7 +14,7 @@ const articles = [
     readTime: "۵ دقیقه",
     category: "راهنمای خرید",
     author: "دکتر خواب",
-    image: "https://placehold.co/800x600/f1f5f9/1e293b?text=CPAP+Device",
+    icon: Stethoscope, // آیکون مرتبط
   },
   {
     id: 2,
@@ -25,7 +24,7 @@ const articles = [
     readTime: "۳ دقیقه",
     category: "پزشکی",
     author: "تیم علمی",
-    image: "https://placehold.co/800x600/f1f5f9/1e293b?text=Sleep+Danger",
+    icon: HeartPulse, // آیکون مرتبط
   },
   {
     id: 3,
@@ -35,7 +34,7 @@ const articles = [
     readTime: "۷ دقیقه",
     category: "آموزشی",
     author: "واحد فنی",
-    image: "https://placehold.co/800x600/f1f5f9/1e293b?text=Cleaning",
+    icon: GraduationCap, // آیکون مرتبط
   },
 ];
 
@@ -68,29 +67,25 @@ export function BlogSection() {
             <Link 
                 href={`/blog/${article.id}`} 
                 key={article.id}
-                className="group flex flex-col bg-white p-3 rounded-[32px] border border-slate-100 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-2 transition-all duration-500 ease-out"
+                className="group flex flex-col bg-white rounded-[32px] border border-slate-100 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-2 transition-all duration-500 ease-out overflow-hidden"
             >
               
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] bg-slate-100">
-                <Image
-                  src={article.image}
-                  alt={article.title}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
+              {/* --- Icon Header Section --- */}
+              <div className="relative h-48 bg-slate-50 flex items-center justify-center group-hover:bg-primary/5 transition-colors duration-500">
+                <div className="w-20 h-20 rounded-full bg-white shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-primary group-hover:scale-110 transition-all duration-500">
+                    <article.icon size={36} strokeWidth={1.5} />
+                </div>
                 
-                <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
                 <div className="absolute top-4 right-4 z-10">
-                    <span className="bg-white/95 backdrop-blur-sm text-slate-800 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm">
+                    <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm border border-slate-100">
                         {article.category}
                     </span>
                 </div>
               </div>
 
-              <div className="flex flex-col flex-1 px-4 pt-6 pb-2">
+              <div className="flex flex-col flex-1 px-6 pt-6 pb-6">
                 
-                <div className="flex items-center justify-between text-xs text-slate-400 mb-3 font-medium">
+                <div className="flex items-center justify-between text-xs text-slate-400 mb-4 font-medium">
                     <div className="flex items-center gap-1.5">
                         <Calendar size={14} className="text-primary" />
                         <span>{article.date}</span>
