@@ -14,7 +14,6 @@ const products = [
     price: "تماس بگیرید",
     category: "الکترودها",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Ear+Clip",
-    tag: "پرفروش",
     isNew: false,
   },
   {
@@ -23,7 +22,6 @@ const products = [
     price: "1,200,000 تومان",
     category: "مصرفی",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Snap+Electrode",
-    isNew: true,
   },
   {
     id: 3,
@@ -31,7 +29,6 @@ const products = [
     price: "تماس بگیرید",
     category: "ژل و چسب",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=EEG+Gel",
-    tag: "ویژه",
     isNew: false,
   },
   {
@@ -40,7 +37,6 @@ const products = [
     price: "تماس بگیرید",
     category: "الکترودها",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Gold+Cup",
-    isNew: false,
   },
   {
     id: 5,
@@ -48,7 +44,6 @@ const products = [
     price: "4,500,000 تومان",
     category: "ماسک‌ها",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Full+Mask",
-    isNew: false,
   },
   {
     id: 6,
@@ -56,7 +51,6 @@ const products = [
     price: "تماس بگیرید",
     category: "لوازم جانبی",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Tube",
-    isNew: false,
   },
   {
     id: 7,
@@ -64,7 +58,6 @@ const products = [
     price: "تماس بگیرید",
     category: "فیلترها",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=Filter",
-    isNew: false,
   },
   {
     id: 8,
@@ -72,8 +65,6 @@ const products = [
     price: "تماس بگیرید",
     category: "دستگاه‌ها",
     image: "https://placehold.co/600x600/f8fafc/1e293b?text=CPAP+Resmed",
-    tag: "پیشنهاد ما",
-    isNew: true,
   },
 ];
 
@@ -128,10 +119,13 @@ export function ProductShowcase() {
 
                     {/* Action Capsule (دکمه‌های شناور وسط) */}
                     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-20">
-                        <Button size="icon" className="h-12 w-12 rounded-full bg-slate-900 text-white hover:bg-primary shadow-xl hover:scale-110 transition-all duration-300">
+                        {/* دکمه سبد خرید با cursor-pointer */}
+                        <Button size="icon" className="h-12 w-12 rounded-full bg-slate-900 text-white hover:bg-primary shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
                             <ShoppingCart size={20} />
                         </Button>
-                        <Button size="icon" variant="secondary" className="h-12 w-12 rounded-full bg-white text-slate-700 hover:text-primary shadow-xl hover:scale-110 transition-all duration-300">
+                        
+                        {/* دکمه مشاهده با cursor-pointer */}
+                        <Button size="icon" variant="secondary" className="h-12 w-12 rounded-full bg-white text-slate-700 hover:text-primary shadow-xl hover:scale-110 transition-all duration-300 cursor-pointer">
                             <Eye size={20} />
                         </Button>
                     </div>
@@ -144,11 +138,7 @@ export function ProductShowcase() {
                             جدید
                         </Badge>
                     )}
-                    {product.tag && (
-                        <Badge className="bg-rose-500/90 backdrop-blur-md text-white border-none shadow-sm px-3 py-1 text-xs animate-in zoom-in">
-                            {product.tag}
-                        </Badge>
-                    )}
+                    {/* اگر تگ دیگری هم باشد اینجا اضافه می‌شود */}
                 </div>
               </div>
 
@@ -182,7 +172,7 @@ export function ProductShowcase() {
 
         {/* View All Button */}
         <div className="mt-24 flex justify-center">
-            <Button variant="outline" size="lg" className="rounded-full h-16 px-10 text-lg border-2 border-slate-200 text-slate-700 bg-white hover:border-primary hover:text-primary hover:bg-primary/5 transition-all group shadow-sm" asChild>
+            <Button variant="outline" size="lg" className="rounded-full h-16 px-10 text-lg border-2 border-slate-200 text-slate-700 bg-white hover:border-primary hover:text-primary hover:bg-primary/5 transition-all group shadow-sm cursor-pointer" asChild>
                 <Link href="/products">
                     مشاهده کاتالوگ کامل
                     <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-2 transition-transform" />

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { 
   Star, ShieldCheck, Truck, Phone, ChevronLeft, 
-  Minus, Plus, Heart, Share2, FileText, Zap, Ruler 
+  Minus, Plus, Heart, Share2, FileText, Zap, Ruler, CheckCircle2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,15 +42,16 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="bg-slate-50 min-h-screen py-12">
+    // تغییر: pt-32 برای فاصله گرفتن از هدر سایت
+    <div className="bg-slate-50 min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         
         {/* --- Breadcrumb --- */}
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap pb-2">
+        <div className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap pb-2 no-scrollbar">
             <Link href="/" className="hover:text-primary transition-colors">خانه</Link>
-            <ChevronLeft size={14} />
+            <ChevronLeft size={14} className="rtl:rotate-180" />
             <Link href="/products" className="hover:text-primary transition-colors">محصولات</Link>
-            <ChevronLeft size={14} />
+            <ChevronLeft size={14} className="rtl:rotate-180" />
             <span className="text-slate-900 font-bold">{product.title}</span>
         </div>
 
@@ -58,7 +59,8 @@ export default function ProductDetailPage() {
             
             {/* --- Left Column: Gallery (Sticky) --- */}
             <div className="lg:col-span-7">
-                <div className="sticky top-24 space-y-6">
+                {/* تغییر: top-32 برای اینکه وقتی اسکرول میشه زیر هدر گیر نکنه */}
+                <div className="sticky top-32 space-y-6">
                     {/* Main Image Stage */}
                     <div className="relative aspect-square w-full bg-white rounded-[40px] border border-slate-200 shadow-sm overflow-hidden group">
                         <Image 
@@ -112,7 +114,7 @@ export default function ProductDetailPage() {
                     <div className="flex items-center gap-4 text-sm text-slate-500">
                         <span className="bg-slate-100 px-2 py-1 rounded text-slate-600 font-mono">SKU: {product.sku}</span>
                         <span className="text-green-600 font-medium flex items-center gap-1">
-                            <ShieldCheck size={16} />
+                            <CheckCircle2 size={16} />
                             موجود در انبار
                         </span>
                     </div>
@@ -137,14 +139,14 @@ export default function ProductDetailPage() {
                         <div className="flex items-center border border-slate-200 rounded-xl h-12 px-2 bg-slate-50">
                             <button 
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary"
+                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
                             >
                                 <Minus size={16} />
                             </button>
                             <span className="w-8 text-center font-bold text-slate-900">{quantity}</span>
                             <button 
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary"
+                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
                             >
                                 <Plus size={16} />
                             </button>
@@ -154,7 +156,7 @@ export default function ProductDetailPage() {
                         </Button>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-slate-500 pt-2">
+                    <div className="flex items-center justify-between text-sm text-slate-500 pt-2 border-t border-slate-50 mt-4">
                         <button className="flex items-center gap-2 hover:text-rose-500 transition-colors">
                             <Heart size={18} />
                             افزودن به علاقه‌مندی
@@ -166,7 +168,7 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
 
-                {/* Feature Cards (Engineering Style) */}
+                {/* Feature Cards */}
                 <div className="grid grid-cols-2 gap-4">
                     {product.features.map((feat, idx) => (
                         <div key={idx} className="bg-white p-4 rounded-2xl border border-slate-100 flex items-center gap-3 shadow-sm hover:border-primary/30 transition-colors">
@@ -182,21 +184,21 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Description Text */}
-                <div className="bg-slate-100/50 p-6 rounded-3xl">
+                <div className="bg-slate-100/50 p-6 rounded-3xl border border-slate-200/50">
                     <h3 className="font-bold text-slate-900 mb-2">معرفی اجمالی</h3>
-                    <p className="text-slate-600 leading-relaxed text-justify">
+                    <p className="text-slate-600 leading-relaxed text-justify text-sm">
                         {product.description}
                     </p>
                 </div>
 
                 {/* Contact for Expert */}
                 <div className="flex items-center gap-4 bg-blue-50 border border-blue-100 p-4 rounded-2xl text-blue-800">
-                    <div className="bg-white p-2 rounded-full shadow-sm">
+                    <div className="bg-white p-2 rounded-full shadow-sm shrink-0">
                         <Phone size={20} className="text-blue-600" />
                     </div>
                     <div>
                         <div className="font-bold text-sm">نیاز به مشاوره تخصصی دارید؟</div>
-                        <div className="text-xs opacity-80">تماس مستقیم با مهندسین فنی: ۰۹۱۵۴۲۵۶۴۵۸</div>
+                        <div className="text-xs opacity-80 mt-1">تماس مستقیم با مهندسین فنی: <span className="dir-ltr font-mono font-bold">۰۹۱۵۴۲۵۶۴۵۸</span></div>
                     </div>
                 </div>
 
@@ -205,13 +207,13 @@ export default function ProductDetailPage() {
 
         <Separator className="my-16" />
 
-        {/* --- Tabs Section (Details, Reviews, etc) --- */}
+        {/* --- Tabs Section --- */}
         <Tabs defaultValue="specs" className="w-full">
             <div className="flex justify-center mb-8">
-                <TabsList className="bg-slate-100 p-1 rounded-full h-auto">
-                    <TabsTrigger value="specs" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">مشخصات فنی</TabsTrigger>
-                    <TabsTrigger value="desc" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">توضیحات تکمیلی</TabsTrigger>
-                    <TabsTrigger value="reviews" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all">نظرات کاربران</TabsTrigger>
+                <TabsList className="bg-slate-200/60 p-1 rounded-full h-auto">
+                    <TabsTrigger value="specs" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all font-bold">مشخصات فنی</TabsTrigger>
+                    <TabsTrigger value="desc" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all font-bold">توضیحات تکمیلی</TabsTrigger>
+                    <TabsTrigger value="reviews" className="rounded-full px-6 py-2.5 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all font-bold">نظرات کاربران</TabsTrigger>
                 </TabsList>
             </div>
             
@@ -228,8 +230,8 @@ export default function ProductDetailPage() {
             </TabsContent>
 
             <TabsContent value="desc" className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-sm">
-                <div className="prose prose-slate max-w-none">
-                    <p>متن توضیحات طولانی و سئو شده درباره محصول در اینجا قرار می‌گیرد...</p>
+                <div className="prose prose-slate max-w-none text-justify leading-loose">
+                    <p>متن توضیحات طولانی و سئو شده درباره محصول در اینجا قرار می‌گیرد. این بخش می‌تواند شامل هدینگ‌های مختلف، لیست‌ها و تصاویر داخل متن باشد.</p>
                 </div>
             </TabsContent>
              <TabsContent value="reviews" className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-sm">

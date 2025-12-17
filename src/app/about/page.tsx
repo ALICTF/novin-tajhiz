@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Users, Target, History, Award, CheckCircle2, Linkedin, Mail,ShieldCheck } from "lucide-react";
+import { Users, Target, History, Award, CheckCircle2, Linkedin, Mail, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -10,28 +10,39 @@ export default function AboutPage() {
     <div className="bg-white min-h-screen">
       
       {/* --- 1. Hero Section (Introduction) --- */}
-      <section className="relative py-24 overflow-hidden bg-slate-900 text-white">
-        {/* Background Patterns */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      {/* تغییرات: 
+          1. pt-32: فاصله از بالا برای هدر
+          2. bg-slate-50: رنگ زمینه روشن مثل صفحه اصلی
+          3. text-slate-900: رنگ متن تیره
+      */}
+      <section className="relative pt-32 pb-20 overflow-hidden bg-slate-50 text-slate-900">
+        
+        {/* Background Patterns (Light Mode) */}
+        
+        {/* Blob Decoration */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center max-w-4xl">
-            <Badge variant="outline" className="mb-6 text-primary border-primary/30 bg-primary/10 px-4 py-1.5">
+            <Badge variant="outline" className="mb-6 text-primary border-primary/20 bg-white/50 backdrop-blur px-4 py-1.5 shadow-sm">
                 داستان نوین تجهیز
             </Badge>
+            
             <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-                ما <span className="text-primary">مهندسانی</span> هستیم که<br/>
+                ما <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-600 to-primary bg-[length:200%_auto] animate-gradient">مهندسانی</span> هستیم که<br/>
                 به کیفیت خواب شما اهمیت می‌دهیم
             </h1>
-            <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
+            
+            <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto font-medium">
                 از سال ۱۳۹۳، ماموریت ما پر کردن شکاف بین "تکنولوژی پزشکی" و "آرامش بیمار" بوده است. ما فقط دستگاه نمی‌فروشیم؛ ما راهکار مهندسی برای سلامتی ارائه می‌دهیم.
             </p>
         </div>
       </section>
 
       {/* --- 2. Stats Section (Trust by Numbers) --- */}
-      <section className="py-12 border-b border-slate-100 bg-white -mt-8 relative z-20 container mx-auto px-4 rounded-3xl shadow-xl max-w-6xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-x-reverse divide-slate-100">
+      {/* تغییر: رنگ پس‌زمینه کارت سفید است که روی زمینه طوسی سکشن بالا کنتراست زیبایی ایجاد می‌کند */}
+      <section className="py-12 bg-transparent -mt-8 relative z-20 container mx-auto px-4 max-w-6xl">
+        <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-x-reverse divide-slate-100 p-2">
             {[
                 { label: "سال تجربه تخصصی", value: "+۱۰", icon: History },
                 { label: "بیمار راضی", value: "+۵۰۰۰", icon: Users },
@@ -147,7 +158,7 @@ export default function AboutPage() {
                 دارای گواهینامه‌های معتبر بین‌المللی
             </p>
             <div className="flex flex-wrap justify-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                {/* لوگوهای فیک برای نمونه - در پروژه واقعی لوگوی ایمد و ایزو قرار میگیرد */}
+                {/* لوگوهای فیک برای نمونه */}
                 <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><Award /> ISO 13485</div>
                 <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><ShieldCheck /> IMED</div>
                 <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><CheckCircle2 /> CE Europe</div>

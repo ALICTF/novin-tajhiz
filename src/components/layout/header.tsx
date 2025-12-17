@@ -305,6 +305,7 @@ export function Header() {
                         <Link href="/blog" className="flex items-center py-3 px-3 font-medium text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
                             وبلاگ آموزشی
                         </Link>
+                        
                     </Accordion>
                 </div>
 

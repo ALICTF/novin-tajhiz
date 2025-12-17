@@ -62,7 +62,7 @@ export function AboutSummary() {
                 <div className="relative w-52 h-52 md:w-64 md:h-64 rounded-full p-2 bg-gradient-to-b from-slate-700 to-transparent">
                     <div className="w-full h-full rounded-full border-4 border-[#0B1120] overflow-hidden relative shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700">
                         <Image 
-                            src="https://placehold.co/400x400/1e293b/ffffff?text=Manager" 
+                            src="/images/boss.jpg" 
                             alt="مهندس حاجی میرزایی" 
                             fill 
                             className="object-cover scale-110 group-hover:scale-100 transition-transform duration-700"

@@ -8,23 +8,30 @@ import { Badge } from "@/components/ui/badge";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed bg-slate-50/50 py-20 lg:py-32">
+    <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-slate-50 py-20 lg:py-32">
       
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[100px] -z-10" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-[80px] -z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose-100/30 rounded-full blur-[80px] -z-10" />
+      {/* --- 1. Background Engineering Grid (CSS Pure - No External Image) --- */}
+      <div className="absolute inset-0 w-full h-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)]" />
+      </div>
 
+      {/* --- 2. Ambient Blurs --- */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-[100px] -z-10" />
+      
       <div className="container mx-auto px-4 md:px-6 relative z-10 w-full max-w-7xl">
         
         <div className="flex flex-col items-center text-center justify-center w-full">
 
           <div className="space-y-8 max-w-4xl w-full mx-auto flex flex-col items-center">
             
-            <Badge variant="outline" className="py-2 px-6 text-primary border-primary/20 bg-white/50 backdrop-blur-sm rounded-full text-sm font-medium shadow-sm hover:bg-white transition-colors">
-              <ShieldCheck className="w-4 h-4 ml-2 inline-block" />
-              مرکز تخصصی مهندسی پزشکی نوین تجهیز
+            {/* Badge */}
+            <Badge variant="outline" className="py-2 px-6 text-primary border-primary/20 bg-white/80 backdrop-blur-md rounded-full text-sm font-medium shadow-sm hover:bg-white transition-colors gap-2">
+              <ShieldCheck className="w-4 h-4" />
+              <span>مرکز تخصصی مهندسی پزشکی نوین تجهیز</span>
             </Badge>
             
+            {/* Title */}
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.2] w-full text-center">
               تجربه خوابی آرام با <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-600 to-primary bg-[length:200%_auto] animate-gradient">
@@ -32,47 +39,53 @@ export function HeroSection() {
               </span>
             </h1>
             
+            {/* Description */}
             <p className="max-w-2xl text-slate-600 md:text-xl leading-relaxed mx-auto px-4 text-center">
               مرجع تخصصی فروش، اجاره و تعمیرات دستگاه‌های <span className="font-bold text-slate-800">CPAP</span> و <span className="font-bold text-slate-800">BiPAP</span> و تجهیزات پلی‌سومنوگرافی در شرق کشور.
             </p>
 
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center items-center pt-2">
-              <Button asChild size="lg" className="h-14 px-10 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
+              <Button asChild size="lg" className="h-14 px-10 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto gap-2">
                 <Link href="/products">
                   مشاهده محصولات
-                  <ArrowLeft className="mr-2 h-5 w-5" />
+                  <ArrowLeft className="w-5 h-5" />
                 </Link>
               </Button>
               
-              <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg rounded-full border-slate-300 bg-white/60 backdrop-blur-sm hover:bg-white text-slate-700 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-                <Link href="/repair">
-                  <Wrench className="ml-2 h-5 w-5 text-slate-500" />
+              <Button asChild variant="outline" size="lg" className="h-14 px-10 text-lg rounded-full border-slate-300 bg-white/60 backdrop-blur-sm hover:bg-white text-slate-700 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto gap-2">
+                <Link href="/services"> {/* لینک به خدمات/تعمیرات */}
+                  <Wrench className="w-5 h-5 text-slate-500" />
                   درخواست تعمیرات
                 </Link>
               </Button>
             </div>
 
+            {/* Features List */}
             <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 text-sm font-medium text-slate-500 pt-4 opacity-90 w-full">
-                <div className="flex items-center gap-2 bg-white/50 px-3 py-1 rounded-full border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-slate-200/60 shadow-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>تامین قطعات اورجینال</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white/50 px-3 py-1 rounded-full border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-slate-200/60 shadow-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>مشاوره تخصصی رایگان</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white/50 px-3 py-1 rounded-full border border-slate-100">
-                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-full border border-slate-200/60 shadow-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span>گارانتی معتبر</span>
                 </div>
             </div>
           </div>
 
+          {/* --- Hero Image & Floating Cards --- */}
           <div className="relative mt-20 w-full max-w-5xl mx-auto px-4">
             
-            <div className="relative w-full aspect-[16/10] md:aspect-[21/9] bg-gradient-to-b from-slate-100 to-white border border-white rounded-[2rem] md:rounded-[3rem] shadow-2xl shadow-slate-200/60 flex items-end justify-center p-8 md:p-12 overflow-visible group">
+            {/* Main Image Container */}
+            <div className="relative w-full aspect-[16/10] md:aspect-[21/9] bg-gradient-to-b from-slate-50 to-white border border-white/60 rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] flex items-end justify-center p-8 md:p-12 overflow-visible group">
                 
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[60px]" />
+                {/* Glow behind device */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-500/10 rounded-full blur-[80px]" />
 
                 <div className="relative z-10 w-full max-w-[500px] lg:max-w-[600px] -mb-12 md:-mb-24 transition-transform duration-700 ease-out group-hover:scale-[1.02]">
                     <Image 
@@ -85,9 +98,10 @@ export function HeroSection() {
                     />
                 </div>
 
-                <div className="hidden lg:flex absolute -top-6 -right-6 z-20 bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/60 w-[260px] hover:-translate-y-2 transition-transform duration-300">
+                {/* Floating Card: Engineer Profile */}
+                <div className="hidden lg:flex absolute -top-6 -right-6 z-20 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/60 w-[260px] hover:-translate-y-2 transition-transform duration-300 animate-in fade-in zoom-in duration-700 delay-300">
                     <div className="flex items-center gap-4 text-right w-full">
-                        <div className="w-14 h-14 rounded-full border-2 border-white shadow-md overflow-hidden relative shrink-0">
+                        <div className="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden relative shrink-0">
                             <Image src="https://placehold.co/100x100/e2e8f0/1e293b?text=Eng" alt="Eng" fill className="object-cover" />
                         </div>
                         <div className="flex flex-col flex-1">
@@ -101,7 +115,8 @@ export function HeroSection() {
                     </div>
                 </div>
 
-                <div className="hidden lg:flex absolute top-1/3 -left-8 z-20 bg-slate-900/95 backdrop-blur-xl text-white p-5 rounded-2xl shadow-2xl border border-slate-700 w-[220px] hover:-translate-y-2 transition-transform duration-300">
+                {/* Floating Card: Reviews */}
+                <div className="hidden lg:flex absolute top-1/3 -left-8 z-20 bg-slate-900/95 backdrop-blur-xl text-white p-5 rounded-2xl shadow-2xl border border-slate-700 w-[220px] hover:-translate-y-2 transition-transform duration-300 animate-in fade-in zoom-in duration-700 delay-500">
                     <div className="flex flex-col items-center text-center gap-3 w-full">
                         <div className="flex gap-1 text-yellow-400">
                             <Star size={16} fill="currentColor" />

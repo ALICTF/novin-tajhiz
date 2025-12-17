@@ -3,12 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Filter, SlidersHorizontal, ChevronDown, Search, ShoppingCart, Eye, LayoutGrid, List } from "lucide-react";
+import { Filter, SlidersHorizontal, ChevronDown, Search, ShoppingCart, Eye, LayoutGrid, List, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
 
 // --- Mock Data ---
 const categories = [
@@ -85,7 +84,8 @@ export default function ProductsPage() {
     <div className="bg-slate-50 min-h-screen pb-20">
       
       {/* --- Page Header --- */}
-      <div className="bg-white border-b border-slate-200 py-12">
+      {/* تغییر: استفاده از pt-32 برای فاصله گرفتن از هدر سایت */}
+      <div className="bg-white border-b border-slate-200 pt-32 pb-12">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
@@ -113,7 +113,7 @@ export default function ProductsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
             
             {/* --- Sidebar Filters (Sticky) --- */}
-            <aside className="hidden lg:block lg:col-span-1 sticky top-24 space-y-8 h-fit overflow-y-auto pr-1">
+            <aside className="hidden lg:block lg:col-span-1 sticky top-24 space-y-6 h-fit overflow-y-auto pr-1">
                 
                 {/* Categories */}
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
@@ -126,7 +126,9 @@ export default function ProductsPage() {
                             <li key={cat.id}>
                                 <label className="flex items-center justify-between cursor-pointer group">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 rounded border border-slate-300 group-hover:border-primary group-hover:bg-primary/10 transition-colors" />
+                                        <div className="w-4 h-4 rounded border border-slate-300 group-hover:border-primary group-hover:bg-primary/10 transition-colors flex items-center justify-center text-primary">
+                                            {/* چک باکس کاستوم */}
+                                        </div>
                                         <span className="text-sm text-slate-600 group-hover:text-primary transition-colors">{cat.name}</span>
                                     </div>
                                     <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full group-hover:bg-primary/10 group-hover:text-primary transition-colors">{cat.count}</span>
@@ -152,17 +154,17 @@ export default function ProductsPage() {
                     </div>
                 </div>
 
-                 {/* Price Range (Mock) */}
-                 <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                {/* Price Range */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                     <h3 className="font-bold text-slate-900 mb-6 flex items-center gap-2">
                         <SlidersHorizontal size={18} className="text-primary" />
                         محدوده قیمت
                     </h3>
-                    {/* Placeholder for Slider Component */}
+                    
                     <div className="h-2 bg-slate-100 rounded-full mb-4 relative">
                         <div className="absolute right-0 left-1/2 h-full bg-primary rounded-full opacity-50" />
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow border-2 border-white cursor-pointer" />
-                        <div className="absolute left-1/2 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow border-2 border-white cursor-pointer" />
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow border-2 border-white cursor-pointer hover:scale-110 transition-transform" />
+                        <div className="absolute left-1/2 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow border-2 border-white cursor-pointer hover:scale-110 transition-transform" />
                     </div>
                     <div className="flex items-center justify-between text-xs text-slate-500 font-mono dir-ltr">
                         <span>0</span>
@@ -221,7 +223,7 @@ export default function ProductsPage() {
                                     className="object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
                                 />
                                 {product.isNew && (
-                                    <Badge className="absolute top-3 right-3 bg-blue-500 hover:bg-blue-600 border-none shadow-sm">
+                                    <Badge className="absolute top-3 right-3 bg-blue-500 hover:bg-blue-600 border-none shadow-sm z-10">
                                         جدید
                                     </Badge>
                                 )}
@@ -229,13 +231,15 @@ export default function ProductsPage() {
                                 {/* Quick Actions (Grid Mode) */}
                                 {viewMode === 'grid' && (
                                     <div className="absolute inset-x-4 bottom-4 flex gap-2 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                                        <Button className="flex-1 bg-slate-900 hover:bg-primary text-white h-10 rounded-xl text-xs gap-2 shadow-lg">
+                                        <Button className="flex-1 bg-slate-900 hover:bg-primary text-white h-10 rounded-xl text-xs gap-2 shadow-lg cursor-pointer">
                                             <ShoppingCart size={14} />
                                             افزودن
                                         </Button>
-                                        <Button size="icon" variant="secondary" className="h-10 w-10 rounded-xl bg-white text-slate-700 shadow-lg">
-                                            <Eye size={16} />
-                                        </Button>
+                                        <Link href={`/products/${product.id}`} className="contents">
+                                            <Button size="icon" variant="secondary" className="h-10 w-10 rounded-xl bg-white text-slate-700 shadow-lg cursor-pointer">
+                                                <Eye size={16} />
+                                            </Button>
+                                        </Link>
                                     </div>
                                 )}
                             </div>
@@ -253,7 +257,7 @@ export default function ProductsPage() {
                                 
                                 {viewMode === 'list' && (
                                     <p className="text-sm text-slate-500 mb-6 line-clamp-2 max-w-lg">
-                                        توضیحات کوتاه محصول برای حالت لیست که به کاربر اطلاعات بیشتری می‌دهد و فضای خالی را پر می‌کند...
+                                        این محصول با جدیدترین تکنولوژی روز دنیا ساخته شده است و دارای گارانتی معتبر شرکتی می‌باشد. برای اطلاعات بیشتر صفحه جزئیات را مشاهده کنید.
                                     </p>
                                 )}
 
@@ -264,10 +268,12 @@ export default function ProductsPage() {
                                     
                                     {viewMode === 'list' && (
                                         <div className="mr-auto flex gap-3">
-                                            <Button size="icon" variant="outline" className="rounded-xl">
-                                                <Eye size={18} />
-                                            </Button>
-                                            <Button className="rounded-xl px-6">
+                                            <Link href={`/products/${product.id}`}>
+                                                <Button size="icon" variant="outline" className="rounded-xl">
+                                                    <Eye size={18} />
+                                                </Button>
+                                            </Link>
+                                            <Button className="rounded-xl px-6 bg-slate-900 hover:bg-primary text-white">
                                                 افزودن به سبد خرید
                                             </Button>
                                         </div>
