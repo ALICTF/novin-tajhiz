@@ -1,9 +1,26 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
-import { Users, Target, History, Award, CheckCircle2, Linkedin, Mail, ShieldCheck, Quote, MapPin } from "lucide-react";
+import Link from "next/link";
+import {
+  Users, Target, History, Award, CheckCircle2, Mail,
+  ShieldCheck, Quote, MapPin, GraduationCap, Stethoscope,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { certificates, companyStats, contactInfo, founder, socialLinks } from "@/lib/data/site";
+
+export const metadata: Metadata = {
+  title: "درباره ما",
+  description:
+    "داستان نوین تجهیز؛ مرکز تخصصی مهندسی پزشکی در مشهد با بیش از یک دهه تجربه در تأمین، تنظیم و تعمیر تجهیزات تنفسی و خواب.",
+  alternates: { canonical: "/about" },
+};
+
+const statIcons = [History, Users, Target, Award];
+const certificateIcons = [Award, ShieldCheck, CheckCircle2];
+/** آیکون هر مدرک مدیریت، به ترتیب فهرست founder.credentials. */
+const credentialIcons = [GraduationCap, GraduationCap, Award, Stethoscope];
 
 export default function AboutPage() {
   return (
@@ -17,6 +34,10 @@ export default function AboutPage() {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
+        <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-4xl">
+            <Breadcrumbs items={[{ label: "درباره ما" }]} className="mb-8" />
+        </div>
+
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center max-w-4xl">
             <Badge variant="outline" className="mb-6 text-primary border-primary/20 bg-white/50 backdrop-blur px-4 py-1.5 shadow-sm">
                 داستان نوین تجهیز
@@ -28,7 +49,7 @@ export default function AboutPage() {
             </h1>
             
             <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto font-medium">
-                از سال ۱۳۹۳، ماموریت ما پر کردن شکاف بین "تکنولوژی پزشکی" و "آرامش بیمار" بوده است. ما فقط دستگاه نمی‌فروشیم؛ ما راهکار مهندسی برای سلامتی ارائه می‌دهیم.
+                از سال ۱۳۹۳، مأموریت ما پر کردن شکاف بین «تکنولوژی پزشکی» و «آرامش بیمار» بوده است. ما فقط دستگاه نمی‌فروشیم؛ ما راهکار مهندسی برای سلامتی ارائه می‌دهیم.
             </p>
         </div>
       </section>
@@ -36,65 +57,120 @@ export default function AboutPage() {
       {/* --- 2. Stats Section --- */}
       <section className="py-12 bg-transparent -mt-8 relative z-20 container mx-auto px-4 max-w-6xl">
         <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-x-reverse divide-slate-100 p-2">
-            {[
-                { label: "سال تجربه تخصصی", value: "+۱۰", icon: History },
-                { label: "بیمار راضی", value: "+۵۰۰۰", icon: Users },
-                { label: "پروژه کلینیکی", value: "+۵۰", icon: Target },
-                { label: "مجوز و گواهی", value: "۱۲", icon: Award },
-            ].map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center p-4">
-                    <stat.icon className="w-8 h-8 text-primary mb-3 opacity-80" />
-                    <div className="text-4xl font-black text-slate-800 mb-1">{stat.value}</div>
-                    <div className="text-sm text-slate-500 font-medium">{stat.label}</div>
-                </div>
-            ))}
+            {companyStats.map((stat, idx) => {
+                const Icon = statIcons[idx] ?? Award;
+                return (
+                    <div key={stat.label} className="flex flex-col items-center text-center p-4">
+                        <Icon className="w-8 h-8 text-primary mb-3 opacity-80" />
+                        <div className="text-4xl font-black text-slate-800 mb-1">{stat.value}</div>
+                        <div className="text-sm text-slate-500 font-medium">{stat.label}</div>
+                    </div>
+                );
+            })}
         </div>
       </section>
 
       {/* --- 3. Management Team (Single Profile) --- */}
-      <section className="py-24 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
             <div className="text-center mb-16">
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">مدیریت مجموعه</h2>
                 <p className="text-slate-500">تعهد به کیفیت، تحت نظارت مستقیم متخصصین</p>
             </div>
 
-            <div className="flex justify-center">
-                <div className="group bg-white rounded-[2.5rem] p-6 shadow-xl border border-slate-100 text-center max-w-md w-full hover:-translate-y-2 transition-all duration-500">
-                    
-                    {/* Image Container */}
-                    <div className="relative aspect-square rounded-[2rem] overflow-hidden mb-8 bg-slate-100 border-4 border-white shadow-inner">
-                        <Image 
-                            src="/images/boss.jpg" 
-                            alt="مهندس سید محمدرضا حاجی‌میرزایی" 
-                            fill 
-                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 lg:grid-cols-5">
+                {/* تصویر و هویت */}
+                <div className="group overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white shadow-xl lg:col-span-2">
+                    <div className="relative aspect-[4/5] w-full overflow-hidden bg-slate-100">
+                        <Image
+                            src={founder.photo}
+                            alt={founder.name}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 40vw"
+                            className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                         />
-                        
-                        {/* Quote Overlay */}
-                        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-3 rounded-2xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
-                            <Quote className="text-primary w-6 h-6" fill="currentColor" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+
+                        <div className="absolute right-6 bottom-6 left-6 text-right">
+                            <h3 className="mb-1 text-xl leading-tight font-black text-white">
+                                {founder.name}
+                            </h3>
+                            <p className="text-sm font-bold text-blue-300">{founder.role}</p>
                         </div>
                     </div>
 
-                    {/* Info */}
-                    <div className="space-y-4 px-4 pb-4">
-                        <div>
-                            <h3 className="text-2xl font-black text-slate-900 mb-1">مهندس سید محمدرضا حاجی‌میرزایی</h3>
-                            <p className="text-primary font-bold text-sm tracking-wide uppercase">مدیریت و موسس</p>
-                        </div>
-                        
-                        <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-4">
-                            کارشناس ارشد مهندسی پزشکی با بیش از یک دهه تجربه در زمینه تجهیزات تنفسی و راه‌اندازی کلینیک‌های خواب. متخصص در کالیبراسیون دقیق دستگاه‌های CPAP و BiPAP.
-                        </p>
-
-                        <div className="flex justify-center gap-3 pt-2">
-                            <Button size="icon" variant="outline" className="rounded-full border-slate-200 text-slate-500 hover:text-blue-700 hover:border-blue-700 hover:bg-blue-50 transition-colors">
-                                <Linkedin size={18} />
+                    <div className="flex justify-center gap-3 p-5">
+                        {socialLinks.map((social) => (
+                            <Button
+                                key={social.href}
+                                asChild
+                                size="icon"
+                                variant="outline"
+                                className={`rounded-full border-slate-200 text-slate-500 transition-colors ${social.hoverClass}`}
+                            >
+                                <a href={social.href} target="_blank" rel="noreferrer" aria-label={social.name}>
+                                    <social.icon size={18} />
+                                </a>
                             </Button>
-                            <Button size="icon" variant="outline" className="rounded-full border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-600 hover:bg-red-50 transition-colors">
+                        ))}
+                        <Button asChild size="icon" variant="outline" className="rounded-full border-slate-200 text-slate-500 transition-colors hover:border-red-600 hover:bg-red-50 hover:text-red-600">
+                            <a href={`mailto:${contactInfo.email}`} aria-label="ارسال ایمیل">
                                 <Mail size={18} />
-                            </Button>
+                            </a>
+                        </Button>
+                    </div>
+                </div>
+
+                {/* زندگی‌نامه و سوابق */}
+                <div className="space-y-5 lg:col-span-3">
+                    <div className="relative rounded-[2rem] border border-slate-100 bg-slate-50 p-7">
+                        <Quote className="absolute top-6 left-6 h-8 w-8 text-primary/20" fill="currentColor" />
+                        <div className="space-y-4 text-justify leading-loose text-slate-600">
+                            {founder.bio.map((para, i) => (
+                                <p key={i} className={i === 0 ? "font-medium text-slate-800" : undefined}>
+                                    {para}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {founder.credentials.map((cred, i) => {
+                            const Icon = credentialIcons[i] ?? Award;
+                            return (
+                                <div
+                                    key={cred.title}
+                                    className="group flex items-start gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
+                                >
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                                        <Icon size={20} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h4 className="mb-1 text-sm leading-snug font-bold text-slate-900">
+                                            {cred.title}
+                                        </h4>
+                                        <p className="text-xs leading-relaxed text-slate-500">
+                                            {cred.subtitle}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+                        <p className="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+                            حوزه تخصصی
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {founder.expertise.map((item) => (
+                                <span
+                                    key={item}
+                                    className="dir-ltr rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 font-mono text-xs text-slate-600"
+                                >
+                                    {item}
+                                </span>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -103,7 +179,7 @@ export default function AboutPage() {
       </section>
 
       {/* --- 4. Our Mission & Vision --- */}
-      <section className="py-24 bg-slate-50 container mx-auto px-4 md:px-6 max-w-7xl rounded-[3rem] my-12">
+      <section className="py-16 md:py-24 bg-slate-50 container mx-auto px-4 md:px-6 max-w-7xl rounded-[2rem] md:rounded-[3rem] my-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             <div className="space-y-8 order-2 lg:order-1">
@@ -131,17 +207,23 @@ export default function AboutPage() {
                     ))}
                 </ul>
                 
-                <Button size="lg" className="rounded-full px-8 bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20">
-                    دریافت مشاوره رایگان
-                </Button>
+                <div className="flex flex-wrap gap-3">
+                    <Button asChild size="lg" className="rounded-full bg-slate-900 px-8 text-white shadow-lg shadow-slate-900/20 hover:bg-slate-800">
+                        <Link href="/contact">دریافت مشاوره رایگان</Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+                        <Link href="/products">مشاهده محصولات</Link>
+                    </Button>
+                </div>
             </div>
 
             <div className="relative order-1 lg:order-2">
                 <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
-                    <Image 
-                        src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000" 
-                        alt="تیم مهندسی پزشکی" 
-                        fill 
+                    <Image
+                        src="/images/site/IMG_0319-rotated-1.jpeg"
+                        alt="کارگاه فنی و تجهیزات پلی‌سومنوگرافی نوین تجهیز"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className="object-cover"
                     />
                 </div>
@@ -152,7 +234,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                         <div className="text-sm font-bold text-slate-800">شعبه مرکزی</div>
-                        <div className="text-xs text-slate-500">مشهد، خیابان احمدآباد</div>
+                        <div className="text-xs text-slate-500">{contactInfo.addressShort}</div>
                     </div>
                 </div>
             </div>
@@ -165,10 +247,22 @@ export default function AboutPage() {
             <p className="text-slate-400 text-sm font-bold uppercase tracking-widest mb-8">
                 دارای گواهینامه‌های معتبر بین‌المللی
             </p>
-            <div className="flex flex-wrap justify-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><Award /> ISO 13485</div>
-                <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><ShieldCheck /> IMED</div>
-                <div className="flex items-center gap-2 font-black text-2xl text-slate-800"><CheckCircle2 /> CE Europe</div>
+            <div className="flex flex-wrap justify-center gap-10 md:gap-16">
+                {certificates.map((cert, i) => {
+                    const Icon = certificateIcons[i] ?? Award;
+                    return (
+                        <div
+                            key={cert.name}
+                            className="group flex flex-col items-center gap-1 opacity-60 transition-opacity duration-500 hover:opacity-100"
+                        >
+                            <div className="flex items-center gap-2 text-2xl font-black text-slate-800">
+                                <Icon className="text-slate-500 transition-colors group-hover:text-primary" />
+                                {cert.name}
+                            </div>
+                            <span className="text-xs text-slate-400">{cert.description}</span>
+                        </div>
+                    );
+                })}
             </div>
         </div>
       </section>

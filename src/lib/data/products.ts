@@ -1,0 +1,2271 @@
+import type { IconName } from "@/lib/icon-map";
+
+/* -------------------------------------------------------------------------- */
+/*  این فایل به‌صورت خودکار از کاتالوگ واقعی novintajhiz.org تولید شده است.      */
+/*  همه تصاویر به‌صورت محلی در public/images/products ذخیره شده‌اند.             */
+/* -------------------------------------------------------------------------- */
+
+export type CategoryId =
+  | "polysomnography"
+  | "consumables"
+  | "eeg"
+  | "pap"
+  | "health-care";
+
+export type Category = {
+  id: CategoryId;
+  name: string;
+  shortName: string;
+  description: string;
+  icon: IconName;
+};
+
+export type Product = {
+  id: number;
+  slug: string;
+  name: string;
+  brand: string;
+  categoryId: CategoryId;
+  /** `null` یعنی «تماس بگیرید». */
+  price: number | null;
+  oldPrice?: number;
+  /** مسیرهای محلی زیر public — هیچ تصویری از دامنه بیرونی بارگذاری نمی‌شود. */
+  images: string[];
+  shortDescription: string;
+  description: string[];
+  tags: string[];
+  rating: number;
+  reviewsCount: number;
+  sku: string;
+  inStock: boolean;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  /** ترتیب نمایش در سایت مرجع؛ مبنای مرتب‌سازی «جدیدترین». */
+  sortIndex: number;
+};
+
+export const categories: Category[] = [
+  {
+    id: "polysomnography",
+    name: "محصولات پلی‌سومنوگرافی",
+    shortName: "پلی‌سومنوگرافی",
+    description: "سنسورها، پراب‌ها و قطعات یدکی دستگاه‌های تست خواب برندهای فیلیپس آلیس، ونتمد و رزمد.",
+    icon: "waves",
+  },
+  {
+    id: "consumables",
+    name: "محصولات مصرفی کلینیک‌های خواب",
+    shortName: "مصرفی کلینیک خواب",
+    description: "اقلام مصرفی روزانه آزمایشگاه خواب: الکترود، کانولا، ژل، چست‌لید و لوازم یک‌بار مصرف.",
+    icon: "clipboardCheck",
+  },
+  {
+    id: "eeg",
+    name: "اکسسوری نوار مغز و نوروفیدبک",
+    shortName: "نوار مغز و نوروفیدبک",
+    description: "الکترود، کلاه، ژل و اکسسوری ثبت EEG و تجهیزات نوروفیدبک با کیفیت آزمایشگاهی.",
+    icon: "brain",
+  },
+  {
+    id: "pap",
+    name: "محصولات دستگاه‌های تنفسی",
+    shortName: "دستگاه‌های تنفسی",
+    description: "قطعات یدکی و مصرفی دستگاه‌های CPAP و BiPAP: موتور، برد، مخزن آب، فیلتر و لوله خرطومی.",
+    icon: "wind",
+  },
+  {
+    id: "health-care",
+    name: "مراقبت سلامت",
+    shortName: "مراقبت سلامت",
+    description: "اقلام مراقبت سلامت و پایش بیمار برای استفاده خانگی و درمانگاهی.",
+    icon: "heartPulse",
+  },
+];
+
+export const brands = [
+  "Dormo",
+  "Dräger",
+  "Grass",
+  "Löwenstein",
+  "Nonin",
+  "Philips",
+  "Protec",
+  "ResMed",
+  "Skintact",
+  "Ventmed",
+  "Weaver",
+  "نوین تجهیز",
+] as const;
+
+export const products: Product[] = [
+  {
+    id: 1341,
+    slug: "ال-سی-دی-دستگاه-اتوسیپپ-لوون-اشتاین-تاچ",
+    name: "ال سی دی دستگاه اتوسیپپ لوون اشتاین تاچ",
+    brand: "Löwenstein",
+    categoryId: "pap",
+    price: 40000000,
+    images: [
+      "/images/products/p1341-1-1342.jpg",
+    ],
+    shortDescription: "ال سی دی دستگاه اتوسیپپ لوون اشتاین تاچ",
+    description: [
+      "ال سی دی دستگاه اتوسیپپ لوون اشتاین تاچ",
+      "اصلی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1341",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1341,
+  },
+  {
+    id: 1339,
+    slug: "موتور-دستگاه-اتو-سیپپ-لوون-اشتاین-میکر",
+    name: "موتور دستگاه اتو سیپپ لوون اشتاین میکرونل",
+    brand: "Löwenstein",
+    categoryId: "pap",
+    price: 50000000,
+    images: [
+      "/images/products/p1339-1-1340.jpg",
+    ],
+    shortDescription: "موتور دستگاه اتو سیپپ لوون اشتاین میکرونلموتور دستگاه اتو سیپپ لوون اشتاین میکرونل",
+    description: [
+      "موتور دستگاه اتو سیپپ لوون اشتاین میکرونلموتور دستگاه اتو سیپپ لوون اشتاین میکرونل",
+      "اصلی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1339",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1339,
+  },
+  {
+    id: 1337,
+    slug: "مخزن-آب-دستگاه-اتوسیپپ-لوون-اشتاین",
+    name: "مخزن آب دستگاه اتوسیپپ لوون اشتاین",
+    brand: "Löwenstein",
+    categoryId: "pap",
+    price: 15000000,
+    images: [
+      "/images/products/p1337-1-1338.jpg",
+    ],
+    shortDescription: "مخزن آب دستگاه اتوسیپپ لوون اشتاین",
+    description: [
+      "مخزن آب دستگاه اتوسیپپ لوون اشتاین",
+      "اصلی استوک",
+      "پریسما اکوا",
+    ],
+    tags: [
+      "اشتاین",
+      "چمبر",
+      "لوون",
+      "لوون اشتاین",
+      "مخزن اتوسیپپ",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1337",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1337,
+  },
+  {
+    id: 1334,
+    slug: "آداپتور-دستگاه-اتوسیپپ-لوون-اشتاین",
+    name: "آداپتور دستگاه اتوسیپپ لوون اشتاین",
+    brand: "Löwenstein",
+    categoryId: "pap",
+    price: 27000000,
+    images: [
+      "/images/products/p1334-1-1335.jpg",
+      "/images/products/p1334-2-1336.jpg",
+    ],
+    shortDescription: "آداپتور دستگاه اتوسیپپ لوون اشتاین",
+    description: [
+      "آداپتور دستگاه اتوسیپپ لوون اشتاین",
+      "فابریک استوک",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1334",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1334,
+  },
+  {
+    id: 1332,
+    slug: "نازال-کانولا-تست-خواب-کوتاه",
+    name: "نازال کانولا تست خواب کوتاه",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 60000,
+    images: [
+      "/images/products/p1332-1-1331.jpg",
+    ],
+    shortDescription: "نازال کانولا تست خواب کوتاه سرپیچی مخصوص تست خواب منزل و کپنوگرافی",
+    description: [
+      "نازال کانولا تست خواب بلند مخصوص تست خواب منزل و کپنوگرافی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1332",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1332,
+  },
+  {
+    id: 1330,
+    slug: "نازال-کانولا-تست-خواب-بلند",
+    name: "نازال کانولا تست خواب بلند",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 80000,
+    images: [
+      "/images/products/p1330-1-1331.jpg",
+    ],
+    shortDescription: "نازال کانولا تست خواب بزرگسال",
+    description: [
+      "نازال کانولا تست خواب بلند",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1330",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1330,
+  },
+  {
+    id: 1328,
+    slug: "مین-برد-اتو-سیپپ-رسمد",
+    name: "مین برد اتو سیپپ رسمد",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: 35000000,
+    images: [
+      "/images/products/p1328-1-1329.jpeg",
+    ],
+    shortDescription: "مادربورد auto cpap resmed airsense 10",
+    description: [
+      "مادربورد auto cpap resmed airsense 10",
+      "استوک شرکتی",
+      "کارکرد ۱۰۰۰ ساعت",
+    ],
+    tags: [
+      "اتوسیپپ رسمد",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1328",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1328,
+  },
+  {
+    id: 1325,
+    slug: "سیم-رابط-ces",
+    name: "سیم رابط CES",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1500000,
+    images: [
+      "/images/products/p1325-1-1326.jpg",
+      "/images/products/p1325-2-1327.jpg",
+    ],
+    shortDescription: "سیم رابط CES",
+    description: [
+      "سیم رابط CES",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1325",
+    inStock: true,
+    isNew: true,
+    isFeatured: true,
+    sortIndex: 1325,
+  },
+  {
+    id: 1323,
+    slug: "گیره-گوش-ces-به-همراه-سیم",
+    name: "گیره گوش CES به همراه سیم",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 3500000,
+    images: [
+      "/images/products/p1323-1-1324.jpg",
+    ],
+    shortDescription: "گیره گوش CES به همراه سیم",
+    description: [
+      "گیره گوش CES به همراه سیم",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1323",
+    inStock: true,
+    isFeatured: true,
+    sortIndex: 1323,
+  },
+  {
+    id: 1321,
+    slug: "گیره-گوش-کربنی-ces-به-همراه-سیم",
+    name: "گیره گوش کربنی CES به همراه سیم",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 3500000,
+    images: [
+      "/images/products/p1321-1-1322.jpg",
+    ],
+    shortDescription: "گیره گوش کربنی CES به همراه سیم",
+    description: [
+      "گیره گوش کربنی CES به همراه سیم",
+      "یک جفت گیره به همراه سیم",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1321",
+    inStock: true,
+    isFeatured: true,
+    sortIndex: 1321,
+  },
+  {
+    id: 1319,
+    slug: "پد-فیزیوتراپی-۹-۶",
+    name: "پد فیزیوتراپی ۹ * ۶",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1000000,
+    images: [
+      "/images/products/p1319-1-1320.jpg",
+    ],
+    shortDescription: "پد فیزیوتراپی ۹ * ۶",
+    description: [
+      "پد فیزیوتراپی ۹ * ۶",
+      "یک جفت",
+      "بدون سیم",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1319",
+    inStock: true,
+    isFeatured: true,
+    sortIndex: 1319,
+  },
+  {
+    id: 1314,
+    slug: "گیره-گوش-ces",
+    name: "گیره گوش CES",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 2000000,
+    images: [
+      "/images/products/p1314-1-1317.jpg",
+    ],
+    shortDescription: "یک جفت تحریکی",
+    description: [
+      "یک جفت تحریکی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1314",
+    inStock: true,
+    isFeatured: true,
+    sortIndex: 1314,
+  },
+  {
+    id: 1306,
+    slug: "کلاه-نوار-مغز-بدون-الکترود",
+    name: "کلاه نوار مغز بدون الکترود",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 36000000,
+    images: [
+      "/images/products/p1306-1-1307.jpg",
+    ],
+    shortDescription: "برند کامپیومدیکس ساخت محصول مشترک آمریکا و استرالیا",
+    description: [
+      "برند کامپیومدیکس ساخت محصول مشترک آمریکا و استرالیا",
+      "کلاه تمام کشی نواز معز &#8211; سایز لارژ + اسمال + نوزاد",
+      "استاندارد 20- 10",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1306",
+    inStock: true,
+    sortIndex: 1306,
+  },
+  {
+    id: 1304,
+    slug: "سیم-الکترود-نواز-مغز",
+    name: "سیم الکترود نواز مغز",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 1000000,
+    images: [
+      "/images/products/p1304-1-1305.jpg",
+    ],
+    shortDescription: "ابریشمی نخ دار",
+    description: [
+      "ابریشمی نخ دار",
+      "برند کامپیومدیکس محصول مشترک آمریکا و استرالیا",
+      "اندازه سیم استاندارد برای کلاه نوار مغز",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1304",
+    inStock: true,
+    sortIndex: 1304,
+  },
+  {
+    id: 1301,
+    slug: "هلدر-الکترود-کلاه-نوار-مغز",
+    name: "هلدر الکترود کلاه نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 500000,
+    images: [
+      "/images/products/p1301-1-1302.jpg",
+      "/images/products/p1301-2-1303.jpg",
+    ],
+    shortDescription: "هولدر + اورینگ",
+    description: [
+      "هولدر + اورینگ",
+      "برند کامپیومدیکس",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1301",
+    inStock: true,
+    sortIndex: 1301,
+  },
+  {
+    id: 1299,
+    slug: "دیسک-الکترود-کلاه-نوار-مغز-سینترد",
+    name: "دیسک الکترود کلاه نوار مغز سینترد",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1000000,
+    images: [
+      "/images/products/p1299-1-1300.jpg",
+    ],
+    shortDescription: "دیسک الکترود کلاه نوار مغز سینترد",
+    description: [
+      "دیسک الکترود کلاه نوار مغز سینترد",
+      "برند Compumedics",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1299",
+    inStock: true,
+    sortIndex: 1299,
+  },
+  {
+    id: 1294,
+    slug: "خرطومی-دستگاه-cpap",
+    name: "خرطومی دستگاه Cpap",
+    brand: "نوین تجهیز",
+    categoryId: "pap",
+    price: 8000000,
+    images: [
+      "/images/products/p1294-1-1295.jpeg",
+    ],
+    shortDescription: "خرطومی دستگاه Cpap ساخت آلمان برند فیلیپس خرطومی دستگاه Cpap",
+    description: [
+      "خرطومی دستگاه Cpap ساخت آلمان برند فیلیپس خرطومی دستگاه Cpap",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1294",
+    inStock: true,
+    sortIndex: 1294,
+  },
+  {
+    id: 1286,
+    slug: "الکترود-نوار-مغز-3",
+    name: "الکترود نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 18000000,
+    images: [
+      "/images/products/p1286-1-1287.jpeg",
+    ],
+    shortDescription: "درجه یک گلد",
+    description: [
+      "درجه یک گلد",
+      "تزریقی",
+      "در 4 سایز",
+      "1.5 متر",
+      "2 متر",
+      "75 سانت",
+      "100 سانت",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1286",
+    inStock: true,
+    sortIndex: 1286,
+  },
+  {
+    id: 1283,
+    slug: "پراب-پالس-اکسیمتر-nonin",
+    name: "پراب پالس اکسیمتر سیلیکونی Nonin",
+    brand: "Nonin",
+    categoryId: "consumables",
+    price: 18000000,
+    images: [
+      "/images/products/p1283-1-1284.jpeg",
+    ],
+    shortDescription: "پراب پالس اکسیمتر Nonin",
+    description: [
+      "پراب پالس اکسیمتر Nonin",
+      "سه متری همراه با اکستنشن",
+      "پورت نونین 9 پین",
+      "سیلیکونی نرم",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1283",
+    inStock: true,
+    sortIndex: 1283,
+  },
+  {
+    id: 1281,
+    slug: "ژل-اسکراب-newprep-پاک-کننده",
+    name: "ژل اسکراب",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 1900000,
+    images: [
+      "/images/products/p1281-1-1282.jpg",
+    ],
+    shortDescription: "Skin Prep Gel 114 mil",
+    description: [
+      "Skin Prep Gel 114 mil",
+      "Newprep",
+      "ژل پاک کننده",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1281",
+    inStock: true,
+    sortIndex: 1281,
+  },
+  {
+    id: 1278,
+    slug: "چست-لید-دورمو-dormo-بسته-50-عددی",
+    name: "چست لید دورمو DORMO بسته 50 عددی",
+    brand: "Dormo",
+    categoryId: "consumables",
+    price: 2000000,
+    images: [
+      "/images/products/p1278-1-1073.png",
+      "/images/products/p1278-2-1074.png",
+    ],
+    shortDescription: "چست لید دورمو",
+    description: [
+      "چست لید دورمو",
+      "معرفی محصول",
+      "پزشکان و پرستاران برای کنترل وضعیت قلب و علائم حیاتی بیمار در اتاق عمل یا بخش مراقبت‌های ویژه همچنین برای گرفتن نوار قلب، از دستگاه مانیتورینگ قلب استفاده می‌کنند. این دستگاه با چست‌لید به بدن بیمار متصل می‌شود.",
+      "چست‌لید (chest lead) که با نام چست الکترود نیز شناخته می‌شود نوعی الکترود رسانا به شکل پد می‌باشد که جزو لوازم جانبی سیستم قلب و علائم حیاتی است، علاوه بر این در انجام تست استرس نیز مورد استفاده قرار می‌گیرد.",
+      "این الکترود‌ نحوه‌ی تپش قلب و میزان آن را بدون کوچکترین نویزی به دستگاه انتقال می‌دهد.",
+      "در واقع از چست‌لید برای اتصال سیم‌های دستگاه مانیتورینگ به قفسه سینه بیمار جهت نمایش سیگنال‌های قلبی در صفحه مانیتور دستگاه استفاده می‌شود.",
+      "ویژگی­‌های محصول",
+      "جنس فلز به کار رفته در چست‌لید دورمو استیل ضد زنگ می‌باشد.",
+      "پد چست‌لید بدون لاتکس و pvc می‌باشد که همین موضوع باعث ضد حساسیت بودن آن شده‌‍‌است.",
+      "این پد در برابر آب و مایعات دیگر مقاوم است.",
+      "دکمه فلزی آن با پوشش نقره می‌باشد.",
+      "امواج کاردیوگرافیک را بدون نویز انتقال می‌دهد.",
+      "مانع از تنفس پوست نمی‌شود.",
+      "از کیفیت و چسبندگی بالایی برخوردار است.",
+      "قطر هر پد 50 میلی‌متر می‌باشد.",
+      "وزن هر پد، 1.5 گرم است.",
+      "برای استفاده‌ی کوتاه‌مدت ساخته شده و حداکثر زمان استفاده از آن 72 ساعت است.",
+      "یکبار مصرف است.",
+      "مخصوص استفاده‌ی بزرگسالان است.",
+      "روش مصرف",
+      "با توجه به آزمایشی که انجام می‌شود چست‌لید را بر روی نقطه‌ی مورد نظر بر روی سینه‌ی بیمار می‌چسبانند.",
+      "با کمک دکمه‌ی فلزی که با روکش نقره پوشانده شده‌است سیگنال قلب را دریافت کرده.",
+      "به وسیله‌ی سیم رابط به مانیتور منتقل می‌کند.",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1278",
+    inStock: true,
+    sortIndex: 1278,
+  },
+  {
+    id: 1274,
+    slug: "چست-لید",
+    name: "چست لید اسکین تکت SKINTACT",
+    brand: "Skintact",
+    categoryId: "consumables",
+    price: 1500000,
+    images: [
+      "/images/products/p1274-1-1277.jpg",
+    ],
+    shortDescription: "چست لید SKINTACT مدل F-55 بسته 30 تایی، محصولی با کیفیت از کشور اتریش برای اتصال سیم مانیتورینگ قلب به قفسه سینه است.",
+    description: [
+      "چست لید SKINTACT مدل F-55 بسته 30 تایی، محصولی با کیفیت از کشور اتریش برای اتصال سیم مانیتورینگ قلب به قفسه سینه است.",
+      "این چست لید با ژل Aqua-Wet و پد فومی چسبنده، انتقال دقیق و با کیفیت امواج کاردیوگرافی را تضمین می‌کند. ضد حساسیت، بدون لاتکس و سازگار با پوست، مناسب استفاده در بخش‌های ICU، CCU و جراحی است.",
+      "این محصول در بسته‌های ۳۰ عددی، گزینه‌ای ایده‌آل برای مراکز درمانی و پزشکان حرفه‌ای ارائه می‌کند.",
+      "ویژگی های محصول:",
+      "هیدروژل پزشکی با چسبندگی مناسب و برداشتن آسان",
+      "انتقال سیگنال پایدار و کم‌نویز برای ثبت دقیق ECG",
+      "سازگار با کانکتور و کابل‌های استاندارد ECG / مونیتورینگ",
+      "استفاده در مطب‌های قلب و دستگاه‌های مانیتورینگ پرتابل",
+      "چسبندگی مناسب به پوست بدون ایجاد حساسیت",
+      "نصب سریع و جداسازی آسان بدون آسیب پوستی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1274",
+    inStock: true,
+    sortIndex: 1274,
+  },
+  {
+    id: 1263,
+    slug: "resmed-apnealink-air-effort-sensor",
+    name: "RESMED APNEALINK AIR EFFORT SENSOR",
+    brand: "ResMed",
+    categoryId: "health-care",
+    price: null,
+    images: [
+      "/images/products/p1263-1-1264.webp",
+    ],
+    shortDescription: "ماژول کمربند افورت تنفسی دستگاه پلی گرافی Apnea link Air Resmed",
+    description: [
+      "ماژول کمربند افورت تنفسی دستگاه پلی گرافی Apnea link Air Resmed",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1263",
+    inStock: true,
+    sortIndex: 1263,
+  },
+  {
+    id: 1257,
+    slug: "الکترود-رفرنس-گوش-گیره-ای-گلد",
+    name: "الکترود رفرنس گوش گیره ای گلد",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 4000000,
+    images: [
+      "/images/products/p1257-1-1258.jpeg",
+      "/images/products/p1257-2-1258.jpeg",
+    ],
+    shortDescription: "الکترود رفرنس گوش گیره ای گلد",
+    description: [
+      "الکترود رفرنس گوش گیره ای گلد",
+      "درجه یک",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1257",
+    inStock: true,
+    sortIndex: 1257,
+  },
+  {
+    id: 1251,
+    slug: "xpod-nonin",
+    name: "Xpod Nonin",
+    brand: "Nonin",
+    categoryId: "polysomnography",
+    price: 110000000,
+    images: [
+      "/images/products/p1251-1-1252.webp",
+    ],
+    shortDescription: "Xpod Nonin مخصوص دستگاه های پلی گرافی و پلی سومنوگرافی",
+    description: [
+      "Xpod Nonin مخصوص دستگاه های پلی گرافی و پلی سومنوگرافی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1251",
+    inStock: true,
+    sortIndex: 1251,
+  },
+  {
+    id: 1205,
+    slug: "الکترود-گیره-گوش",
+    name: "الکترود گیره گوش",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 2000000,
+    images: [
+      "/images/products/p1205-1-1206.jpeg",
+    ],
+    shortDescription: "الکترود گیره گوش",
+    description: [
+      "الکترود گیره گوش وارداتی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1205",
+    inStock: true,
+    sortIndex: 1205,
+  },
+  {
+    id: 1185,
+    slug: "الکترود-نوار-مغز-2",
+    name: "الکترود نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1000000,
+    images: [
+      "/images/products/p1185-1-1189.jpeg",
+    ],
+    shortDescription: "ساخت ایتالیا کارکرده سیمی مخصوص دستگاه های نوار مغز نوع بریج",
+    description: [
+      "ساخت ایتالیا کارکرده سیمی مخصوص دستگاه های نوار مغز نوع بریج",
+      "فیشی",
+    ],
+    tags: [
+      "الکترود نوار مغز درجه یک 1/5 متری",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1185",
+    inStock: true,
+    sortIndex: 1185,
+  },
+  {
+    id: 1180,
+    slug: "الکترود-گیره-ای-گوش",
+    name: "الکترود گیره ای گوش CES",
+    brand: "نوین تجهیز",
+    categoryId: "health-care",
+    price: 1000000,
+    images: [
+      "/images/products/p1180-1-1247.jpg",
+      "/images/products/p1180-2-1247.jpg",
+    ],
+    shortDescription: "رابط تنس عضلانی مدل گیره گوش مناسب بیوفیدبک و نوروفیدبک &#8211; تحریکی",
+    description: [
+      "رابط تنس عضلانی مدل گیره گوش مناسب بیوفیدبک و نوروفیدبک &#8211; تحریکی",
+    ],
+    tags: [
+      "الکترود گیره گوش",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1180",
+    inStock: true,
+    sortIndex: 1180,
+  },
+  {
+    id: 1164,
+    slug: "اسنپ-الکترود-اورجینال",
+    name: "اسنپ الکترود اورجینال",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 5000000,
+    images: [
+      "/images/products/p1164-1-1165.jpeg",
+    ],
+    shortDescription: "Snap electrods respironics 76 cm",
+    description: [
+      "Snap electrods respironics 76 cm",
+    ],
+    tags: [
+      "Snap electrods",
+      "اسنپ الکترود",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1164",
+    inStock: true,
+    sortIndex: 1164,
+  },
+  {
+    id: 1154,
+    slug: "الکتروژل-نوار-مغز",
+    name: "الکتروژل نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1900000,
+    images: [
+      "/images/products/p1154-1-1157.jpeg",
+      "/images/products/p1154-2-1158.jpeg",
+    ],
+    shortDescription: "الکتروژل نوار مغز مخصوص EEG EEG CAP",
+    description: [
+      "الکتروژل نوار مغز مخصوص EEG EEG CAP",
+    ],
+    tags: [
+      "الکتروژل",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1154",
+    inStock: true,
+    sortIndex: 1154,
+  },
+  {
+    id: 1152,
+    slug: "گاپ-الکترود-گلد",
+    name: "گاپ الکترود گلد",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 300000,
+    images: [
+      "/images/products/p1152-1-1153.jpg",
+    ],
+    shortDescription: "گاپ الکترود گلد نوار مغز",
+    description: [
+      "گاپ الکترود گلد نوار مغز",
+    ],
+    tags: [
+      "گاپ الکترود گلد",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1152",
+    inStock: true,
+    sortIndex: 1152,
+  },
+  {
+    id: 1146,
+    slug: "الکترود-نوار-مغز-۱-۵-متری",
+    name: "الکترود نوار مغز ۱/۵ متری",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 2500000,
+    images: [
+      "/images/products/p1146-1-1147.jpeg",
+      "/images/products/p1146-2-1148.jpeg",
+      "/images/products/p1146-3-1149.jpeg",
+    ],
+    shortDescription: "الکتزود نوار مغز ساخت ایتالیا Spes Medica 1/5 m",
+    description: [
+      "الکتزود نوار مغز ساخت ایتالیا Spes Medica 1/5 m",
+    ],
+    tags: [
+      "AFC EEG PASTE 400 G ژل نوار مغز",
+      "EEG_ELECTROD",
+      "Spes Medica",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1146",
+    inStock: true,
+    sortIndex: 1146,
+  },
+  {
+    id: 1142,
+    slug: "پراب-نوار-مغز-دستگاه-ونتمد",
+    name: "پراب نوار مغز دستگاه ونتمد",
+    brand: "Ventmed",
+    categoryId: "eeg",
+    price: null,
+    images: [
+      "/images/products/p1142-1-1143.jpeg",
+    ],
+    shortDescription: "ventmed eeg probe",
+    description: [
+      "ventmed eeg probe",
+    ],
+    tags: [
+      "پراب",
+      "نوار مغز",
+      "ونتمد",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1142",
+    inStock: true,
+    sortIndex: 1142,
+  },
+  {
+    id: 1140,
+    slug: "سرنگ-eeg-cap",
+    name: "سرنگ EEG CAP",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: null,
+    images: [
+      "/images/products/p1140-1-1141.jpeg",
+    ],
+    shortDescription: "سرنگ EEG CAP QEEG 10cc",
+    description: [
+      "سرنگ EEG CAP QEEG 10cc",
+    ],
+    tags: [
+      "EEG",
+      "EEG_CAP",
+      "QEEG",
+      "سرنگ",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1140",
+    inStock: true,
+    sortIndex: 1140,
+  },
+  {
+    id: 1137,
+    slug: "eeg-adapter",
+    name: "EEG ADAPTER",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: null,
+    images: [
+      "/images/products/p1137-1-1138.jpeg",
+    ],
+    shortDescription: "EEG ADAPTER 23 CH",
+    description: [
+      "EEG ADAPTER 23 CH",
+    ],
+    tags: [
+      "ADAPTER",
+      "CAP",
+      "EEG",
+      "QEEG",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1137",
+    inStock: true,
+    sortIndex: 1137,
+  },
+  {
+    id: 1135,
+    slug: "الکترود-نوار-مغز",
+    name: "الکترود کلاه نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 3000000,
+    images: [
+      "/images/products/p1135-1-1297.jpg",
+    ],
+    shortDescription: "Quik-Insert, Cap Electrode, 1.5m lead, Sintered, each ساخت آمریکا سایز حدود 1/5 متر سیم نخ دار",
+    description: [
+      "Quik-Insert, Cap Electrode, 1.5m lead, Sintered, each ساخت آمریکا سایز حدود 1/5 متر سیم نخ دار",
+    ],
+    tags: [
+      "EEG",
+      "EEG CAP",
+      "QEEG",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1135",
+    inStock: true,
+    sortIndex: 1135,
+  },
+  {
+    id: 1132,
+    slug: "ژل-نوار-مغز",
+    name: "ژل نوار مغز TEN20 MEGA PASTE",
+    brand: "Weaver",
+    categoryId: "eeg",
+    price: 2000000,
+    images: [
+      "/images/products/p1132-1-1133.jpeg",
+    ],
+    shortDescription: "ژل نوار مغز ایرانی ۲۵۰ گرمی",
+    description: [
+      "ژل نوار مغز ایرانی ۲۵۰ گرمی",
+    ],
+    tags: [
+      "ژل نوار مغز TEN20 ایرانی غیر اصل",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1132",
+    inStock: true,
+    sortIndex: 1132,
+  },
+  {
+    id: 1130,
+    slug: "دستبند-نوار-قلب-ecg",
+    name: "دستبند نوار قلب ECG بسته دو عددی",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: null,
+    images: [
+      "/images/products/p1130-1-1131.jpeg",
+    ],
+    shortDescription: "دستبند نوار قلب ECG ست ۴ عددی",
+    description: [
+      "دستبند نوار قلب ECG ست ۴ عددی",
+    ],
+    tags: [
+      "ECG",
+      "دستبند",
+      "گیره",
+      "نوار قلب",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1130",
+    inStock: false,
+    sortIndex: 1130,
+  },
+  {
+    id: 745,
+    slug: "اسنپ-الکترود-نوار-قلب-90-سانت",
+    name: "اسنپ الکترود نوار قلب 90 سانت",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 2000000,
+    images: [
+      "/images/products/p745-1-1126.jpeg",
+    ],
+    shortDescription: "اسنپ الکترود emg ecg پنج رنگ درجه یک",
+    description: [
+      "اسنپ الکترود emg ecg پنج رنگ درجه یک",
+    ],
+    tags: [
+      "اسنپ الکترود نوار قلب",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-745",
+    inStock: true,
+    sortIndex: 745,
+  },
+  {
+    id: 1122,
+    slug: "آداپتور-دستگاه-تنفسی-رسمد",
+    name: "آداپتور دستگاه تنفسی رسمد",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: 15000000,
+    images: [
+      "/images/products/p1122-1-1123.jpeg",
+    ],
+    shortDescription: "آداپتور دستگاه کمک تنفسی رسمد سی پپ بای پپ",
+    description: [
+      "آداپتور دستگاه کمک تنفسی رسمد سی پپ بای پپ",
+    ],
+    tags: [
+      "bipap",
+      "Cpap",
+      "resmed",
+      "آداپتور",
+      "بای پپ",
+      "رسمد",
+      "سی پپ",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1122",
+    inStock: true,
+    sortIndex: 1122,
+  },
+  {
+    id: 1120,
+    slug: "مخزن-آب-دستگاه-سی-پپ-رسمد",
+    name: "مخزن آب دستگاه سی پپ رسمد",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: 10000000,
+    images: [
+      "/images/products/p1120-1-1121.jpeg",
+    ],
+    shortDescription: "مخزن آب رطوبت ساز دستگاه کمک تنفسی رسمد",
+    description: [
+      "مخزن آب رطوبت ساز دستگاه کمک تنفسی رسمد",
+    ],
+    tags: [
+      "Cpap",
+      "water champer",
+      "آب",
+      "اتو سی پپ",
+      "بای پپ",
+      "رسمد",
+      "رطوبت ساز",
+      "سی پپ",
+      "مخزن",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1120",
+    inStock: true,
+    sortIndex: 1120,
+  },
+  {
+    id: 1116,
+    slug: "موتور-سی-پپ",
+    name: "موتور سی پپ رسمد",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: null,
+    images: [
+      "/images/products/p1116-1-1117.jpeg",
+    ],
+    shortDescription: "موتور دستگاه کمک تنفسی سی پپ و اتو سی پپ رسمد",
+    description: [
+      "موتور دستگاه سی پپ رسمد CPAP MOTOR RESMED AIR SENCE 10",
+    ],
+    tags: [
+      "auto cpap",
+      "Cpap",
+      "Motor",
+      "سی پپ",
+      "موتور",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1116",
+    inStock: false,
+    sortIndex: 1116,
+  },
+  {
+    id: 1112,
+    slug: "رطوبت-ساز-فیلیپس-water-champer",
+    name: "رطوبت ساز فیلیپس water champer",
+    brand: "Philips",
+    categoryId: "pap",
+    price: 35000000,
+    images: [
+      "/images/products/p1112-1-1113.jpeg",
+    ],
+    shortDescription: "مخزن آب رطوبت ساز دستگاه کمک تنفسی فیلیپس",
+    description: [
+      "مخزن آب دستگاه کمک تنفسی فیلیپس",
+    ],
+    tags: [
+      "champer",
+      "بای پپ",
+      "رطوب ساز",
+      "سی پپ",
+      "فیلیپس",
+      "مخزن آب",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1112",
+    inStock: true,
+    sortIndex: 1112,
+  },
+  {
+    id: 1093,
+    slug: "bridge-eeg-electrodes",
+    name: "Bridge EEG Electrodes",
+    brand: "نوین تجهیز",
+    categoryId: "eeg",
+    price: 1500000,
+    images: [
+      "/images/products/p1093-1-1094.jpg",
+      "/images/products/p1093-2-1094.jpg",
+      "/images/products/p1093-3-1095.jpg",
+    ],
+    shortDescription: "Bridge Electrodes ساخت ایتالیا کارکرده",
+    description: [
+      "Bridge Electrodes ساخت ایتالیا کارکرده",
+    ],
+    tags: [
+      "BRIDGE",
+      "BRIDGE ELECTRODES",
+      "EEG ELECTROD",
+      "NICOLET",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1093",
+    inStock: true,
+    sortIndex: 1093,
+  },
+  {
+    id: 1064,
+    slug: "فلت-دستگاه-alice-pdx",
+    name: "فلت دستگاه ALICE PDX",
+    brand: "Philips",
+    categoryId: "consumables",
+    price: 30000000,
+    images: [
+      "/images/products/p1064-1-1066.jpeg",
+    ],
+    shortDescription: "Alice pdx flex pcb",
+    description: [
+      "Flat pcb ALICE PDX",
+    ],
+    tags: [
+      "Flex PCB",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1064",
+    inStock: true,
+    sortIndex: 1064,
+  },
+  {
+    id: 1058,
+    slug: "فیلتر-دستگاه-سی-پپ-بای-پپ",
+    name: "فیلتر دستگاه سی پپ بای پپ",
+    brand: "نوین تجهیز",
+    categoryId: "health-care",
+    price: 350000,
+    images: [
+      "/images/products/p1058-1-1059.jpg",
+    ],
+    shortDescription: "Flter Cpap Bipap",
+    description: [
+      "Flter Cpap Bipap",
+      "مخصوص برند رسمد و دستگاه های ایرانی و چینی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1058",
+    inStock: true,
+    sortIndex: 1058,
+  },
+  {
+    id: 1055,
+    slug: "فیلتر-سی-پپ-cpap-filter",
+    name: "فیلتر سی پپ Cpap Filter",
+    brand: "ResMed",
+    categoryId: "health-care",
+    price: 450000,
+    images: [
+      "/images/products/p1055-1-1056.jpeg",
+    ],
+    shortDescription: "فیلتر سی پپ درجه یک وارداتی",
+    description: [
+      "فیلتر سی پپ درجه یک وارداتی",
+    ],
+    tags: [
+      "cpapfilter",
+      "رسمد",
+      "فیلتر",
+      "فیلترFilter",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1055",
+    inStock: true,
+    sortIndex: 1055,
+  },
+  {
+    id: 1053,
+    slug: "فیلتر-هوا-دستگاه-philips-respironics-dream-station-cpap",
+    name: "فیلتر هوا دستگاه Philips Respironics Dream Station CPAP",
+    brand: "Philips",
+    categoryId: "health-care",
+    price: 7000000,
+    images: [
+      "/images/products/p1053-1-1054.jpg",
+    ],
+    shortDescription: "فیلتر هوا دستگاه Philips Respironics Dream Station CPAP",
+    description: [
+      "فیلتر هوا دستگاه Philips Respironics Dream Station CPAP ست 6 عددی",
+    ],
+    tags: [
+      "Dream Station",
+      "Philips",
+      "فیلتر Cpap",
+      "فیلتر هوا",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-1053",
+    inStock: true,
+    sortIndex: 1053,
+  },
+  {
+    id: 845,
+    slug: "کانکتور-سنسور-اکسیژن-دراگر",
+    name: "کانکتور سنسور اکسیژن دراگر",
+    brand: "Dräger",
+    categoryId: "pap",
+    price: 6000000,
+    images: [
+      "/images/products/p845-1-846.jpeg",
+    ],
+    shortDescription: "کانکتور سنسور اکسیژن دراگر",
+    description: [
+      "کانکتور سنسور اکسیژن دراگر",
+    ],
+    tags: [
+      "کانکتور سنسور اکسیژن دراگر",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-845",
+    inStock: true,
+    sortIndex: 845,
+  },
+  {
+    id: 842,
+    slug: "کانکتور-پالس-اکسیمتر-دستگاه-پلی-گرافی-ap",
+    name: "کانکتور پالس اکسیمتر دستگاه پلی گرافی apnea link اورجینال",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 7000000,
+    images: [
+      "/images/products/p842-1-843.jpeg",
+      "/images/products/p842-2-844.jpeg",
+    ],
+    shortDescription: "کانکتور پالس اکسیمتر دستگاه پلی گرافی apnea link resmed",
+    description: [
+      "کانکتور پالس اکسیمتر دستگاه پلی گرافی apnea link resmed",
+    ],
+    tags: [
+      "کانکتور پالس اکسیمتر پلی گرافی اورجینال",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-842",
+    inStock: true,
+    sortIndex: 842,
+  },
+  {
+    id: 839,
+    slug: "کانکتور-eeg",
+    name: "کانکتور EEG",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 850000,
+    images: [
+      "/images/products/p839-1-840.jpeg",
+      "/images/products/p839-2-841.jpeg",
+    ],
+    shortDescription: "کانکتور پورت نوار مغز استاندارد",
+    description: [
+      "کانکتور پورت نوار مغز استاندارد",
+    ],
+    tags: [
+      "EEG CONECTOR",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-839",
+    inStock: true,
+    sortIndex: 839,
+  },
+  {
+    id: 837,
+    slug: "پراب-پالس-اکسیمتر",
+    name: "پراب پالس اکسیمتر",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: null,
+    images: [
+      "/images/products/p837-1-838.jpeg",
+    ],
+    shortDescription: "پراب پالمس اکسیمتر",
+    description: [
+      "پراب پالمس اکسیمتر",
+    ],
+    tags: [
+      "Spo2 probe",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-837",
+    inStock: true,
+    sortIndex: 837,
+  },
+  {
+    id: 835,
+    slug: "الکترود-نوار-مغز-دو-متری",
+    name: "الکترود نوار مغز دو متری",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 1600000,
+    images: [
+      "/images/products/p835-1-836.jpeg",
+    ],
+    shortDescription: "دو متری سبز رنگ",
+    description: [
+      "دو متری سبز رنگ",
+    ],
+    tags: [
+      "الکترود نوار مغز",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-835",
+    inStock: true,
+    sortIndex: 835,
+  },
+  {
+    id: 810,
+    slug: "effort-beltrip",
+    name: "Effort beltRip کمربند افورت ۱۷۵ سانتی",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 3500000,
+    images: [
+      "/images/products/p810-1-809.jpeg",
+    ],
+    shortDescription: "Effort belt Rip",
+    description: [
+      "Effort belt Rip",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-810",
+    inStock: false,
+    sortIndex: 810,
+  },
+  {
+    id: 801,
+    slug: "eeg-electrods-made-in-japan",
+    name: "EEG ELECTRODS MADE IN JAPAN الکتورد نوار مغز",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: null,
+    images: [
+      "/images/products/p801-1-802.jpg",
+    ],
+    shortDescription: "EEG ELECTRODS MADE IN JAPAN",
+    description: [
+      "EEG ELECTRODS MADE IN JAPAN",
+      "الکترود ساخت ژاپن اصل ست 12 عددی",
+    ],
+    tags: [
+      "الکترود نوار مغز درجه یک 1/5 متری زوج رنگ",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-801",
+    inStock: true,
+    sortIndex: 801,
+  },
+  {
+    id: 795,
+    slug: "eeg-electrods-gold-2-m-الکترود-نوار-مغز-درجه-یک-1-5-متری-زوج",
+    name: "EEG ELECTRODS GOLD الکترود نوار مغز درجه یک 1/5 متری",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 1600000,
+    images: [
+      "/images/products/p795-1-796.jpg",
+    ],
+    shortDescription: "EEG ELECTRODS GOLD 2 M",
+    description: [
+      "EEG ELECTRODS GOLD 2 M",
+    ],
+    tags: [
+      "الکترود نوار مغز درجه یک 1/5 متری",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-795",
+    inStock: true,
+    sortIndex: 795,
+  },
+  {
+    id: 793,
+    slug: "keyhole-wire",
+    name: "Keyhole wire 2 m",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 3000000,
+    images: [
+      "/images/products/p793-1-794.jpg",
+    ],
+    shortDescription: "Keyhole wire- Sensor",
+    description: [
+      "Keyhole wire- Sensor",
+    ],
+    tags: [
+      "دو متری",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-793",
+    inStock: true,
+    sortIndex: 793,
+  },
+  {
+    id: 761,
+    slug: "ventmed-probe",
+    name: "پراب کمربند افورت دستگاه پلی سومنوگرافی ونتمد",
+    brand: "Ventmed",
+    categoryId: "consumables",
+    price: null,
+    images: [
+      "/images/products/p761-1-762.jpg",
+    ],
+    shortDescription: "Ventmed Probe",
+    description: [
+      "Ventmed Probe",
+      "ECG & Effort",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-761",
+    inStock: true,
+    sortIndex: 761,
+  },
+  {
+    id: 748,
+    slug: "اسنپ-الکترود-نوار-قلب",
+    name: "اسنپ الکترود نوار قلب 1.5 متری",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 3000000,
+    images: [
+      "/images/products/p748-1-747.jpeg",
+    ],
+    shortDescription: "اسنپ الکترود نوار قلب دو متری",
+    description: [
+      "اسنپ الکترود نوار قلب دو متری",
+      "چهار رنگ",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-748",
+    inStock: true,
+    sortIndex: 748,
+  },
+  {
+    id: 739,
+    slug: "الکترود-ثبت-ecg-2meter",
+    name: "الکترود ثبت ECG 2meter",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: null,
+    images: [
+      "/images/products/p739-1-740.jpg",
+    ],
+    shortDescription: "ست 4 عددی",
+    description: [
+      "ست 4 عددی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-739",
+    inStock: true,
+    sortIndex: 739,
+  },
+  {
+    id: 718,
+    slug: "فیلتر-cpap",
+    name: "فیلتر CPAP مخصوص دستگاه های رسمد",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: 350000,
+    images: [
+      "/images/products/p718-1-719.jpeg",
+    ],
+    shortDescription: "فیلتر هوا CPAP",
+    description: [
+      "فیلتر هوا CPAP",
+    ],
+    tags: [
+      "رسمد",
+      "سی پپ",
+      "فیلتر",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-718",
+    inStock: true,
+    sortIndex: 718,
+  },
+  {
+    id: 588,
+    slug: "ترمیستور-اطفال-اورجینال-برند-پروتگ",
+    name: "ترمیستور پلی سومنوگرافی اطفال اورجینال برند پروتک",
+    brand: "Protec",
+    categoryId: "consumables",
+    price: 65000000,
+    images: [
+      "/images/products/p588-1-589.jpg",
+    ],
+    shortDescription: "Thermistor Pediatric Protech Sensor",
+    description: [
+      "Thermistor Pediatric Protech Sensor",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-588",
+    inStock: true,
+    sortIndex: 588,
+  },
+  {
+    id: 585,
+    slug: "nasal-cannula",
+    name: "Nasal Cannula رابط جریان هوای تنفسی",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 85000,
+    images: [
+      "/images/products/p585-1-586.jpg",
+    ],
+    shortDescription: "for Sleep Test",
+    description: [
+      "for Sleep Test",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-585",
+    inStock: true,
+    sortIndex: 585,
+  },
+  {
+    id: 532,
+    slug: "leg-electrods-4m-dual-الکترود-پا-3-متری-ثبت-emg",
+    name: "الکترود پا",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 3900000,
+    images: [
+      "/images/products/p532-1-534.jpg",
+    ],
+    shortDescription: "Leg Electrods 4m Dual &#8211; الکترود پا 4 متری ثبت EMG",
+    description: [
+      "Leg Electrods 4m Dual &#8211; الکترود پا 4 متری ثبت EMG",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-532",
+    inStock: true,
+    sortIndex: 532,
+  },
+  {
+    id: 521,
+    slug: "effort-belt-2",
+    name: "Effort Belt Rip کمربند افورت تنفسی مدل ریپ",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 30000000,
+    images: [
+      "/images/products/p521-1-522.jpg",
+    ],
+    shortDescription: "Effort Belt",
+    description: [
+      "Effort Belt",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-521",
+    inStock: true,
+    sortIndex: 521,
+  },
+  {
+    id: 507,
+    slug: "مگنت-و-بندک-ماسک-resmed-yuwell",
+    name: "مگنت و بندک یدک ماسک Resmed , Yuwell",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: null,
+    images: [
+      "/images/products/p507-1-508.jpg",
+    ],
+    shortDescription: "مگنت و بندک ماسک Resmed , Yuwell",
+    description: [
+      "مگنت و بندک ماسک Resmed , Yuwell",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-507",
+    inStock: false,
+    sortIndex: 507,
+  },
+  {
+    id: 432,
+    slug: "eeg-electrods-درجه-دو-ده-رنگ",
+    name: "EEG Electrods درجه دو ده رنگ",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: null,
+    images: [
+      "/images/products/p432-1-433.jpg",
+    ],
+    shortDescription: "جهت استعلام قیمت تماس بگیرید",
+    description: [
+      "EEG Electrods درجه دو ده رنگ",
+    ],
+    tags: [
+      "ست ده عددی رنگی دو متری",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-432",
+    inStock: true,
+    sortIndex: 432,
+  },
+  {
+    id: 430,
+    slug: "الکترود-نوار-مغز-درجه-یک-75-سانتی-متری-زو",
+    name: "الکترود نوار مغز درجه یک 100 سانتی متری زوج رنگ",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 1400000,
+    images: [
+      "/images/products/p430-1-431.jpg",
+    ],
+    shortDescription: "الکترود نوار مغز درجه یک 75 سانتی متری زوج رنگ",
+    description: [
+      "الکترود نوار مغز درجه یک 75 سانتی متری زوج رنگ",
+      "بسته ده عددی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-430",
+    inStock: true,
+    sortIndex: 430,
+  },
+  {
+    id: 428,
+    slug: "الکترود-نوار-مغز-درجه-یک-1-5-متری-زوج-رنگ",
+    name: "الکترود نوار مغز درجه یک 1/5 متری زوج رنگ",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 1600000,
+    images: [
+      "/images/products/p428-1-434.jpg",
+    ],
+    shortDescription: "الکترود نوار مغز درجه یک 1/5 متری زوج رنگ",
+    description: [
+      "الکترود نوار مغز درجه یک 1/5 متری زوج رنگ",
+      "بسته ده عددی",
+      "کاپ الکترود گلد",
+    ],
+    tags: [
+      "ست ده عددی زوج رنگ",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-428",
+    inStock: true,
+    sortIndex: 428,
+  },
+  {
+    id: 426,
+    slug: "سرجیفیکس-بزرگسالان-کشی",
+    name: "سرجیفیکس سر سی تو",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 23000,
+    images: [
+      "/images/products/p426-1-328.jpeg",
+    ],
+    shortDescription: "سرجیفیکس بزرگسالان کشی سی تو",
+    description: [
+      "سرجیفیکس بزرگسالان کشی سی تو",
+      "60 عددی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-426",
+    inStock: true,
+    sortIndex: 426,
+  },
+  {
+    id: 424,
+    slug: "لوله-خرطومی-دستگاه-سی-پپ-و-بای-پپ-resmed",
+    name: "لوله خرطومی دستگاه سی پپ و بای پپ Resmed",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: null,
+    images: [
+      "/images/products/p424-1-425.jpg",
+    ],
+    shortDescription: "سنسور دار",
+    description: [
+      "سنسور دار",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-424",
+    inStock: true,
+    sortIndex: 424,
+  },
+  {
+    id: 422,
+    slug: "لوله-خرطومی-دستگاه-سی-پپ-و-بای-پپ-resmed-نرما",
+    name: "لوله خرطومی دستگاه سی پپ و بای پپ Resmed نرمال",
+    brand: "ResMed",
+    categoryId: "pap",
+    price: 9000000,
+    images: [
+      "/images/products/p422-1-423.jpg",
+    ],
+    shortDescription: "تیوبینگ دستگاه های رسمد بدون سنسور",
+    description: [
+      "تیوبینگ دستگاه های رسمد بدون سنسور",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-422",
+    inStock: true,
+    sortIndex: 422,
+  },
+  {
+    id: 420,
+    slug: "spo2-sensor-alice-5",
+    name: "پراب پالس اکسیمتر دستگاه پلی سومنوگرافی فیلیپس آلییس 5",
+    brand: "Philips",
+    categoryId: "consumables",
+    price: null,
+    images: [
+      "/images/products/p420-1-421.jpg",
+    ],
+    shortDescription: "Spo2 Sensor Alice 5 پراب سنسور اکسیژن دستگاه آلیس 5",
+    description: [
+      "Spo2 Sensor Alice 5 پراب سنسور اکسیژن دستگاه آلیس 5",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-420",
+    inStock: true,
+    sortIndex: 420,
+  },
+  {
+    id: 418,
+    slug: "spo2-sensor-nonin",
+    name: "Spo2 Sensor پراب پالس اکسیمتر با پورت DB9",
+    brand: "نوین تجهیز",
+    categoryId: "consumables",
+    price: 10000000,
+    images: [
+      "/images/products/p418-1-419.jpg",
+    ],
+    shortDescription: "پراب سنجش اکسیژن نونین درجه یک مخصوص دستگاه های Alice PDX و پلی گرافی رسمد",
+    description: [
+      "پراب سنجش اکسیژن نونین درجه یک مخصوص دستگاه های Alice PDX و پلی گرافی رسمد",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-418",
+    inStock: true,
+    sortIndex: 418,
+  },
+  {
+    id: 416,
+    slug: "spo2-probe-sensor-alice-6",
+    name: "Spo2 Probe Sensor Alice 6 پراب پالس اکسیمتر دستگاه پلی سومنوگرافی آلیس 6 فیلیپس",
+    brand: "Philips",
+    categoryId: "consumables",
+    price: 10000000,
+    images: [
+      "/images/products/p416-1-417.jpg",
+    ],
+    shortDescription: "پراب پالس اکسیمتر دستگاه آلیس 6 درجه یک",
+    description: [
+      "پراب پالس اکسیمتر دستگاه آلیس 6 درجه یک",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-416",
+    inStock: true,
+    sortIndex: 416,
+  },
+  {
+    id: 406,
+    slug: "لوله-خرطومی-دستگاه-سی-پپ-و-بای-پپ",
+    name: "لوله خرطومی دستگاه سی پپ و بای پپ",
+    brand: "نوین تجهیز",
+    categoryId: "pap",
+    price: 2000000,
+    images: [
+      "/images/products/p406-1-415.jpg",
+      "/images/products/p406-2-414.jpg",
+    ],
+    shortDescription: "لوله رابط انتقال هوا از دستگاه تنفسی سی پپ و بای پپ به ماسک",
+    description: [
+      "لوله خرطومی دستگاه سی پپ و بای پپ درجه یک خارجی",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-406",
+    inStock: true,
+    sortIndex: 406,
+  },
+  {
+    id: 252,
+    slug: "snore-sensor-2",
+    name: "Snore Sensor دستگاه پلی سومنوگرافی",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 30000000,
+    images: [
+      "/images/products/p252-1-56.jpeg",
+    ],
+    shortDescription: "Snore فلیپس الیس 5 و 6 &#8211; وای من &#8211; MPR نیتوس",
+    description: [
+      "Snore فلیپس الیس 5 و 6 &#8211; وای من &#8211; MPR نیتوس",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-252",
+    inStock: true,
+    sortIndex: 252,
+  },
+  {
+    id: 214,
+    slug: "effort-belt",
+    name: "کمربند افورت تنفسی",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 30000000,
+    images: [
+      "/images/products/p214-1-200.jpeg",
+    ],
+    shortDescription: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+    description: [
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-214",
+    inStock: true,
+    sortIndex: 214,
+  },
+  {
+    id: 212,
+    slug: "zrip-kit-2",
+    name: "Zrip kit مبدل کمربند تنفسی دستگاه پلی سومنوگرافی فیلیپس آلیس 5",
+    brand: "Philips",
+    categoryId: "polysomnography",
+    price: 100000000,
+    images: [
+      "/images/products/p212-1-202.jpeg",
+    ],
+    shortDescription: "مبدل DC کمربند تنفسی افوورت های ادومن و تراکس",
+    description: [],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-212",
+    inStock: true,
+    sortIndex: 212,
+  },
+  {
+    id: 210,
+    slug: "eeg-electrods-درجه-یک-2",
+    name: "EEG Electrods درجه یک تزریقی دو متری",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 1800000,
+    images: [
+      "/images/products/p210-1-204.jpeg",
+    ],
+    shortDescription: "EEG Electrods درجه یک تزریقی دو متری",
+    description: [],
+    tags: [
+      "دو متری تزریقی ست ده عددی",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-210",
+    inStock: true,
+    sortIndex: 210,
+  },
+  {
+    id: 209,
+    slug: "leg-electrods-2",
+    name: "الکترود پاسه متری LEG",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 3900000,
+    images: [
+      "/images/products/p209-1-205.jpeg",
+    ],
+    shortDescription: "90 cm ابراشمی درجه یک 5 رنگ",
+    description: [
+      "90 cm ابراشمی درجه یک 5 رنگ",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-209",
+    inStock: true,
+    sortIndex: 209,
+  },
+  {
+    id: 207,
+    slug: "thermistor-sensor-2",
+    name: "Thermistor Sensorسنسور ترمیستور پلی سومنوگرافی",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 35000000,
+    images: [
+      "/images/products/p207-1-206.jpeg",
+    ],
+    shortDescription: "Thermistor Sensorسنسور ترمیستور پلی سومنوگرافی",
+    description: [],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-207",
+    inStock: true,
+    sortIndex: 207,
+  },
+  {
+    id: 198,
+    slug: "body-position-sensor-2",
+    name: "Body position sensor Alice 5 سنسور موقعیت یاب بدن مخصوص دستگاه های پلی سومنوگرافی فیلیپس آلیس 5 و 6",
+    brand: "Philips",
+    categoryId: "polysomnography",
+    price: 50000000,
+    images: [
+      "/images/products/p198-1-199.jpeg",
+    ],
+    shortDescription: "Body position sensor Alice 5 سنسور موقعیت یاب بدن مخصوص دستگاه های پلی سومنوگرافی فیلیپس آلیس 5 و 6",
+    description: [],
+    tags: [
+      "Alice 5",
+    ],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-198",
+    inStock: true,
+    sortIndex: 198,
+  },
+  {
+    id: 147,
+    slug: "air-flow-sensor",
+    name: "Air flow sensor سنسور جریان هوای تنفسی دستگاه های پلی سومنوگرافی فیلیپس الیس 5و 6",
+    brand: "Philips",
+    categoryId: "polysomnography",
+    price: 60000000,
+    images: [
+      "/images/products/p147-1-134.jpeg",
+    ],
+    shortDescription: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+    description: [
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
+    ],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-147",
+    inStock: true,
+    sortIndex: 147,
+  },
+  {
+    id: 144,
+    slug: "eeg-electrods-original",
+    name: "EEG Electrods original الکترود نواز مغز برند گرس اورجینال",
+    brand: "Grass",
+    categoryId: "polysomnography",
+    price: null,
+    images: [
+      "/images/products/p144-1-136.jpeg",
+    ],
+    shortDescription: "EEG Electrods original الکترود نواز مغز برند گرس اورجینال",
+    description: [],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-144",
+    inStock: true,
+    sortIndex: 144,
+  },
+  {
+    id: 142,
+    slug: "ecg-electrods",
+    name: "ECG Electrods الکتور نوار قلب یک و نیم متری",
+    brand: "نوین تجهیز",
+    categoryId: "polysomnography",
+    price: 3000000,
+    images: [
+      "/images/products/p142-1-138.jpeg",
+    ],
+    shortDescription: "ECG Electrods الکتور نوار قلب یک و نیم متری",
+    description: [],
+    tags: [],
+    rating: 0,
+    reviewsCount: 0,
+    sku: "NT-142",
+    inStock: true,
+    sortIndex: 142,
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/*                                   کمکی‌ها                                   */
+/* -------------------------------------------------------------------------- */
+
+export function getCategory(id: string): Category | undefined {
+  return categories.find((c) => c.id === id);
+}
+
+export function getCategoryName(id: string): string {
+  return getCategory(id)?.shortName ?? id;
+}
+
+/** محصول را با `id` عددی یا `slug` پیدا می‌کند. */
+export function getProduct(idOrSlug: string | number): Product | undefined {
+  const key = String(idOrSlug);
+  return products.find((p) => p.slug === key || String(p.id) === key);
+}
+
+export function getProductsByCategory(categoryId: string): Product[] {
+  return products.filter((p) => p.categoryId === categoryId);
+}
+
+export function getFeaturedProducts(limit = 8): Product[] {
+  const featured = products.filter((p) => p.isFeatured && p.inStock);
+  return (featured.length >= limit ? featured : products.filter((p) => p.inStock)).slice(0, limit);
+}
+
+export function getNewProducts(limit = 4): Product[] {
+  return [...products].sort((a, b) => b.sortIndex - a.sortIndex).slice(0, limit);
+}
+
+/** محصولات مرتبط: هم‌دسته، و در صورت کمبود، هم‌برند. */
+export function getRelatedProducts(product: Product, limit = 4): Product[] {
+  const sameCategory = products.filter(
+    (p) => p.id !== product.id && p.categoryId === product.categoryId,
+  );
+  const sameBrand = products.filter(
+    (p) =>
+      p.id !== product.id &&
+      p.brand === product.brand &&
+      p.categoryId !== product.categoryId,
+  );
+  return [...sameCategory, ...sameBrand].slice(0, limit);
+}
+
+export function getCategoryCounts(): Record<string, number> {
+  return products.reduce<Record<string, number>>((acc, p) => {
+    acc[p.categoryId] = (acc[p.categoryId] ?? 0) + 1;
+    return acc;
+  }, {});
+}
+
+export function getBrandCounts(): Record<string, number> {
+  return products.reduce<Record<string, number>>((acc, p) => {
+    acc[p.brand] = (acc[p.brand] ?? 0) + 1;
+    return acc;
+  }, {});
+}
+
+export const priceBounds = {
+  min: 0,
+  max: Math.max(...products.map((p) => p.price ?? 0)),
+};
+
+export type SortOption =
+  | "newest"
+  | "price-asc"
+  | "price-desc"
+  | "name"
+  | "available";
+
+export const sortOptions: { value: SortOption; label: string }[] = [
+  { value: "newest", label: "جدیدترین" },
+  { value: "available", label: "موجودها" },
+  { value: "price-asc", label: "ارزان‌ترین" },
+  { value: "price-desc", label: "گران‌ترین" },
+  { value: "name", label: "بر اساس نام" },
+];
+
+export type ProductFilters = {
+  query?: string;
+  categories?: string[];
+  brands?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  inStockOnly?: boolean;
+  sort?: SortOption;
+};
+
+/** فیلتر و مرتب‌سازی محصولات بر اساس یک شیء فیلتر. */
+export function filterProducts(filters: ProductFilters): Product[] {
+  const {
+    query,
+    categories: cats,
+    brands: brs,
+    minPrice,
+    maxPrice,
+    inStockOnly,
+    sort = "newest",
+  } = filters;
+
+  let result = products;
+
+  if (query) {
+    const q = query.trim().toLowerCase();
+    result = result.filter((p) =>
+      [p.name, p.brand, p.shortDescription, ...p.tags]
+        .join(" ")
+        .toLowerCase()
+        .includes(q),
+    );
+  }
+
+  if (cats?.length) result = result.filter((p) => cats.includes(p.categoryId));
+  if (brs?.length) result = result.filter((p) => brs.includes(p.brand));
+  if (inStockOnly) result = result.filter((p) => p.inStock);
+
+  if (minPrice != null || maxPrice != null) {
+    result = result.filter((p) => {
+      // محصولات «تماس بگیرید» از فیلتر قیمت مستثنا هستند.
+      if (p.price === null) return true;
+      if (minPrice != null && p.price < minPrice) return false;
+      if (maxPrice != null && p.price > maxPrice) return false;
+      return true;
+    });
+  }
+
+  return [...result].sort((a, b) => {
+    switch (sort) {
+      case "price-asc":
+        if (a.price === null) return 1;
+        if (b.price === null) return -1;
+        return a.price - b.price;
+      case "price-desc":
+        if (a.price === null) return 1;
+        if (b.price === null) return -1;
+        return b.price - a.price;
+      case "name":
+        return a.name.localeCompare(b.name, "fa");
+      case "available":
+        return Number(b.inStock) - Number(a.inStock) || b.sortIndex - a.sortIndex;
+      case "newest":
+      default:
+        return b.sortIndex - a.sortIndex;
+    }
+  });
+}

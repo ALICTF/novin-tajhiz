@@ -1,9 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
 
 export default function ProductDetailLoading() {
   return (
-    <div className="bg-slate-50 min-h-screen py-12">
+    <div className="bg-slate-50 min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         
         {/* Breadcrumb */}

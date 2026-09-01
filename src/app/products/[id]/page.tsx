@@ -1,394 +1,441 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { 
-  Star, ShieldCheck, Truck, Phone, ChevronLeft, 
-  Minus, Plus, Heart, Share2, FileText, Zap, Ruler, 
-  CheckCircle2, ArrowRight, ThumbsUp, HelpCircle, 
-  RotateCcw, User, MessageCircle
+import { notFound } from "next/navigation";
+import {
+  ArrowLeft, CheckCircle2, Layers, MessageCircle, Package,
+  Phone, ShieldCheck, Tag, ThumbsUp, User, XCircle,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { StarRating } from "@/components/shared/star-rating";
+import { ProductCard } from "@/components/shared/product-card";
+import { getIcon } from "@/lib/icon-map";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  getCategory,
+  getProduct,
+  getRelatedProducts,
+  products,
+} from "@/lib/data/products";
+import { getProductReviews } from "@/lib/data/reviews";
+import { formatPrice, toPersianDigits } from "@/lib/format";
+import { primaryPhone, siteConfig, warrantyStatement } from "@/lib/data/site";
+import { ProductGallery } from "./product-gallery";
+import { ProductPurchase } from "./product-purchase";
+import { ReviewForm } from "./review-form";
 
-// --- Mock Data ---
+type Params = { params: Promise<{ id: string }> };
 
-const product = {
-  id: 1,
-  title: "دستگاه اتو سیپپ ResMed AirSense 10 AutoSet",
-  brand: "ResMed",
-  price: "۴۵,۰۰۰,۰۰۰",
-  oldPrice: "۴۸,۰۰۰,۰۰۰",
-  rating: 4.8,
-  reviewsCount: 124,
-  sku: "RES-10-AUTO",
-  description: "پیشرفته‌ترین دستگاه کمک تنفسی هوشمند با قابلیت تشخیص خودکار انسداد راه هوایی. دارای مرطوب‌کننده یکپارچه و قابلیت اتصال بی‌سیم جهت پایش داده‌های خواب بیمار. این دستگاه با الگوریتم AutoSet Response راحتی بیمار را در طول شب تضمین می‌کند.",
-  features: [
-    { icon: Zap, label: "میزان صدا", value: "26 dBA (بسیار کم‌صدا)" },
-    { icon: Ruler, label: "وزن دستگاه", value: "1.2 kg" },
-    { icon: ShieldCheck, label: "گارانتی", value: "۲ ساله شرکتی" },
-    { icon: FileText, label: "مد کاری", value: "Auto CPAP / CPAP" },
-  ],
-  images: [
-    "https://placehold.co/600x600/f1f5f9/1e293b?text=Main+Device",
-    "https://placehold.co/600x600/f1f5f9/1e293b?text=Humidifier",
-    "https://placehold.co/600x600/f1f5f9/1e293b?text=Mask+Fit",
-    "https://placehold.co/600x600/f1f5f9/1e293b?text=Screen+UI",
-  ]
-};
+/** همه صفحات محصول در زمان build ساخته می‌شوند. */
+export function generateStaticParams() {
+  return products.map((p) => ({ id: p.slug }));
+}
 
-const relatedProducts = [
-    { id: 2, name: "ماسک تمام صورت F20", price: "۴,۵۰۰,۰۰۰ تومان", image: "https://placehold.co/400x400/f8fafc/1e293b?text=F20" },
-    { id: 3, name: "لوله خرطومی ClimateLine", price: "۲,۸۰۰,۰۰۰ تومان", image: "https://placehold.co/400x400/f8fafc/1e293b?text=Tube" },
-    { id: 4, name: "فیلتر هایپوآلرژنیک", price: "۳۵۰,۰۰۰ تومان", image: "https://placehold.co/400x400/f8fafc/1e293b?text=Filter" },
-    { id: 5, name: "دستگاه BiPAP Lumis 150", price: "تماس بگیرید", image: "https://placehold.co/400x400/f8fafc/1e293b?text=Lumis" },
-];
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { id } = await params;
+  const product = getProduct(id);
+  if (!product) return { title: "محصول یافت نشد" };
 
-const reviews = [
-    { id: 1, user: "علی محمدی", date: "۱۲ آذر ۱۴۰۳", rating: 5, text: "واقعاً دستگاه بیوصدایی هست. من قبلاً مدل‌های چینی داشتم ولی این اصلاً قابل مقایسه نیست. ممنون از مشاوره خوبتون." },
-    { id: 2, user: "سارا احمدی", date: "۱۰ آذر ۱۴۰۳", rating: 4, text: "دستگاه عالیه ولی قیمتش یکم بالاست. البته با توجه به کیفیت خوابی که میده ارزشش رو داره." },
-    { id: 3, user: "دکتر کمالی", date: "۵ آذر ۱۴۰۳", rating: 5, text: "به عنوان پزشک متخصص ریه، این مدل رو به تمام بیمارانم پیشنهاد میکنم. الگوریتم تشخیصش عالی عمل میکنه." },
-];
+  const description = `${product.shortDescription} — خرید ${product.name} با ${warrantyStatement} از ${siteConfig.name}${
+    product.price ? `. قیمت: ${formatPrice(product.price)}` : ". برای استعلام قیمت تماس بگیرید"
+  }.`;
 
-const faqs = [
-    { q: "آیا این دستگاه دارای کارت حافظه است؟", a: "بله، دستگاه دارای کارت SD برای ذخیره اطلاعات خواب تا یک سال می‌باشد." },
-    { q: "آیا مرطوب‌کننده دستگاه جدا می‌شود؟", a: "خیر، در مدل AirSense 10 مرطوب‌کننده به صورت یکپارچه طراحی شده است اما مخزن آب قابل جدا شدن و شستشو است." },
-    { q: "تفاوت مدل AutoSet با Elite چیست؟", a: "مدل AutoSet فشار را به صورت اتوماتیک بر اساس نیاز بیمار تنظیم می‌کند، اما مدل Elite روی فشار ثابت کار می‌کند." },
-];
+  return {
+    title: product.name,
+    description: description.slice(0, 300),
+    keywords: [product.name, product.brand, ...product.tags, "تست خواب", "پلی سومنوگرافی"],
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: {
+      type: "website",
+      title: product.name,
+      description: product.shortDescription,
+      images: [{ url: product.images[0] }],
+    },
+  };
+}
 
-export default function ProductDetailPage() {
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+export default async function ProductDetailPage({ params }: Params) {
+  const { id } = await params;
+  const product = getProduct(id);
+  if (!product) notFound();
+
+  const category = getCategory(product.categoryId);
+  const CategoryIcon = getIcon(category?.icon);
+  const related = getRelatedProducts(product);
+  const productReviews = getProductReviews(product.id);
+
+  /** داده ساخت‌یافته محصول برای نتایج جستجوی گوگل. */
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.shortDescription,
+    sku: product.sku,
+    image: [`${siteConfig.url}${product.images[0]}`],
+    brand: { "@type": "Brand", name: product.brand },
+    category: category?.name,
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/products/${product.slug}`,
+      priceCurrency: "IRR",
+      ...(product.price ? { price: product.price * 10 } : {}),
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: siteConfig.name },
+    },
+  };
 
   return (
-    <div className="bg-slate-50 min-h-screen pt-32 pb-20">
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        
-        {/* --- Breadcrumb --- */}
-        <div className="flex items-center gap-2 text-sm text-slate-500 mb-8 overflow-x-auto whitespace-nowrap pb-2 no-scrollbar">
-            <Link href="/" className="hover:text-primary transition-colors">خانه</Link>
-            <ChevronLeft size={14} className="rtl:rotate-180" />
-            <Link href="/products" className="hover:text-primary transition-colors">محصولات</Link>
-            <ChevronLeft size={14} className="rtl:rotate-180" />
-            <Link href="/products/cpap" className="hover:text-primary transition-colors">دستگاه‌های CPAP</Link>
-            <ChevronLeft size={14} className="rtl:rotate-180" />
-            <span className="text-slate-900 font-bold">{product.title}</span>
-        </div>
+    <div className="min-h-screen bg-slate-50 pt-32 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            
-            {/* --- Left Column: Gallery (Sticky) --- */}
-            <div className="lg:col-span-7">
-                <div className="sticky top-32 space-y-6">
-                    {/* Main Image Stage */}
-                    <div className="relative aspect-square w-full bg-white rounded-[40px] border border-slate-200 shadow-sm overflow-hidden group">
-                        <Image 
-                            src={product.images[selectedImage]} 
-                            alt={product.title}
-                            fill
-                            className="object-contain p-12 transition-transform duration-700 group-hover:scale-110 mix-blend-multiply"
-                        />
-                        <div className="absolute top-6 left-6 z-10">
-                            <Badge className="bg-rose-500 hover:bg-rose-600 text-white border-none px-3 py-1 text-sm font-bold shadow-md">
-                                فروش ویژه
-                            </Badge>
-                        </div>
-                    </div>
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <Breadcrumbs
+          className="mb-8"
+          items={[
+            { label: "محصولات", href: "/products" },
+            {
+              label: category?.shortName ?? "محصول",
+              href: `/products?category=${product.categoryId}`,
+            },
+            { label: product.name },
+          ]}
+        />
 
-                    {/* Thumbnails */}
-                    <div className="grid grid-cols-4 gap-4">
-                        {product.images.map((img, idx) => (
-                            <button 
-                                key={idx}
-                                onClick={() => setSelectedImage(idx)}
-                                className={`relative aspect-square rounded-2xl border-2 overflow-hidden bg-white transition-all duration-300 ${selectedImage === idx ? 'border-primary ring-4 ring-primary/10 scale-95' : 'border-slate-100 hover:border-slate-300 hover:shadow-md'}`}
-                            >
-                                <Image src={img} alt="thumbnail" fill className="object-contain p-2 mix-blend-multiply" />
-                            </button>
-                        ))}
-                    </div>
-                </div>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* ---------------------------- گالری ---------------------------- */}
+          <div className="lg:col-span-7">
+            <div className="sticky top-32">
+              <ProductGallery
+                images={product.images}
+                alt={product.name}
+                price={product.price}
+                oldPrice={product.oldPrice}
+              />
+            </div>
+          </div>
+
+          {/* --------------------------- اطلاعات --------------------------- */}
+          <div className="space-y-8 lg:col-span-5">
+            <div className="space-y-4 border-b border-slate-200 pb-8">
+              <div className="flex flex-wrap items-center gap-3">
+                <Link href={`/products?brand=${encodeURIComponent(product.brand)}`}>
+                  <Badge
+                    variant="outline"
+                    className="border-primary/20 bg-primary/5 px-3 py-1 text-primary hover:bg-primary/10"
+                  >
+                    {product.brand}
+                  </Badge>
+                </Link>
+                <Link href={`/products?category=${product.categoryId}`}>
+                  <Badge
+                    variant="secondary"
+                    className="gap-1.5 bg-slate-100 px-3 py-1 text-slate-600 hover:bg-slate-200"
+                  >
+                    <CategoryIcon size={13} />
+                    {category?.shortName}
+                  </Badge>
+                </Link>
+                {product.reviewsCount > 0 && (
+                  <StarRating
+                    value={product.rating}
+                    showValue
+                    reviewsCount={product.reviewsCount}
+                    size={15}
+                  />
+                )}
+              </div>
+
+              <h1 className="text-2xl leading-tight font-black text-slate-900 md:text-4xl">
+                {product.name}
+              </h1>
+
+              <p className="leading-relaxed text-slate-500">{product.shortDescription}</p>
+
+              <div className="flex flex-wrap items-center gap-3 text-sm">
+                <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600">
+                  کد کالا: {product.sku}
+                </span>
+                {product.inStock ? (
+                  <span className="flex items-center gap-1 rounded bg-emerald-50 px-2 py-1 font-bold text-emerald-600">
+                    <CheckCircle2 size={14} />
+                    موجود و آماده ارسال
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 rounded bg-rose-50 px-2 py-1 font-bold text-rose-600">
+                    <XCircle size={14} />
+                    ناموجود — تماس بگیرید
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* --- Right Column: Product Info --- */}
-            <div className="lg:col-span-5 space-y-8">
-                
-                {/* Header Info */}
-                <div className="space-y-4 border-b border-slate-200 pb-8">
-                    <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-primary border-primary/20 bg-primary/5 px-3 py-1">
-                            {product.brand}
-                        </Badge>
-                        <div className="flex items-center gap-1 text-amber-500 bg-amber-50 px-2 py-1 rounded-lg">
-                            <Star size={16} fill="currentColor" />
-                            <span className="text-sm font-bold text-slate-700 pt-0.5">{product.rating}</span>
-                            <span className="text-xs text-slate-400 pt-0.5 border-r border-slate-300 mr-2 pr-2">({product.reviewsCount} دیدگاه)</span>
-                        </div>
+            <ProductPurchase product={product} />
+
+            {/* اطلاعات کلیدی */}
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: Package, label: "برند", value: product.brand },
+                { icon: Layers, label: "دسته‌بندی", value: category?.shortName ?? "—" },
+                { icon: ShieldCheck, label: "ضمانت", value: "اصالت کالا" },
+                {
+                  icon: Tag,
+                  label: "قیمت",
+                  value: product.price ? formatPrice(product.price, false) : "استعلامی",
+                },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-colors hover:border-primary/30"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-50 text-slate-500 transition-colors group-hover:bg-primary group-hover:text-white">
+                    <item.icon size={20} />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="truncate text-xs text-slate-400">{item.label}</div>
+                    <div className="truncate text-sm font-bold text-slate-900">
+                      {item.value}
                     </div>
-                    
-                    <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">
-                        {product.title}
-                    </h1>
-                    
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
-                        <span className="bg-slate-100 px-2 py-1 rounded text-slate-600 font-mono text-xs">SKU: {product.sku}</span>
-                        <span className="text-emerald-600 font-bold flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded">
-                            <CheckCircle2 size={14} />
-                            موجود و آماده ارسال
-                        </span>
-                    </div>
+                  </div>
                 </div>
-
-                {/* Price & Actions Box */}
-                <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xl shadow-slate-200/40 space-y-6 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-400 to-primary" />
-                    
-                    <div className="flex items-end justify-between">
-                        <div className="space-y-1">
-                            <span className="text-slate-400 text-sm line-through decoration-rose-500">{product.oldPrice}</span>
-                            <div className="flex items-center gap-1">
-                                <span className="text-3xl font-black text-slate-900">{product.price}</span>
-                                <span className="text-sm text-slate-500 mb-1">تومان</span>
-                            </div>
-                        </div>
-                        <div className="bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold animate-pulse">
-                            ۵٪ تخفیف محدود
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center border border-slate-200 rounded-xl h-12 px-2 bg-slate-50">
-                            <button 
-                                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
-                            >
-                                <Minus size={16} />
-                            </button>
-                            <span className="w-8 text-center font-bold text-slate-900">{quantity}</span>
-                            <button 
-                                onClick={() => setQuantity(quantity + 1)}
-                                className="w-8 h-full flex items-center justify-center text-slate-500 hover:text-primary transition-colors"
-                            >
-                                <Plus size={16} />
-                            </button>
-                        </div>
-                        <Button className="flex-1 h-12 rounded-xl text-lg font-bold bg-slate-900 hover:bg-primary shadow-lg shadow-slate-900/20 text-white transition-all">
-                            افزودن به سبد خرید
-                        </Button>
-                    </div>
-
-                    {/* Trust Badges */}
-                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
-                        <div className="flex flex-col items-center text-center gap-1">
-                            <Truck size={20} className="text-slate-400" />
-                            <span className="text-[10px] text-slate-500">ارسال رایگان</span>
-                        </div>
-                        <div className="flex flex-col items-center text-center gap-1 border-r border-slate-100">
-                            <ShieldCheck size={20} className="text-slate-400" />
-                            <span className="text-[10px] text-slate-500">ضمانت اصالت</span>
-                        </div>
-                        <div className="flex flex-col items-center text-center gap-1 border-r border-slate-100">
-                            <RotateCcw size={20} className="text-slate-400" />
-                            <span className="text-[10px] text-slate-500">۷ روز بازگشت</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex items-center justify-between text-sm text-slate-500 px-2">
-                    <button className="flex items-center gap-2 hover:text-rose-500 transition-colors group">
-                        <Heart size={18} className="group-hover:fill-rose-500" />
-                        افزودن به علاقه‌مندی
-                    </button>
-                    <button className="flex items-center gap-2 hover:text-primary transition-colors">
-                        <Share2 size={18} />
-                        اشتراک‌گذاری
-                    </button>
-                </div>
-
-                {/* Feature Cards */}
-                <div className="grid grid-cols-2 gap-4">
-                    {product.features.map((feat, idx) => (
-                        <div key={idx} className="bg-white p-4 rounded-2xl border border-slate-100 flex items-center gap-3 shadow-sm hover:border-primary/30 transition-colors group">
-                            <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-primary group-hover:text-white transition-colors">
-                                <feat.icon size={20} />
-                            </div>
-                            <div className="overflow-hidden">
-                                <div className="text-xs text-slate-400 truncate">{feat.label}</div>
-                                <div className="font-bold text-slate-900 dir-ltr text-right truncate text-sm">{feat.value}</div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Contact for Expert */}
-                <div className="flex items-center gap-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl text-blue-900">
-                    <div className="bg-white p-3 rounded-full shadow-sm shrink-0 text-primary">
-                        <Phone size={24} />
-                    </div>
-                    <div>
-                        <div className="font-bold text-sm mb-1">نیاز به مشاوره تخصصی دارید؟</div>
-                        <div className="text-xs text-slate-600">تماس مستقیم با مهندسین فنی (۸ صبح تا ۱۰ شب)</div>
-                        <div className="dir-ltr font-mono font-bold text-lg text-primary mt-1">0915-425-6458</div>
-                    </div>
-                </div>
-
+              ))}
             </div>
+
+            {/* برچسب‌ها */}
+            {product.tags.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <Tag size={16} className="text-slate-400" />
+                {product.tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    href={`/search?q=${encodeURIComponent(tag)}`}
+                    className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600 transition-colors hover:bg-primary/10 hover:text-primary"
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* مشاوره */}
+            <div className="flex items-center gap-4 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 text-blue-900">
+              <div className="shrink-0 rounded-full bg-white p-3 text-primary shadow-sm">
+                <Phone size={24} />
+              </div>
+              <div>
+                <div className="mb-1 text-sm font-bold">
+                  برای مشاوره یا استعلام موجودی تماس بگیرید
+                </div>
+                <div className="text-xs text-slate-600">
+                  کارشناسان فنی نوین تجهیز راهنمای شما هستند
+                </div>
+                <a
+                  href={`tel:${primaryPhone.tel}`}
+                  className="dir-ltr mt-1 block text-lg font-bold tabular-nums tracking-wide text-primary"
+                >
+                  {primaryPhone.number}
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Separator className="my-20" />
 
-        {/* --- Tabs Section --- */}
-        <Tabs defaultValue="specs" className="w-full">
-            <div className="flex justify-center mb-10">
-                <TabsList className="bg-slate-100 p-1.5 rounded-full h-auto shadow-inner">
-                    <TabsTrigger value="specs" className="rounded-full px-8 py-3 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all font-bold text-slate-600">مشخصات فنی</TabsTrigger>
-                    <TabsTrigger value="desc" className="rounded-full px-8 py-3 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all font-bold text-slate-600">توضیحات و پرسش‌ها</TabsTrigger>
-                    <TabsTrigger value="reviews" className="rounded-full px-8 py-3 data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md transition-all font-bold text-slate-600">نظرات کاربران ({product.reviewsCount})</TabsTrigger>
-                </TabsList>
+        {/* ------------------------------ تب‌ها ------------------------------ */}
+        <Tabs defaultValue="desc" className="w-full">
+          <div className="mb-10 flex justify-center">
+            <TabsList className="h-auto rounded-full bg-slate-100 p-1.5 shadow-inner">
+              <TabsTrigger
+                value="desc"
+                className="rounded-full px-6 py-3 font-bold text-slate-600 transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md md:px-8"
+              >
+                توضیحات محصول
+              </TabsTrigger>
+              <TabsTrigger
+                value="shipping"
+                className="rounded-full px-6 py-3 font-bold text-slate-600 transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md md:px-8"
+              >
+                ارسال و ضمانت
+              </TabsTrigger>
+              <TabsTrigger
+                value="reviews"
+                className="rounded-full px-6 py-3 font-bold text-slate-600 transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md md:px-8"
+              >
+                نظرات {product.reviewsCount > 0 && `(${toPersianDigits(product.reviewsCount)})`}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* توضیحات */}
+          <TabsContent
+            value="desc"
+            className="animate-in fade-in slide-in-from-bottom-4 rounded-[3rem] border border-slate-200 bg-white p-8 shadow-sm md:p-12"
+          >
+            <div className="mx-auto max-w-3xl">
+              <h2 className="mb-6 border-r-4 border-primary pr-4 text-2xl font-bold text-slate-900">
+                درباره {product.name}
+              </h2>
+
+              {product.description.length > 0 ? (
+                <div className="space-y-4 text-justify leading-loose">
+                  {product.description.map((para, i) => (
+                    <p key={i} className="text-slate-600">
+                      {para}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <p className="leading-loose text-slate-600">
+                  {product.shortDescription} برای دریافت مشخصات فنی دقیق، سازگاری با مدل
+                  دستگاه شما و استعلام موجودی، با کارشناسان ما تماس بگیرید.
+                </p>
+              )}
+
+              <div className="mt-8 rounded-2xl bg-slate-50 p-5 text-sm leading-relaxed text-slate-600">
+                <p className="mb-2 flex items-center gap-2 font-bold text-slate-800">
+                  <CheckCircle2 size={18} className="text-primary" />
+                  پیش از خرید بخوانید
+                </p>
+                سازگاری قطعات یدکی و اکسسوری با مدل دقیق دستگاه شما اهمیت زیادی دارد. اگر
+                از انتخاب خود مطمئن نیستید، پیش از ثبت سفارش مدل دستگاهتان را به کارشناسان
+                ما اعلام کنید تا سازگاری بررسی شود.
+              </div>
             </div>
-            
-            <TabsContent value="specs" className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-4">
-                <h3 className="text-2xl font-bold text-slate-900 mb-8 border-r-4 border-primary pr-4">جدول مشخصات کامل</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-4">
-                    {[1,2,3,4,5,6,7,8].map((i) => (
-                        <div key={i} className="flex justify-between py-4 border-b border-slate-100 hover:bg-slate-50 px-4 rounded-xl transition-colors">
-                            <span className="text-slate-500 font-medium">ویژگی فنی شماره {i}</span>
-                            <span className="font-bold text-slate-800">مقداری برای تست</span>
-                        </div>
-                    ))}
-                </div>
-            </TabsContent>
+          </TabsContent>
 
-            <TabsContent value="desc" className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-4">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    <div className="lg:col-span-2 prose prose-slate max-w-none text-justify leading-loose">
-                        <h3 className="text-xl font-bold text-slate-900 mb-4">نقد و بررسی تخصصی</h3>
-                        <p>{product.description}</p>
-                        <p>این دستگاه با استفاده از موتور توربینی جدید خود، صدای بسیار کمی تولید می‌کند که برای خواب راحت بیمار و اطرافیان او حیاتی است. همچنین سیستم مرطوب‌کننده HumidAir به کار رفته در آن، از خشکی گلو و بینی جلوگیری می‌کند.</p>
-                        <h4 className="font-bold mt-6 mb-2 text-slate-800">مزایای اصلی:</h4>
-                        <ul className="list-disc list-inside space-y-2 marker:text-primary">
-                            <li>تشخیص هوشمند رویدادهای تنفسی</li>
-                            <li>شروع خودکار (SmartStart)</li>
-                            <li>قابلیت کاهش فشار بازدمی (EPR)</li>
-                        </ul>
-                    </div>
-                    
-                    {/* FAQ Section inside Description Tab */}
-                    <div className="bg-slate-50 p-6 rounded-3xl h-fit">
-                        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                            <HelpCircle className="text-primary" />
-                            سوالات متداول
-                        </h3>
-                        <Accordion type="single" collapsible className="w-full">
-                            {faqs.map((faq, i) => (
-                                <AccordionItem key={i} value={`item-${i}`} className="border-b-slate-200">
-                                    <AccordionTrigger className="text-sm font-bold text-slate-700 hover:no-underline hover:text-primary text-right">{faq.q}</AccordionTrigger>
-                                    <AccordionContent className="text-slate-600 text-sm leading-relaxed">
-                                        {faq.a}
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </div>
-                </div>
-            </TabsContent>
+          {/* ارسال و ضمانت */}
+          <TabsContent
+            value="shipping"
+            className="animate-in fade-in slide-in-from-bottom-4 rounded-[3rem] border border-slate-200 bg-white p-8 shadow-sm md:p-12"
+          >
+            <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+              <div>
+                <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-slate-900">
+                  <ShieldCheck className="text-primary" />
+                  ضمانت کالا
+                </h2>
+                <ul className="space-y-3 text-sm leading-relaxed text-slate-600">
+                  {[
+                    "تمام کالاها اورجینال و با ضمانت اصالت عرضه می‌شوند.",
+                    "در صورت مغایرت کالا با سفارش، تعویض رایگان انجام می‌شود.",
+                    "پشتیبانی فنی برای نصب و راه‌اندازی قطعات ارائه می‌گردد.",
+                    "اقلام مصرفی و بهداشتی پس از باز شدن بسته قابل بازگشت نیستند.",
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-2.5">
+                      <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-primary" />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-             <TabsContent value="reviews" className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-4">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    {/* Rating Summary */}
-                    <div className="lg:col-span-4 bg-slate-50 p-8 rounded-3xl text-center h-fit">
-                        <div className="text-6xl font-black text-slate-900 mb-2">{product.rating}</div>
-                        <div className="flex justify-center gap-1 text-amber-400 mb-2">
-                            {[1,2,3,4,5].map(i => <Star key={i} size={24} fill="currentColor" />)}
-                        </div>
-                        <p className="text-slate-500 text-sm mb-8">از مجموع {product.reviewsCount} نظر ثبت شده</p>
-                        
-                        <div className="space-y-3">
-                            {[5,4,3,2,1].map(star => (
-                                <div key={star} className="flex items-center gap-3 text-sm">
-                                    <span className="w-3 font-bold">{star}</span>
-                                    <Star size={12} className="text-slate-400" />
-                                    <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
-                                        <div className="h-full bg-amber-400 rounded-full" style={{ width: star === 5 ? '70%' : star === 4 ? '20%' : '5%' }} />
-                                    </div>
-                                    <span className="text-slate-400 text-xs w-8 text-left">{star === 5 ? '70%' : '...'}</span>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <Button className="w-full mt-8 bg-slate-900 text-white rounded-xl">ثبت دیدگاه جدید</Button>
-                    </div>
+              <div>
+                <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-slate-900">
+                  <Package className="text-primary" />
+                  ارسال سفارش
+                </h2>
+                <ul className="space-y-3 text-sm leading-relaxed text-slate-600">
+                  {[
+                    "ارسال به سراسر کشور با پست پیشتاز و تیپاکس.",
+                    "تحویل حضوری در مشهد با هماهنگی قبلی امکان‌پذیر است.",
+                    "بسته‌بندی ایمن مخصوص تجهیزات پزشکی.",
+                    "پس از ثبت سفارش، کارشناسان ما برای تأیید نهایی تماس می‌گیرند.",
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-2.5">
+                      <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-primary" />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
 
-                    {/* Review List */}
-                    <div className="lg:col-span-8 space-y-6">
-                        {reviews.map((review) => (
-                            <div key={review.id} className="border-b border-slate-100 pb-6 last:border-0">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-                                            <User size={20} />
-                                        </div>
-                                        <div>
-                                            <div className="font-bold text-slate-900">{review.user}</div>
-                                            <div className="text-xs text-slate-400">{review.date}</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-1 bg-amber-50 px-2 py-1 rounded text-amber-600 text-sm font-bold">
-                                        <span>{review.rating}</span>
-                                        <Star size={12} fill="currentColor" />
-                                    </div>
-                                </div>
-                                <p className="text-slate-600 leading-relaxed text-sm bg-slate-50 p-4 rounded-xl rounded-tr-none">
-                                    {review.text}
-                                </p>
-                                <div className="flex items-center gap-4 mt-3">
-                                    <button className="flex items-center gap-1 text-xs text-slate-400 hover:text-green-600 transition-colors">
-                                        <ThumbsUp size={14} />
-                                        مفید بود (۲)
-                                    </button>
-                                    <button className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 transition-colors">
-                                        <MessageCircle size={14} />
-                                        پاسخ
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+          {/* نظرات */}
+          <TabsContent
+            value="reviews"
+            className="animate-in fade-in slide-in-from-bottom-4 rounded-[3rem] border border-slate-200 bg-white p-8 shadow-sm md:p-12"
+          >
+            <div className="mx-auto max-w-4xl">
+              {productReviews.length === 0 ? (
+                <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-200 py-16 text-center">
+                  <MessageCircle size={40} className="mb-4 text-slate-300" />
+                  <p className="font-bold text-slate-700">هنوز دیدگاهی ثبت نشده است</p>
+                  <p className="mt-1 mb-6 text-sm text-slate-500">
+                    اولین نفری باشید که تجربه خود از این محصول را می‌نویسد.
+                  </p>
+                  <div className="w-full max-w-xs">
+                    <ReviewForm productName={product.name} />
+                  </div>
                 </div>
-            </TabsContent>
+              ) : (
+                <div className="space-y-6">
+                  {productReviews.map((review) => (
+                    <article
+                      key={review.id}
+                      className="border-b border-slate-100 pb-6 last:border-0"
+                    >
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                            <User size={20} />
+                          </div>
+                          <div>
+                            <div className="font-bold text-slate-900">{review.user}</div>
+                            <div className="text-xs text-slate-400">{review.date}</div>
+                          </div>
+                        </div>
+                        <StarRating value={review.rating} size={14} />
+                      </div>
+
+                      <p className="rounded-xl rounded-tr-none bg-slate-50 p-4 text-sm leading-relaxed text-slate-600">
+                        {review.text}
+                      </p>
+
+                      <div className="mt-3 flex items-center gap-4">
+                        <span className="flex items-center gap-1 text-xs text-slate-400">
+                          <ThumbsUp size={14} />
+                          مفید بود ({toPersianDigits(review.helpful)})
+                        </span>
+                      </div>
+                    </article>
+                  ))}
+                  <ReviewForm productName={product.name} />
+                </div>
+              )}
+            </div>
+          </TabsContent>
         </Tabs>
 
-        {/* --- Related Products Section --- */}
-        <div className="mt-24">
-            <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900">محصولات مکمل و مشابه</h2>
-                <Link href="/products" className="text-primary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all">
-                    مشاهده همه <ArrowRight size={16} />
-                </Link>
+        {/* --------------------------- محصولات مشابه --------------------------- */}
+        {related.length > 0 && (
+          <section className="mt-24">
+            <div className="mb-8 flex items-center justify-between gap-4">
+              <h2 className="text-2xl font-black text-slate-900 md:text-3xl">
+                محصولات مرتبط
+              </h2>
+              <Link
+                href={`/products?category=${product.categoryId}`}
+                className="flex shrink-0 items-center gap-1 text-sm font-bold text-primary transition-all hover:gap-2"
+              >
+                مشاهده همه <ArrowLeft size={16} />
+              </Link>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((item) => (
-                    <Link href={`/products/${item.id}`} key={item.id} className="group bg-white p-4 rounded-3xl border border-slate-200 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
-                        <div className="relative aspect-square mb-4 bg-slate-50 rounded-2xl overflow-hidden">
-                            <Image src={item.image} alt={item.name} fill className="object-contain p-4 mix-blend-multiply group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <h3 className="font-bold text-slate-900 text-sm mb-2 line-clamp-1 group-hover:text-primary transition-colors">{item.name}</h3>
-                        <div className="text-slate-500 text-sm font-medium">{item.price}</div>
-                    </Link>
-                ))}
-            </div>
-        </div>
 
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {related.map((item) => (
+                <ProductCard key={item.id} product={item} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

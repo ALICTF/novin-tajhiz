@@ -1,7 +1,4 @@
-"use client";
-
 import { ShieldCheck, Truck, Headset, Wrench } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const features = [
   {

@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsLoading() {
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 pt-12">
+    <div className="bg-slate-50 min-h-screen pb-20 pt-32">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         
         {/* Header Skeleton */}
