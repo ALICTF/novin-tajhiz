@@ -16,8 +16,8 @@ export function ProductShowcase() {
   return (
     <section className="relative flex w-full flex-col items-center overflow-hidden border-t border-white bg-slate-50 py-16 md:py-24">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-      <div className="absolute top-[10%] left-[10%] -z-10 h-96 w-96 rounded-full bg-blue-100/40 blur-[100px]" />
-      <div className="absolute right-[10%] bottom-[10%] -z-10 h-96 w-96 rounded-full bg-primary/5 blur-[100px]" />
+      <div className="absolute top-[10%] left-[10%] -z-10 h-96 w-96 rounded-full glow [--glow-color:rgba(219,234,254,.55)]" />
+      <div className="absolute right-[10%] bottom-[10%] -z-10 h-96 w-96 rounded-full glow [--glow-color:rgba(37,99,235,.10)]" />
 
       <div className="relative z-10 container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-10 flex flex-col items-center space-y-4 text-center md:mb-16 md:space-y-5">

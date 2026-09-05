@@ -39,25 +39,65 @@ export type PaymentMethod = {
   id: "online" | "transfer" | "onDelivery";
   title: string;
   description: string;
+  /** روش‌های هنوز فعال‌نشده، نمایش داده می‌شوند ولی قابل انتخاب نیستند. */
+  disabled?: boolean;
 };
 
 export const paymentMethods: PaymentMethod[] = [
   {
-    id: "online",
-    title: "پرداخت اینترنتی",
-    description: "انتقال به درگاه بانکی امن و پرداخت با کارت‌های عضو شتاب.",
-  },
-  {
     id: "transfer",
-    title: "کارت به کارت / انتقال بانکی",
-    description: "شماره حساب پس از ثبت سفارش برای شما ارسال می‌شود.",
+    title: "کارت به کارت",
+    description:
+      "مبلغ فاکتور را به شماره کارت مجموعه واریز کنید و تصویر فیش را در همین صفحه بارگذاری نمایید.",
   },
   {
     id: "onDelivery",
     title: "پرداخت در محل",
     description: "فقط برای سفارش‌های داخل مشهد با تحویل توسط پیک اختصاصی.",
   },
+  {
+    id: "online",
+    title: "پرداخت اینترنتی",
+    description: "به‌زودی — درگاه بانکی این فروشگاه هنوز فعال نشده است.",
+    disabled: true,
+  },
 ];
+
+export type BankAccount = {
+  bank: string;
+  /** ۱۶ رقم با ارقام لاتین و بدون فاصله. */
+  cardNumber: string;
+  holder: string;
+  sheba?: string;
+  /**
+   * تا وقتی `false` است، به‌جای کارت بانکی یک پیام «برای دریافت شماره کارت
+   * تماس بگیرید» به مشتری نشان داده می‌شود.
+   */
+  configured: boolean;
+};
+
+/**
+ * حساب بانکی مقصدِ پرداخت کارت‌به‌کارت.
+ *
+ * ⚠️ هنوز پر نشده است. شماره کارت واقعی عمداً وارد نشده تا هیچ عددِ ساختگی
+ * به‌جای شماره واقعی به مشتری نمایش داده نشود.
+ *
+ * برای فعال‌سازی، سه مقدار زیر را پر کنید و `configured` را `true` بگذارید:
+ *   cardNumber → ۱۶ رقم پیوسته با ارقام لاتین، مثلاً "6104337812345678"
+ *   holder     → نام دقیق صاحب حساب همان‌طور که در بانک ثبت شده
+ *   sheba      → اختیاری؛ ۲۴ رقم بدون پیشوند IR
+ *
+ * تا زمانی که `configured` برابر `false` باشد، صفحه پرداخت به‌جای کارت،
+ * شماره تماس مجموعه را نشان می‌دهد؛ پس سایت قابل استفاده می‌ماند و هیچ
+ * مشتری‌ای به حساب اشتباه واریز نمی‌کند.
+ */
+export const bankAccount: BankAccount = {
+  bank: "بانک ملت",
+  cardNumber: "",
+  holder: "",
+  sheba: "",
+  configured: false,
+};
 
 export const provinces = [
   "خراسان رضوی",
@@ -96,6 +136,6 @@ export const provinces = [
 export const checkoutSteps = [
   { id: 1, title: "بازبینی سبد", description: "بررسی اقلام انتخابی" },
   { id: 2, title: "اطلاعات ارسال", description: "نشانی و روش تحویل" },
-  { id: 3, title: "پرداخت", description: "انتخاب روش پرداخت" },
-  { id: 4, title: "تأیید نهایی", description: "ثبت سفارش" },
+  { id: 3, title: "روش پرداخت", description: "انتخاب شیوه تسویه" },
+  { id: 4, title: "فاکتور و واریز", description: "پرداخت و ارسال فیش" },
 ];

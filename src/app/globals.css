@@ -132,6 +132,18 @@
 }
 
 @layer utilities {
+  /* هاله‌های تزئینی پس‌زمینه.
+     قبلاً با `blur-[120px]` روی یک دایره ساخته می‌شدند؛ فیلتر blur روی سطح
+     بزرگ در هر فریم اسکرول دوباره رستر می‌شود و روی موبایل گران‌ترین افکت
+     صفحه است. radial-gradient همان ظاهر را می‌دهد و فقط یک‌بار رستر می‌شود. */
+  .glow {
+    background-image: radial-gradient(
+      closest-side,
+      var(--glow-color, rgba(37, 99, 235, 0.1)),
+      transparent
+    );
+  }
+
   .no-scrollbar::-webkit-scrollbar,
   .scrollbar-hide::-webkit-scrollbar {
     display: none;

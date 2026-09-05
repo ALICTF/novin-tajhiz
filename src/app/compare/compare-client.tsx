@@ -102,7 +102,7 @@ export function CompareClient() {
                         </Link>
 
                         <AddToCartButton
-                          productId={product.id}
+                          product={product}
                           disabled={!product.inStock}
                           size="sm"
                           className="w-full rounded-xl bg-slate-900 text-white hover:bg-primary"

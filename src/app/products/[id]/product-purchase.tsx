@@ -16,7 +16,7 @@ export function ProductPurchase({ product }: { product: Product }) {
   const off = discountPercent(product.price, product.oldPrice);
 
   const handleAdd = () => {
-    add(product.id, quantity);
+    add(product, quantity);
     setOpen(true);
   };
 
@@ -129,8 +129,8 @@ export function ProductPurchase({ product }: { product: Product }) {
 
       {/* اکشن‌های ثانویه */}
       <div className="flex items-center justify-between border-t border-slate-100 pt-4 text-sm">
-        <WishlistButton productId={product.id} withLabel />
-        <CompareButton productId={product.id} withLabel />
+        <WishlistButton product={product} withLabel />
+        <CompareButton product={product} withLabel />
         <Link
           href="/cart"
           className="text-sm font-bold text-primary transition-colors hover:text-primary/80"

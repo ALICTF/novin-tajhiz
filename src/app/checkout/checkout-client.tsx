@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowLeft, ArrowRight, Check, CreditCard, Loader2,
-  MapPin, ShoppingBag, Info,
+  MapPin, ReceiptText, ShoppingBag, Info,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -38,11 +38,14 @@ import {
   shippingMethods,
 } from "@/lib/data/checkout";
 import { cn } from "@/lib/utils";
+import { BankCard } from "./bank-card";
+import { ReceiptUpload, type ReceiptFile } from "./receipt-upload";
 
 export function CheckoutClient() {
   const router = useRouter();
   const { lines, subtotal, quoteOnlyCount, clear, hydrated } = useCart();
   const [step, setStep] = React.useState(1);
+  const [receipt, setReceipt] = React.useState<ReceiptFile | null>(null);
 
   const {
     register,
@@ -64,12 +67,13 @@ export function CheckoutClient() {
       address: "",
       postalCode: "",
       shippingMethod: "courier",
-      paymentMethod: "online",
+      paymentMethod: "transfer",
       note: "",
     },
   });
 
   const shippingMethodId = watch("shippingMethod");
+  const paymentMethodId = watch("paymentMethod");
   const selectedShipping = shippingMethods.find((m) => m.id === shippingMethodId);
   const shippingCost =
     subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : (selectedShipping?.cost ?? 0);
@@ -108,9 +112,13 @@ export function CheckoutClient() {
         quantity: l.quantity,
       })),
       total,
+      // فقط متادیتای فیش ارسال می‌شود؛ خود فایل تا آماده شدن بک‌اند
+      // آپلود جایی فرستاده نمی‌شود.
+      receipt,
     });
     clear();
-    router.push(`/checkout/success?ref=${reference}`);
+    const paid = values.paymentMethod === "transfer" ? "1" : "0";
+    router.push(`/checkout/success?ref=${reference}&transfer=${paid}`);
   };
 
   /* --------------------------- حالت سبد خالی --------------------------- */
@@ -437,13 +445,20 @@ export function CheckoutClient() {
                             key={m.id}
                             htmlFor={`pay-${m.id}`}
                             className={cn(
-                              "flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-all",
-                              field.value === m.id
-                                ? "border-primary bg-primary/5"
-                                : "border-slate-200 hover:border-slate-300",
+                              "flex items-start gap-3 rounded-2xl border p-4 transition-all",
+                              m.disabled
+                                ? "cursor-not-allowed border-slate-200 bg-slate-50 opacity-60"
+                                : field.value === m.id
+                                  ? "cursor-pointer border-primary bg-primary/5"
+                                  : "cursor-pointer border-slate-200 hover:border-slate-300",
                             )}
                           >
-                            <RadioGroupItem value={m.id} id={`pay-${m.id}`} className="mt-0.5" />
+                            <RadioGroupItem
+                              value={m.id}
+                              id={`pay-${m.id}`}
+                              disabled={m.disabled}
+                              className="mt-0.5"
+                            />
                             <div>
                               <span className="text-sm font-bold text-slate-900">{m.title}</span>
                               <p className="mt-1 text-xs leading-relaxed text-slate-500">
@@ -459,8 +474,9 @@ export function CheckoutClient() {
                   <div className="mt-6 flex items-start gap-2 rounded-xl bg-blue-50 p-4 text-xs leading-relaxed text-blue-800">
                     <Info size={16} className="mt-0.5 shrink-0" />
                     <span>
-                      این فروشگاه در حال حاضر درگاه پرداخت فعال ندارد. پس از ثبت سفارش،
-                      کارشناسان ما برای هماهنگی پرداخت و ارسال با شما تماس می‌گیرند.
+                      درگاه پرداخت اینترنتی هنوز فعال نشده است. روش پیشنهادی،
+                      «کارت به کارت» است: در گام بعد شماره کارت مجموعه و فاکتور
+                      نهایی را می‌بینید و پس از واریز، تصویر فیش را بارگذاری می‌کنید.
                     </span>
                   </div>
 
@@ -477,15 +493,106 @@ export function CheckoutClient() {
                 </section>
               )}
 
-              {/* ------------------------ گام ۴: تأیید ------------------------ */}
+              {/* -------------- گام ۴: فاکتور، واریز و ارسال فیش -------------- */}
               {step === 4 && (
-                <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-                  <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-slate-900">
-                    <Check size={20} className="text-primary" />
-                    تأیید نهایی سفارش
-                  </h2>
+                <section className="space-y-6">
+                  {/* ---------------------- فاکتور ---------------------- */}
+                  <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+                    <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-slate-900">
+                      <ReceiptText size={20} className="text-primary" />
+                      فاکتور سفارش
+                    </h2>
 
-                  <dl className="space-y-3 rounded-2xl bg-slate-50 p-5 text-sm">
+                    <ul className="divide-y divide-slate-100">
+                      {lines.map((l) => (
+                        <li key={l.product.id} className="flex items-start gap-3 py-3">
+                          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-bold text-slate-600 tabular-nums">
+                            {toPersianDigits(l.quantity)}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm leading-snug font-bold text-slate-900">
+                              {l.product.name}
+                            </p>
+                            <p className="mt-0.5 text-[11px] text-slate-400">
+                              {l.product.brand}
+                            </p>
+                          </div>
+                          <span className="shrink-0 text-sm font-bold text-slate-900 tabular-nums">
+                            {l.product.price === null
+                              ? "استعلامی"
+                              : formatPrice(l.product.price * l.quantity, false)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <dl className="mt-4 space-y-2 border-t border-slate-200 pt-4 text-sm">
+                      <div className="flex justify-between">
+                        <dt className="text-slate-500">جمع اقلام</dt>
+                        <dd className="font-bold text-slate-900 tabular-nums">
+                          {formatPrice(subtotal, false)}
+                        </dd>
+                      </div>
+                      <div className="flex justify-between">
+                        <dt className="text-slate-500">هزینه ارسال</dt>
+                        <dd className="font-bold text-slate-900 tabular-nums">
+                          {shippingCost === 0 ? "رایگان" : formatPrice(shippingCost, false)}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-dashed border-slate-200 pt-3">
+                        <dt className="font-bold text-slate-900">مبلغ قابل پرداخت</dt>
+                        <dd className="text-xl font-black text-primary tabular-nums">
+                          {formatPrice(total)}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    {quoteOnlyCount > 0 && (
+                      <p className="mt-4 flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-[11px] leading-relaxed text-amber-800">
+                        <Info size={14} className="mt-0.5 shrink-0" />
+                        <span>
+                          {toPersianDigits(quoteOnlyCount)} قلم از سفارش شما «استعلامی»
+                          است و قیمتش در مبلغ بالا محاسبه نشده. کارشناسان ما قیمت
+                          نهایی آن را جداگانه اعلام می‌کنند.
+                        </span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* ------------- واریز کارت‌به‌کارت و فیش ------------- */}
+                  {paymentMethodId === "transfer" && (
+                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+                      <h2 className="mb-2 flex items-center gap-2 text-xl font-bold text-slate-900">
+                        <CreditCard size={20} className="text-primary" />
+                        واریز وجه
+                      </h2>
+                      <p className="mb-6 text-sm leading-relaxed text-slate-500">
+                        مبلغ{" "}
+                        <span className="font-bold text-slate-900">
+                          {formatPrice(total)}
+                        </span>{" "}
+                        را به کارت زیر واریز کنید، سپس تصویر فیش را بارگذاری نمایید.
+                      </p>
+
+                      <BankCard />
+
+                      <div className="mt-8">
+                        <h3 className="mb-3 text-sm font-bold text-slate-900">
+                          بارگذاری فیش واریزی
+                        </h3>
+                        <ReceiptUpload onChange={setReceipt} />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ---------------- خلاصه اطلاعات ارسال ---------------- */}
+                  <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+                    <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-slate-900">
+                      <Check size={20} className="text-primary" />
+                      تأیید اطلاعات
+                    </h2>
+
+                    <dl className="space-y-3 rounded-2xl bg-slate-50 p-5 text-sm">
                     <div className="flex justify-between gap-4">
                       <dt className="text-slate-500">گیرنده</dt>
                       <dd className="font-bold text-slate-900">
@@ -512,9 +619,11 @@ export function CheckoutClient() {
                         {paymentMethods.find((m) => m.id === watch("paymentMethod"))?.title}
                       </dd>
                     </div>
-                  </dl>
+                    </dl>
+                  </div>
 
-                  <div className="mt-8 flex items-center justify-between">
+                  {/* ---------------------- ثبت نهایی ---------------------- */}
+                  <div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <Button type="button" variant="ghost" onClick={goBack} className="gap-2">
                       <ArrowRight size={16} />
                       بازگشت
@@ -525,9 +634,18 @@ export function CheckoutClient() {
                       className="h-12 gap-2 rounded-xl bg-slate-900 px-8 font-bold text-white hover:bg-primary"
                     >
                       {isSubmitting && <Loader2 size={18} className="animate-spin" />}
-                      ثبت نهایی سفارش
+                      {paymentMethodId === "transfer"
+                        ? "ثبت سفارش و ارسال فیش"
+                        : "ثبت نهایی سفارش"}
                     </Button>
                   </div>
+
+                  {paymentMethodId === "transfer" && !receipt && (
+                    <p className="text-center text-xs text-slate-400 sm:text-right">
+                      اگر فیش را الان در دسترس ندارید، می‌توانید سفارش را ثبت کنید و
+                      تصویر فیش را بعداً برای ما بفرستید.
+                    </p>
+                  )}
                 </section>
               )}
             </div>

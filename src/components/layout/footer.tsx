@@ -19,8 +19,8 @@ export function Footer() {
     <footer className="relative border-t border-white/5 bg-[#0B1120] text-slate-300">
       {/* لایه پس‌زمینه — محصور تا اسکرول افقی ایجاد نکند */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 right-0 h-[500px] w-[500px] translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] -translate-x-1/2 translate-y-1/2 rounded-full bg-blue-600/5 blur-[120px]" />
+        <div className="absolute top-0 right-0 h-[500px] w-[500px] translate-x-1/2 -translate-y-1/2 rounded-full glow [--glow-color:rgba(37,99,235,.10)]" />
+        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] -translate-x-1/2 translate-y-1/2 rounded-full glow [--glow-color:rgba(37,99,235,.10)]" />
       </div>
 
       <div className="relative z-10 pt-24 pb-8">

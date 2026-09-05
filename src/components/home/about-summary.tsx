@@ -18,8 +18,8 @@ export function AboutSummary() {
     <section className="relative overflow-hidden border-t border-white/5 bg-[#0B1120] py-16 text-white md:py-24">
       {/* پس‌زمینه */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-0 right-0 h-[600px] w-[600px] translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/10 blur-[150px]" />
-        <div className="absolute bottom-0 left-0 h-[600px] w-[600px] -translate-x-1/3 translate-y-1/3 rounded-full bg-blue-600/10 blur-[150px]" />
+        <div className="absolute top-0 right-0 h-[600px] w-[600px] translate-x-1/3 -translate-y-1/3 rounded-full glow [--glow-color:rgba(37,99,235,.16)]" />
+        <div className="absolute bottom-0 left-0 h-[600px] w-[600px] -translate-x-1/3 translate-y-1/3 rounded-full glow [--glow-color:rgba(37,99,235,.16)]" />
       </div>
 
       <div className="relative z-10 container mx-auto max-w-6xl px-4 md:px-6">
@@ -32,7 +32,7 @@ export function AboutSummary() {
               {/* حلقه میانی ثابت */}
               <div className="absolute inset-[6%] rounded-full border border-white/10" />
               {/* هاله پشت تصویر */}
-              <div className="absolute inset-[14%] rounded-full bg-primary/25 blur-[60px]" />
+              <div className="absolute inset-[14%] rounded-full glow [--glow-color:rgba(37,99,235,.30)]" />
 
               {/* تصویر */}
               <div className="absolute inset-[11%] overflow-hidden rounded-full ring-1 ring-white/15">
@@ -68,11 +68,11 @@ export function AboutSummary() {
 
             <h2 className="mb-5 text-3xl leading-[1.25] font-black tracking-tight text-white md:text-4xl">
               تلفیق دانش{" "}
-              <span className="animate-gradient bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-[length:200%_auto] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
                 مهندسی
               </span>{" "}
               و تجربه{" "}
-              <span className="animate-gradient bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-[length:200%_auto] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
                 بالینی
               </span>
             </h2>

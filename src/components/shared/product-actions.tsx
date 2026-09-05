@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Heart, Repeat2, ShoppingCart, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { ProductSummary } from "@/lib/data/catalog-meta";
 import { useCart } from "@/context/cart-context";
 import { useWishlist } from "@/context/wishlist-context";
 import { useCompare } from "@/context/compare-context";
@@ -11,14 +12,14 @@ import { cn } from "@/lib/utils";
 /* -------------------------------------------------------------------------- */
 
 export function AddToCartButton({
-  productId,
+  product,
   quantity = 1,
   className,
   size,
   children,
   disabled,
 }: {
-  productId: number;
+  product: ProductSummary;
   quantity?: number;
   className?: string;
   size?: React.ComponentProps<typeof Button>["size"];
@@ -43,7 +44,7 @@ export function AddToCartButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        add(productId, quantity);
+        add(product, quantity);
         setJustAdded(true);
       }}
     >
@@ -56,18 +57,18 @@ export function AddToCartButton({
 /* -------------------------------------------------------------------------- */
 
 export function WishlistButton({
-  productId,
+  product,
   className,
   withLabel = false,
   size = 18,
 }: {
-  productId: number;
+  product: ProductSummary;
   className?: string;
   withLabel?: boolean;
   size?: number;
 }) {
   const { has, toggle, hydrated } = useWishlist();
-  const active = hydrated && has(productId);
+  const active = hydrated && has(product.id);
 
   return (
     <button
@@ -78,7 +79,7 @@ export function WishlistButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggle(productId);
+        toggle(product);
       }}
       className={cn(
         "flex cursor-pointer items-center gap-2 text-slate-400 transition-colors hover:text-rose-500",
@@ -99,18 +100,18 @@ export function WishlistButton({
 /* -------------------------------------------------------------------------- */
 
 export function CompareButton({
-  productId,
+  product,
   className,
   withLabel = false,
   size = 18,
 }: {
-  productId: number;
+  product: ProductSummary;
   className?: string;
   withLabel?: boolean;
   size?: number;
 }) {
   const { has, toggle, hydrated } = useCompare();
-  const active = hydrated && has(productId);
+  const active = hydrated && has(product.id);
 
   return (
     <button
@@ -121,7 +122,7 @@ export function CompareButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggle(productId);
+        toggle(product);
       }}
       className={cn(
         "flex cursor-pointer items-center gap-2 text-slate-400 transition-colors hover:text-primary",

@@ -31,8 +31,8 @@ export default function AboutPage() {
       <section className="relative pt-32 pb-20 overflow-hidden bg-slate-50 text-slate-900">
         
         {/* Blob Decoration (حباب‌های رنگی محو برای زیبایی) */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full glow [--glow-color:rgba(59,130,246,.10)] -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full glow [--glow-color:rgba(37,99,235,.10)] translate-y-1/2 -translate-x-1/2" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-4xl">
             <Breadcrumbs items={[{ label: "درباره ما" }]} className="mb-8" />
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </Badge>
             
             <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-                ما <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-600 to-primary bg-[length:200%_auto] animate-gradient">مهندسانی</span> هستیم که<br/>
+                ما <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-600 to-primary">مهندسانی</span> هستیم که<br/>
                 به کیفیت خواب شما اهمیت می‌دهیم
             </h1>
             

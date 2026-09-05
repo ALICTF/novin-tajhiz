@@ -152,7 +152,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
 
 /** مراکز درمانی که مجموعه با آن‌ها همکاری داشته است. */
 export const partners = [
-  { name: "بیمارستان مسیح دانشوری", logo: "/images/site/MasihLogo_1.png" },
+  { name: "بیمارستان مسیح دانشوری", logo: "/images/site/masih-daneshvari.png" },
   { name: "بیمارستان نجمیه", logo: "/images/site/Najmieh-hospital.png" },
   { name: "بیمارستان بقیةالله الاعظم", logo: "/images/site/IMG_9023.png" },
   { name: "کلینیک خواب", logo: "/images/site/logo_clinic_sleep_320-1.png" },
@@ -211,6 +211,24 @@ export const certificates = [
   { name: "مقالات علمی", description: "انتشار مقاله در سطح ملی و بین‌المللی" },
   { name: "طراحی و تولید", description: "طراحی و ساخت اکسسوری تخصصی تست خواب" },
 ];
+
+/**
+ * نماد اعتماد الکترونیکی.
+ *
+ * ⚠️ عمداً خاموش است. تصویری که در `public/images/site` هست یک لوگوی عمومی
+ * دانلودشده از یک سایت PNG رایگان است (۲ کیلوبایت)، نه نماد اختصاصی مجموعه.
+ * نماد واقعی باید به پروفایل شما در enamad.ir لینک شود؛ نمایش لوگوی عمومی
+ * بدون آن لینک، ادعای گواهی‌ای است که تأیید نشده.
+ *
+ * برای فعال‌سازی: از پنل enamad.ir کد اختصاصی را بگیرید، تصویر واقعی را در
+ * `public/images/site/enamad.png` بگذارید، `href` را با آدرس پروفایل خودتان
+ * پر کنید و `enabled` را `true` بگذارید.
+ */
+export const enamad = {
+  enabled: false,
+  href: "",
+  image: "/images/site/enamad.png",
+};
 
 export const companyStats = [
   { label: "سال فعالیت تخصصی", value: "+۱۰" },

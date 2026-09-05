@@ -18,6 +18,7 @@ import {
   getRelatedArticles,
 } from "@/lib/data/articles";
 import { ShareButtons } from "./share-buttons";
+import { decodeParam } from "@/lib/utils";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -26,7 +27,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeParam(rawSlug);
   const article = getArticle(slug);
   if (!article) return { title: "مقاله یافت نشد" };
 
@@ -48,7 +50,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Params) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeParam(rawSlug);
   const article = getArticle(slug);
   if (!article) notFound();
 

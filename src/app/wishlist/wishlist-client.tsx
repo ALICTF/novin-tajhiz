@@ -15,7 +15,7 @@ export function WishlistClient() {
   const { add } = useCart();
 
   const addAllInStock = () => {
-    items.filter((p) => p.inStock).forEach((p) => add(p.id, 1, { silent: true }));
+    items.filter((p) => p.inStock).forEach((p) => add(p, 1, { silent: true }));
   };
 
   return (

@@ -24,7 +24,8 @@ import { formatPrice, toPersianDigits } from "@/lib/format";
 import { primaryPhone, siteConfig, warrantyStatement } from "@/lib/data/site";
 import { ProductGallery } from "./product-gallery";
 import { ProductPurchase } from "./product-purchase";
-import { ReviewForm } from "./review-form";
+import { ReviewFormLazy } from "./review-form-lazy";
+import { decodeParam } from "@/lib/utils";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -34,7 +35,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { id } = await params;
+  const { id: rawId } = await params;
+  const id = decodeParam(rawId);
   const product = getProduct(id);
   if (!product) return { title: "محصول یافت نشد" };
 
@@ -57,7 +59,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function ProductDetailPage({ params }: Params) {
-  const { id } = await params;
+  const { id: rawId } = await params;
+  const id = decodeParam(rawId);
   const product = getProduct(id);
   if (!product) notFound();
 
@@ -372,7 +375,7 @@ export default async function ProductDetailPage({ params }: Params) {
                     اولین نفری باشید که تجربه خود از این محصول را می‌نویسد.
                   </p>
                   <div className="w-full max-w-xs">
-                    <ReviewForm productName={product.name} />
+                    <ReviewFormLazy productName={product.name} />
                   </div>
                 </div>
               ) : (
@@ -407,7 +410,7 @@ export default async function ProductDetailPage({ params }: Params) {
                       </div>
                     </article>
                   ))}
-                  <ReviewForm productName={product.name} />
+                  <ReviewFormLazy productName={product.name} />
                 </div>
               )}
             </div>

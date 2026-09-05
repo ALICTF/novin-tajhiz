@@ -11,7 +11,7 @@ import {
   CompareButton,
   WishlistButton,
 } from "@/components/shared/product-actions";
-import { getCategoryName, type Product } from "@/lib/data/products";
+import { getCategoryName, type ProductSummary } from "@/lib/data/catalog-meta";
 import { discountPercent, formatPrice, toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,7 @@ export function ProductCard({
   product,
   view = "grid",
 }: {
-  product: Product;
+  product: ProductSummary;
   view?: ProductCardView;
 }) {
   const href = `/products/${product.slug}`;
@@ -96,7 +96,7 @@ export function ProductCard({
 
             <div className="absolute inset-x-3 bottom-3 z-20 flex gap-2 transition-all duration-300 sm:inset-x-4 sm:bottom-4 sm:translate-y-3 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
               <AddToCartButton
-                productId={product.id}
+                product={product}
                 disabled={!product.inStock}
                 className="h-10 flex-1 rounded-xl bg-slate-900 text-xs text-white shadow-lg hover:bg-primary"
               >
@@ -187,8 +187,8 @@ export function ProductCard({
 
           {isList && (
             <div className="mr-auto flex w-full items-center gap-2 sm:w-auto sm:gap-3">
-              <WishlistButton productId={product.id} />
-              <CompareButton productId={product.id} />
+              <WishlistButton product={product} />
+              <CompareButton product={product} />
               <Button
                 asChild
                 size="icon"
@@ -200,7 +200,7 @@ export function ProductCard({
                 </Link>
               </Button>
               <AddToCartButton
-                productId={product.id}
+                product={product}
                 disabled={!product.inStock}
                 className="flex-1 rounded-xl bg-slate-900 px-4 text-white hover:bg-primary sm:flex-none sm:px-6"
               >
@@ -212,8 +212,8 @@ export function ProductCard({
 
         {!isList && (
           <div className="mt-3 flex w-full items-center justify-center gap-5 border-t border-slate-50 pt-3 sm:mt-4">
-            <WishlistButton productId={product.id} size={16} />
-            <CompareButton productId={product.id} size={16} />
+            <WishlistButton product={product} size={16} />
+            <CompareButton product={product} size={16} />
           </div>
         )}
       </div>

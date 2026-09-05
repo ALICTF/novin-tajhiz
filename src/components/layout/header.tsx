@@ -38,7 +38,7 @@ import {
 import { CartSheet } from "@/components/shared/cart-sheet";
 import { useCart } from "@/context/cart-context";
 import { useWishlist } from "@/context/wishlist-context";
-import { categories } from "@/lib/data/products";
+import { categories } from "@/lib/data/catalog-meta";
 import { contactInfo, phones, siteConfig, socialLinks } from "@/lib/data/site";
 import { toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -105,8 +105,12 @@ export function Header() {
         <header
           className={cn(
             "relative flex w-full items-center justify-between rounded-2xl border px-4 transition-all duration-500 md:px-6",
-            "border-white/40 bg-white/80 shadow-lg backdrop-blur-xl supports-[backdrop-filter]:bg-white/60",
-            isScrolled ? "h-16 bg-white/90 shadow-xl" : "h-20",
+            // هدر fixed است: backdrop-blur روی عنصر ثابت باعث می‌شود مرورگر در
+            // *هر فریم اسکرول* پس‌زمینه پشت آن را دوباره محو کند — سنگین‌ترین
+            // علت لگ اسکرول روی موبایل. زیر md پس‌زمینه مات می‌شود و blur فقط
+            // روی دسکتاپ می‌ماند.
+            "border-white/40 bg-white shadow-lg md:bg-white/80 md:backdrop-blur-xl md:supports-[backdrop-filter]:bg-white/60",
+            isScrolled ? "h-16 md:bg-white/90 shadow-xl" : "h-20",
           )}
         >
           {/* ------------------------------ لوگو ------------------------------ */}

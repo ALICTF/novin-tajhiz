@@ -1,44 +1,66 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import { toLatinDigits } from "@/lib/format";
+
+/**
+ * از `zod/mini` استفاده می‌شود، نه `zod`.
+ *
+ * API معمول zod متدزنجیره‌ای است (`z.string().min(1).email()`) و همین باعث
+ * می‌شود کل کتابخانه — حدود ۱۰۰ کیلوبایت gzip — وارد باندل شود، چون هیچ متدی
+ * قابل حذف در tree-shaking نیست. نسخه mini همان هسته اعتبارسنجی را دارد ولی
+ * هر بررسی یک تابع مستقل است، پس فقط چیزی که واقعاً استفاده می‌شود باندل
+ * می‌شود. رفتار و متن خطاها عیناً حفظ شده است.
+ */
+
+const stripSeparators = (value: string) => value.replace(/[\s-]/g, "");
+const isIranMobile = (value: string) => /^0?9\d{9}$/.test(stripSeparators(value));
 
 /** موبایل ایران؛ ارقام فارسی هم پذیرفته و نرمال می‌شوند. */
 export const iranPhone = z
-  .string()
-  .min(1, "شماره تماس را وارد کنید")
-  .transform(toLatinDigits)
-  .refine((v) => /^0?9\d{9}$/.test(v.replace(/[\s-]/g, "")), {
-    message: "شماره موبایل معتبر نیست (مثال: ۰۹۱۵۱۲۳۴۵۶۷)",
-  });
+  .pipe(
+    z.string().check(z.minLength(1, "شماره تماس را وارد کنید")),
+    z.transform(toLatinDigits),
+  )
+  .check(z.refine(isIranMobile, "شماره موبایل معتبر نیست (مثال: ۰۹۱۵۱۲۳۴۵۶۷)"));
 
-export const optionalIranPhone = z
-  .string()
-  .transform(toLatinDigits)
-  .refine((v) => v === "" || /^0?9\d{9}$/.test(v.replace(/[\s-]/g, "")), {
-    message: "شماره موبایل معتبر نیست",
-  })
-  .optional();
+export const optionalIranPhone = z.optional(
+  z
+    .pipe(z.string(), z.transform(toLatinDigits))
+    .check(
+      z.refine((v: string) => v === "" || isIranMobile(v), "شماره موبایل معتبر نیست"),
+    ),
+);
 
 export const persianName = z
   .string()
-  .min(3, "نام و نام خانوادگی را کامل وارد کنید")
-  .max(60, "نام واردشده بیش از حد طولانی است");
+  .check(
+    z.minLength(3, "نام و نام خانوادگی را کامل وارد کنید"),
+    z.maxLength(60, "نام واردشده بیش از حد طولانی است"),
+  );
 
 export const emailField = z
   .string()
-  .min(1, "ایمیل را وارد کنید")
-  .email("ایمیل معتبر نیست");
+  .check(z.minLength(1, "ایمیل را وارد کنید"), z.email("ایمیل معتبر نیست"));
+
+/** ایمیل اختیاری: یا خالی، یا اصلاً وارد نشده، یا یک ایمیل معتبر. */
+const optionalEmail = z.optional(
+  z.union([z.literal(""), z.string().check(z.email("ایمیل معتبر نیست"))]),
+);
 
 /* ------------------------------ فرم تماس ------------------------------ */
 
 export const contactSchema = z.object({
   name: persianName,
   phone: iranPhone,
-  email: z.string().email("ایمیل معتبر نیست").optional().or(z.literal("")),
-  subject: z.string().min(3, "موضوع پیام را وارد کنید").max(100),
+  email: optionalEmail,
+  subject: z
+    .string()
+    .check(z.minLength(3, "موضوع پیام را وارد کنید"), z.maxLength(100)),
   message: z
     .string()
-    .min(10, "متن پیام باید حداقل ۱۰ نویسه باشد")
-    .max(1500, "متن پیام بیش از حد طولانی است"),
+    .check(
+      z.minLength(10, "متن پیام باید حداقل ۱۰ نویسه باشد"),
+      z.maxLength(1500, "متن پیام بیش از حد طولانی است"),
+    ),
 });
 
 export type ContactFormValues = z.infer<typeof contactSchema>;
@@ -54,22 +76,28 @@ export type NewsletterFormValues = z.infer<typeof newsletterSchema>;
 /* ----------------------------- تسویه‌حساب ----------------------------- */
 
 export const checkoutShippingSchema = z.object({
-  firstName: z.string().min(2, "نام را وارد کنید").max(40),
-  lastName: z.string().min(2, "نام خانوادگی را وارد کنید").max(40),
-  phone: iranPhone,
-  email: z.string().email("ایمیل معتبر نیست").optional().or(z.literal("")),
-  province: z.string().min(1, "استان را انتخاب کنید"),
-  city: z.string().min(2, "شهر را وارد کنید").max(40),
-  address: z.string().min(10, "نشانی را کامل وارد کنید").max(300),
-  postalCode: z
+  firstName: z.string().check(z.minLength(2, "نام را وارد کنید"), z.maxLength(40)),
+  lastName: z
     .string()
-    .transform(toLatinDigits)
-    .refine((v) => /^\d{10}$/.test(v.replace(/[\s-]/g, "")), {
-      message: "کد پستی باید ۱۰ رقم باشد",
-    }),
+    .check(z.minLength(2, "نام خانوادگی را وارد کنید"), z.maxLength(40)),
+  phone: iranPhone,
+  email: optionalEmail,
+  province: z.string().check(z.minLength(1, "استان را انتخاب کنید")),
+  city: z.string().check(z.minLength(2, "شهر را وارد کنید"), z.maxLength(40)),
+  address: z
+    .string()
+    .check(z.minLength(10, "نشانی را کامل وارد کنید"), z.maxLength(300)),
+  postalCode: z
+    .pipe(z.string(), z.transform(toLatinDigits))
+    .check(
+      z.refine(
+        (v: string) => /^\d{10}$/.test(stripSeparators(v)),
+        "کد پستی باید ۱۰ رقم باشد",
+      ),
+    ),
   shippingMethod: z.enum(["courier", "post", "pickup"]),
   paymentMethod: z.enum(["online", "transfer", "onDelivery"]),
-  note: z.string().max(500).optional().or(z.literal("")),
+  note: z.union([z.literal(""), z.optional(z.string().check(z.maxLength(500)))]),
 });
 
 export type CheckoutFormValues = z.infer<typeof checkoutShippingSchema>;
@@ -78,8 +106,13 @@ export type CheckoutFormValues = z.infer<typeof checkoutShippingSchema>;
 
 export const reviewSchema = z.object({
   name: persianName,
-  rating: z.number().min(1, "امتیاز خود را انتخاب کنید").max(5),
-  text: z.string().min(10, "متن دیدگاه باید حداقل ۱۰ نویسه باشد").max(800),
+  rating: z.number().check(z.gte(1, "امتیاز خود را انتخاب کنید"), z.lte(5)),
+  text: z
+    .string()
+    .check(
+      z.minLength(10, "متن دیدگاه باید حداقل ۱۰ نویسه باشد"),
+      z.maxLength(800),
+    ),
 });
 
 export type ReviewFormValues = z.infer<typeof reviewSchema>;

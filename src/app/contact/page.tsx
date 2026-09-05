@@ -38,7 +38,7 @@ export default function ContactPage() {
 
           <h1 className="text-4xl font-black tracking-tight text-slate-900 md:text-6xl">
             ارتباط با{" "}
-            <span className="animate-gradient bg-gradient-to-r from-primary via-blue-500 to-indigo-600 bg-[length:200%_auto] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-blue-500 to-indigo-600 bg-clip-text text-transparent">
               نوین تجهیز
             </span>
           </h1>
@@ -87,7 +87,7 @@ export default function ContactPage() {
 
           {/* پشتیبانی */}
           <div className="relative flex min-h-[420px] flex-col overflow-hidden rounded-[2rem] border border-slate-800 bg-[#0f172a] p-8 text-white shadow-2xl shadow-slate-900/20 transition-transform duration-500 hover:-translate-y-2 lg:-mt-6 lg:mb-6">
-            <div className="pointer-events-none absolute top-0 right-0 h-64 w-64 translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[80px]" />
+            <div className="pointer-events-none absolute top-0 right-0 h-64 w-64 translate-x-1/2 -translate-y-1/2 rounded-full glow [--glow-color:rgba(37,99,235,.26)]" />
 
             <div className="absolute top-6 left-6 flex items-center gap-2 rounded-full border border-white/5 bg-white/10 px-3 py-1 backdrop-blur-md">
               <span className="relative flex h-2.5 w-2.5">
