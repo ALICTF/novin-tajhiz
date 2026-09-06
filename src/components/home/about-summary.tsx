@@ -1,10 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, BadgeCheck, Phone, Quote } from "lucide-react";
+import {
+  Activity,
+  ArrowLeft,
+  Award,
+  BadgeCheck,
+  CircuitBoard,
+  GraduationCap,
+  Phone,
+  Quote,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { founder, primaryPhone, siteConfig } from "@/lib/data/site";
 import { toPersianDigits } from "@/lib/format";
+
+/** نشان هر مدرک، به ترتیب همان آرایه founder.credentials. */
+const CREDENTIAL_ICONS = [GraduationCap, CircuitBoard, Award, Activity];
 
 export function AboutSummary() {
   /** خلاصه‌ای از سوابق — جزئیات کامل در صفحه «درباره ما» است. */
@@ -81,6 +93,18 @@ export function AboutSummary() {
               {founder.intro}
             </p>
 
+            {/* حوزه‌های تخصص — از founder.expertise، بدون تکرار دستی */}
+            <ul className="mt-7 flex flex-wrap justify-center gap-2 lg:justify-start">
+              {founder.expertise.map((skill) => (
+                <li
+                  key={skill}
+                  className="dir-ltr rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-medium tracking-wide text-slate-300"
+                >
+                  {skill}
+                </li>
+              ))}
+            </ul>
+
             {/* هویت */}
             <div className="mt-8 border-t border-white/10 pt-6">
               <p className="text-lg font-bold text-white">{founder.name}</p>
@@ -135,6 +159,43 @@ export function AboutSummary() {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/*
+          مدارک و سوابق.
+
+          خریدار تجهیزات پزشکی قبل از قیمت، دنبال این است که بداند چه کسی پشت
+          این کالاست. تا قبل از این، `founder.credentials` در فایل داده بود ولی
+          هیچ‌جای صفحه اصلی نمایش داده نمی‌شد و بازدیدکننده باید تا صفحه
+          «درباره ما» می‌رفت تا ببیندش. آیکن‌ها با ترتیب همان آرایه نگاشت
+          می‌شوند و اگر مدرکی اضافه شود، به نشان پیش‌فرض برمی‌گردد.
+        */}
+        <div className="mt-14 border-t border-white/10 pt-10 md:mt-16">
+          <h3 className="mb-6 text-center text-sm font-bold text-white lg:text-right">
+            مدارک و سوابق
+          </h3>
+
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {founder.credentials.map((item, i) => {
+              const Icon = CREDENTIAL_ICONS[i] ?? BadgeCheck;
+              return (
+                <li
+                  key={item.title}
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors hover:border-primary/30 hover:bg-white/[0.07]"
+                >
+                  <span className="mb-3.5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <Icon size={19} strokeWidth={1.75} />
+                  </span>
+                  <p className="mb-1.5 text-sm leading-snug font-bold text-white">
+                    {item.title}
+                  </p>
+                  <p className="text-xs leading-relaxed text-slate-400">
+                    {item.subtitle}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </section>

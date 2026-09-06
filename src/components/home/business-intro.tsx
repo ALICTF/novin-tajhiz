@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft, Building2, MapPin, Stethoscope } from "lucide-react";
+import { ArrowLeft, Award, Building2, MapPin, Stethoscope } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { contactInfo, founder, siteConfig } from "@/lib/data/site";
+import { certificates, contactInfo, founder, siteConfig } from "@/lib/data/site";
 import { toPersianDigits } from "@/lib/format";
 
 /**
@@ -112,16 +112,30 @@ export function BusinessIntro() {
               </ul>
             </div>
 
+            {/*
+              اینجا عمداً معرفی مؤسس نیامده. بخش «درباره مدیریت» پایین‌تر در
+              همین صفحه، متن founder.intro را کامل نشان می‌دهد؛ تکرار همان
+              پاراگراف در دو نقطه از یک صفحه، هم برای خواننده تکراری است هم
+              برای موتور جستجو محتوای تکراری می‌سازد. به‌جایش دستاوردهای
+              مجموعه که هیچ‌جای صفحه اصلی نمایش داده نمی‌شدند اینجا آمده‌اند.
+            */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6">
-              <h3 className="mb-4 text-sm font-bold text-slate-900">
-                تخصص مدیریت مجموعه
+              <h3 className="mb-4 flex items-center gap-2 text-sm font-bold text-slate-900">
+                <Award size={16} className="text-primary" />
+                دستاوردهای مجموعه
               </h3>
-              <p className="mb-4 text-sm leading-relaxed text-slate-600">
-                {founder.intro}
-              </p>
-              <p className="text-xs text-slate-400">
-                {founder.name} — {founder.role}
-              </p>
+              <ul className="flex flex-col gap-4">
+                {certificates.map((item) => (
+                  <li key={item.name}>
+                    <p className="text-sm font-bold text-slate-800">
+                      {item.name}
+                    </p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-slate-500">
+                      {item.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <p className="flex items-start gap-2 px-2 text-xs leading-relaxed text-slate-500">
