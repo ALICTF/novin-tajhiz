@@ -94,7 +94,7 @@ export async function CategoriesSection() {
   return (
     <section className="w-full bg-white py-16 md:py-24">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <div className="mb-16 flex flex-col items-center space-y-4 text-center md:mb-20">
+        <div className="reveal mb-16 flex flex-col items-center space-y-4 text-center md:mb-20">
           <Badge
             variant="outline"
             className="rounded-full border-primary/20 bg-primary/5 px-4 py-1.5 text-primary"
@@ -123,7 +123,7 @@ export async function CategoriesSection() {
             return (
               <article
                 key={category.id}
-                className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
+                className="reveal grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
               >
                 {/* ------------------------- عکس ------------------------- */}
                 <div className={flipped ? "lg:order-2" : undefined}>

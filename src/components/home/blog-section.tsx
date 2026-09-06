@@ -11,7 +11,7 @@ export async function BlogSection() {
   const articles = getLatestArticles(all, 3);
 
   return (
-    <section className="border-none bg-slate-50 py-16 md:py-24">
+    <section className="reveal border-none bg-slate-50 py-16 md:py-24">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="mb-10 flex flex-col items-center space-y-4 text-center md:mb-16">
           <Badge

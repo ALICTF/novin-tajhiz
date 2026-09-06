@@ -15,7 +15,7 @@ export function AboutSummary() {
   ];
 
   return (
-    <section className="relative overflow-hidden border-t border-white/5 bg-[#0B1120] py-16 text-white md:py-24">
+    <section className="reveal relative overflow-hidden border-t border-white/5 bg-[#0B1120] py-16 text-white md:py-24">
       {/* پس‌زمینه */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-0 right-0 h-[600px] w-[600px] translate-x-1/3 -translate-y-1/3 rounded-full glow [--glow-color:rgba(37,99,235,.16)]" />
