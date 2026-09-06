@@ -72,18 +72,6 @@ export async function storeUpload(
     return uploadToS3(key, bytes, file.type);
   }
 
-  /*
-    روی هاست‌های بدون دیسک دائمی (Vercel و مانند آن) فایل‌سیستم فقط‌خواندنی
-    است و writeFile با خطای گنگ ENOENT/EROFS می‌شکند. بهتر است همین‌جا با
-    پیام روشن متوقف شود تا کسی دنبال باگ نگردد.
-  */
-  if (process.env.VERCEL) {
-    return {
-      error:
-        "روی این هاست امکان ذخیره فایل روی دیسک نیست. برای فعال شدن آپلود، فضای ابری S3 را در متغیرهای محیطی تنظیم کنید.",
-    };
-  }
-
   const baseDir = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "uploads");
   const target = path.join(baseDir, key);
 
@@ -91,8 +79,15 @@ export async function storeUpload(
     await mkdir(path.dirname(target), { recursive: true });
     await writeFile(target, bytes);
   } catch (error) {
+    /*
+      روی لیارا این خطا یعنی دیسک uploads سوار نشده است — بدون آن مسیر
+      /app/uploads فقط‌خواندنی است. پیام روشن بهتر از استک‌تریس ENOENT است.
+    */
     console.error("[storage] نوشتن فایل ناموفق:", error);
-    return { error: "ذخیره فایل روی سرور ممکن نشد" };
+    return {
+      error:
+        "ذخیره فایل ممکن نشد. اگر روی لیارا هستید، مطمئن شوید دیسک «uploads» ساخته و به مسیر /app/uploads متصل شده است.",
+    };
   }
 
   return { url: `/uploads/${key}`, key, size: bytes.length };

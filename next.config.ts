@@ -24,11 +24,8 @@ const nextConfig: NextConfig = {
     خروجی standalone فقط فایل‌های واقعاً لازم را کنار سرور می‌گذارد و
     node_modules را ردیابی می‌کند. ایمیج داکر به‌جای چند صد مگابایت، حدود
     ۱۵۰ مگابایت می‌شود و بالا آمدن کانتینر هم سریع‌تر است.
-
-    روی Vercel غیرفعال می‌شود: آنجا خودِ پلتفرم خروجی را بسته‌بندی می‌کند و
-    standalone هم لازم نیست هم می‌تواند با بسته‌بندی خودش تداخل کند.
   */
-  output: process.env.VERCEL ? undefined : "standalone",
+  output: "standalone",
 
   poweredByHeader: false,
 

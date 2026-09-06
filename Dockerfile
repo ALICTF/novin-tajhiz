@@ -38,7 +38,6 @@ RUN npx prisma generate
 # می‌شود. اینجا دیتابیسی در دسترس نیست، پس تولید استاتیک کنار گذاشته می‌شود و
 # صفحه‌ها در اولین بازدید روی سرور ساخته و بعد کش می‌شوند.
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV DOCKER_BUILD=1
 RUN npm run build
 
 
