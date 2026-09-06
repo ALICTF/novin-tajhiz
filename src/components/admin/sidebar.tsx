@@ -10,6 +10,7 @@ import {
   MessageSquare,
   MessageSquareQuote,
   Package,
+  Store,
   ShoppingCart,
   X,
 } from "lucide-react";
@@ -42,6 +43,7 @@ const links = [
     badge: "pendingReviews",
   },
   { href: "/admin/messages", label: "پیام‌ها", icon: MessageSquare, badge: "unreadMessages" },
+  { href: "/admin/torob", label: "ترب", icon: Store },
 ] as const;
 
 export function Sidebar({

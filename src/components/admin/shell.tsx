@@ -21,6 +21,7 @@ const TITLES: { prefix: string; title: string; exact?: boolean }[] = [
   { prefix: "/admin/articles", title: "مقالات" },
   { prefix: "/admin/reviews", title: "دیدگاه‌ها" },
   { prefix: "/admin/messages", title: "پیام‌ها" },
+  { prefix: "/admin/torob", title: "ترب" },
 ];
 
 export function AdminShell({
