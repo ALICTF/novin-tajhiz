@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { breadcrumbJsonLd, JsonLd, pageJsonLd } from "@/lib/seo/json-ld";
 import { certificates, companyStats, contactInfo, founder, socialLinks } from "@/lib/data/site";
 
 export const metadata: Metadata = {
@@ -35,6 +36,17 @@ export default function AboutPage() {
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full glow [--glow-color:rgba(37,99,235,.10)] translate-y-1/2 -translate-x-1/2" />
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-4xl">
+            <JsonLd
+              data={pageJsonLd({
+                type: "AboutPage",
+                name: "درباره نوین تجهیز",
+                description:
+                  "داستان نوین تجهیز؛ مرکز تخصصی مهندسی پزشکی در مشهد در حوزه تجهیزات پلی‌سومنوگرافی و دستگاه‌های کمک تنفسی.",
+                path: "/about",
+              })}
+            />
+            <JsonLd data={breadcrumbJsonLd([{ label: "درباره ما" }], "/about")} />
+
             <Breadcrumbs items={[{ label: "درباره ما" }]} className="mb-8" />
         </div>
 

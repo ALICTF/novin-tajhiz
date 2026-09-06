@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { breadcrumbJsonLd, JsonLd } from "@/lib/seo/json-ld";
 import { allFaqs, faqGroups } from "@/lib/data/faqs";
 import { primaryPhone } from "@/lib/data/site";
 import { toPersianDigits } from "@/lib/format";
@@ -41,6 +42,8 @@ export default function FaqPage() {
       />
 
       <div className="container mx-auto max-w-4xl px-4 md:px-6">
+        <JsonLd data={breadcrumbJsonLd([{ label: "پرسش‌های متداول" }], "/faq")} />
+
         <Breadcrumbs items={[{ label: "پرسش‌های متداول" }]} className="mb-8" />
 
         <header className="mb-14 text-center">

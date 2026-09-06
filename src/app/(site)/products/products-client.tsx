@@ -26,7 +26,6 @@ import {
 import { ProductCard } from "@/components/shared/product-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
-import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import {
   sortOptions,
   type Category,
@@ -287,24 +286,25 @@ export function ProductsClient({
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
-      {/* سربرگ صفحه */}
-      <div className="border-b border-slate-200 bg-white pt-32 pb-12">
-        <div className="container mx-auto max-w-7xl px-4 md:px-6">
-          <Breadcrumbs items={[{ label: "فروشگاه محصولات" }]} className="mb-6" />
+      {/*
+        نوار جستجو و شمارنده.
 
+        عنوان صفحه، مسیر راهنما و متن معرفی عمداً اینجا نیستند و در
+        page.tsx سمت سرور رندر می‌شوند. علتش این است که این کامپوننت
+        useSearchParams دارد و نکست کل زیردرختش را به رندر سمت کلاینت
+        می‌برد؛ تا قبل از این، <h1> صفحه فروشگاه اصلاً در HTML سرور وجود
+        نداشت و خزنده فقط اسکلت لودینگ را می‌دید.
+      */}
+      <div className="border-b border-slate-200 bg-white pb-8">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <h1 className="mb-2 text-3xl font-black tracking-tight text-slate-900">
-                فروشگاه محصولات
-              </h1>
-              <p className="text-sm text-slate-500">
-                نمایش{" "}
-                <span className="font-bold text-slate-900">
-                  {toPersianDigits(filtered.length)}
-                </span>{" "}
-                محصول از مجموع {toPersianDigits(Object.values(categoryCounts).reduce((a, b) => a + b, 0))} قلم
-              </p>
-            </div>
+            <p className="text-sm text-slate-500">
+              نمایش{" "}
+              <span className="font-bold text-slate-900">
+                {toPersianDigits(filtered.length)}
+              </span>{" "}
+              محصول از مجموع {toPersianDigits(Object.values(categoryCounts).reduce((a, b) => a + b, 0))} قلم
+            </p>
 
             <form
               onSubmit={(e) => {

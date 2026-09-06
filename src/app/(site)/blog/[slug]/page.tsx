@@ -18,6 +18,7 @@ import {
   getPublishedArticles,
 } from "@/lib/db/public";
 import { ShareButtons } from "./share-buttons";
+import { articleJsonLd, breadcrumbJsonLd, JsonLd } from "@/lib/seo/json-ld";
 import { decodeParam } from "@/lib/utils";
 
 /*
@@ -66,13 +67,18 @@ export default async function ArticlePage({ params }: Params) {
   const headings = getArticleHeadings(article);
   const related = getRelatedArticles(await getPublishedArticles(), article);
 
+  const crumbs = [
+    { label: "وبلاگ", href: "/blog" },
+    { label: article.title },
+  ];
+
   return (
     <article className="min-h-screen bg-slate-50 pt-32 pb-20">
+      <JsonLd data={articleJsonLd(article)} />
+      <JsonLd data={breadcrumbJsonLd(crumbs, `/blog/${article.slug}`)} />
+
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <Breadcrumbs
-          className="mb-8"
-          items={[{ label: "وبلاگ", href: "/blog" }, { label: article.title }]}
-        />
+        <Breadcrumbs className="mb-8" items={crumbs} />
 
         {/* ------------------------------ سربرگ ------------------------------ */}
         <header className="mx-auto mb-10 max-w-4xl text-center">

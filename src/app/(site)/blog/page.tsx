@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BlogClient } from "./blog-client";
 import { getPublishedArticles } from "@/lib/db/public";
+import { breadcrumbJsonLd, collectionJsonLd, JsonLd } from "@/lib/seo/json-ld";
 
 /*
   صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
@@ -19,5 +20,23 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const articles = await getPublishedArticles();
-  return <BlogClient articles={articles} />;
+
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ label: "وبلاگ" }], "/blog")} />
+      <JsonLd
+        data={collectionJsonLd({
+          name: "مجله تخصصی خواب و تنفس",
+          description:
+            "مقالات علمی و راهنماهای کاربردی درباره آپنه خواب، تست خواب، دستگاه‌های CPAP و BiPAP و نگهداری تجهیزات.",
+          path: "/blog",
+          items: articles.map((a) => ({
+            name: a.title,
+            url: `/blog/${a.slug}`,
+          })),
+        })}
+      />
+      <BlogClient articles={articles} />
+    </>
+  );
 }

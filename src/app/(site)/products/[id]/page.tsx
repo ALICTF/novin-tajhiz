@@ -10,6 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import {
+  breadcrumbJsonLd,
+  clampDescription,
+  JsonLd,
+} from "@/lib/seo/json-ld";
 import { StarRating } from "@/components/shared/star-rating";
 import { ProductCard } from "@/components/shared/product-card";
 import { getIcon } from "@/lib/icon-map";
@@ -55,7 +60,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   return {
     title: product.name,
-    description: description.slice(0, 300),
+    description: clampDescription(description),
     keywords: [product.name, product.brand, ...product.tags, "تست خواب", "پلی سومنوگرافی"],
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: {
@@ -101,6 +106,15 @@ export default async function ProductDetailPage({ params }: Params) {
     },
   };
 
+  const crumbs = [
+    { label: "محصولات", href: "/products" },
+    {
+      label: category?.shortName ?? "محصول",
+      href: `/products?category=${product.categoryId}`,
+    },
+    { label: product.name },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 pt-32 pb-20">
       <script
@@ -108,18 +122,10 @@ export default async function ProductDetailPage({ params }: Params) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
 
+      <JsonLd data={breadcrumbJsonLd(crumbs, `/products/${product.slug}`)} />
+
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <Breadcrumbs
-          className="mb-8"
-          items={[
-            { label: "محصولات", href: "/products" },
-            {
-              label: category?.shortName ?? "محصول",
-              href: `/products?category=${product.categoryId}`,
-            },
-            { label: product.name },
-          ]}
-        />
+        <Breadcrumbs className="mb-8" items={crumbs} />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
           {/* ---------------------------- گالری ---------------------------- */}

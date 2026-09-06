@@ -7,6 +7,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { breadcrumbJsonLd, JsonLd, pageJsonLd } from "@/lib/seo/json-ld";
 import { contactInfo, phones, socialLinks } from "@/lib/data/site";
 import { ContactForm } from "./contact-form";
 
@@ -23,6 +24,17 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-slate-50 pt-32 pb-20">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <JsonLd
+          data={pageJsonLd({
+            type: "ContactPage",
+            name: "تماس با نوین تجهیز",
+            description:
+              "شماره تماس، نشانی دفتر مرکزی در مشهد، ساعات کاری و فرم ارتباط مستقیم با کارشناسان نوین تجهیز.",
+            path: "/contact",
+          })}
+        />
+        <JsonLd data={breadcrumbJsonLd([{ label: "تماس با ما" }], "/contact")} />
+
         <Breadcrumbs items={[{ label: "تماس با ما" }]} className="mb-6" />
       </div>
 

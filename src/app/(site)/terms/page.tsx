@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/shared/legal-page";
 import { contactInfo, siteConfig } from "@/lib/data/site";
+import { breadcrumbJsonLd, JsonLd, pageJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "قوانین و مقررات",
@@ -92,11 +93,24 @@ const sections: LegalSection[] = [
 
 export default function TermsPage() {
   return (
-    <LegalPage
+    <>
+      <JsonLd
+        data={pageJsonLd({
+          type: "WebPage",
+          name: "قوانین و مقررات",
+          description:
+            "شرایط استفاده از فروشگاه، قوانین سفارش، ارسال، گارانتی و بازگشت کالا در نوین تجهیز.",
+          path: "/terms",
+        })}
+      />
+      <JsonLd data={breadcrumbJsonLd([{ label: "قوانین و مقررات" }], "/terms")} />
+
+      <LegalPage
       title="قوانین و مقررات"
       intro="شرایط استفاده از خدمات و فروشگاه نوین تجهیز. لطفاً پیش از ثبت سفارش این متن را مطالعه کنید."
       updatedAt="۱۰ شهریور ۱۴۰۴"
       sections={sections}
     />
+    </>
   );
 }

@@ -219,6 +219,24 @@ export const getProductSlugs = unstable_cache(
   { tags: [CACHE_TAGS.products] },
 );
 
+/**
+ * اسلاگ و تاریخ آخرین ویرایش هر محصول — برای sitemap.
+ *
+ * جدا از getProductSlugs است چون آنجا فقط برای generateStaticParams لازم
+ * است و اضافه کردن updatedAt به آن، بی‌دلیل داده بیشتری در کش می‌گذاشت.
+ */
+export const getProductSitemapEntries = unstable_cache(
+  async (): Promise<{ slug: string; updatedAt: Date }[]> =>
+    safeQuery(async () => {
+      return prisma.product.findMany({
+        where: { published: true },
+        select: { slug: true, updatedAt: true },
+      });
+    }, []),
+  ["product-sitemap"],
+  { tags: [CACHE_TAGS.products] },
+);
+
 export const getBrands = unstable_cache(
   async (): Promise<string[]> =>
     safeQuery(async () => {

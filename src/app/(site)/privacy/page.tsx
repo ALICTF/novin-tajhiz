@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage, type LegalSection } from "@/components/shared/legal-page";
 import { contactInfo, siteConfig } from "@/lib/data/site";
+import { breadcrumbJsonLd, JsonLd, pageJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "حریم خصوصی",
@@ -87,11 +88,24 @@ const sections: LegalSection[] = [
 
 export default function PrivacyPage() {
   return (
-    <LegalPage
+    <>
+      <JsonLd
+        data={pageJsonLd({
+          type: "WebPage",
+          name: "سیاست حریم خصوصی",
+          description:
+            "توضیح شفاف درباره اطلاعاتی که جمع‌آوری می‌کنیم، نحوه استفاده و نگهداری آن‌ها و حقوق شما.",
+          path: "/privacy",
+        })}
+      />
+      <JsonLd data={breadcrumbJsonLd([{ label: "حریم خصوصی" }], "/privacy")} />
+
+      <LegalPage
       title="سیاست حریم خصوصی"
       intro="شفاف توضیح می‌دهیم چه اطلاعاتی از شما دریافت می‌کنیم، چرا و چگونه از آن‌ها محافظت می‌کنیم."
       updatedAt="۱۰ شهریور ۱۴۰۴"
       sections={sections}
     />
+    </>
   );
 }
