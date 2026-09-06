@@ -1,108 +1,112 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, CheckCircle2, Wrench, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Phone, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { TrustBand } from "@/components/home/trust-band";
+import { primaryPhone } from "@/lib/data/site";
 
 export function HeroSection() {
   return (
-    // هدر ثابت است و ۹۶ پیکسل بالای صفحه را می‌پوشاند؛ pt-28 همان فاصله را جبران می‌کند.
-    <section className="relative w-full lg:min-h-[90vh] flex flex-col items-center justify-center overflow-hidden bg-slate-50 pt-28 pb-14 md:pt-32 md:pb-20 lg:py-32">
+    <section className="relative w-full overflow-hidden">
 
-      {/* --- Background ---
-          قبلاً سه لایه با blur-[100px] و blur-[120px] روی هم بودند. فیلتر blur
-          روی سطح بزرگ، گران‌ترین کار پردازنده گرافیکی موبایل است و در هر اسکرول
-          دوباره محاسبه می‌شود. همان ظاهر با چند radial-gradient ساخته می‌شود که
-          مرورگر یک‌بار رستر می‌کند و دیگر دست نمی‌زند. */}
-      <div
-        className="absolute inset-0 -z-20 w-full h-full bg-white"
-        style={{
-          backgroundImage: [
-            "radial-gradient(circle 500px at 50% 200px, #C9EBFF, transparent)",
-            "radial-gradient(circle 420px at 50% 0, rgba(37,99,235,.07), transparent)",
-            "radial-gradient(circle 340px at 0 100%, rgba(191,219,254,.35), transparent)",
-            "radial-gradient(circle 300px at 100% 33%, rgba(165,243,252,.35), transparent)",
-          ].join(", "),
-        }}
-      />
+      {/* ---------------------------- تصویر پس‌زمینه ----------------------------
+          تصویر تمام‌عرض است و متن رویش می‌نشیند. همچنان عنصر LCP صفحه است، پس
+          priority دارد و هیچ انیمیشن ورودی رویش گذاشته نشده تا ثبت LCP عقب نیفتد. */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/sleep.jpg"
+          alt="درمان آپنه خواب با دستگاه CPAP"
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover object-center"
+        />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 w-full max-w-7xl">
+        {/*
+          تصویر روشن است، پس بدون این لایه متن سفید خوانا نمی‌شود.
+          گرادیان به‌جای رنگ تخت استفاده شده تا بالای کادر تیره‌تر بماند
+          (زیر هدر شیشه‌ای) و وسط کمی از خود تصویر پیدا باشد.
+        */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-slate-950/92" />
+      </div>
 
-        {/* در RTL ستون اول سمت راست می‌نشیند: متن راست، تصویر چپ. */}
-        <div className="grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      {/* هدر ثابت است و ۹۶ پیکسل بالای صفحه را می‌پوشاند؛ pt جبرانش می‌کند. */}
+      <div className="relative z-10 container mx-auto flex w-full max-w-7xl flex-col justify-center px-4 pt-32 pb-16 md:px-6 md:pt-40 md:pb-20 lg:min-h-[92vh]">
 
-          {/* ------------------------------ متن ------------------------------ */}
-          <div className="flex flex-col items-center gap-6 text-center md:gap-8 lg:items-start lg:text-right">
+        {/* ------------------------------ متن ------------------------------ */}
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center md:gap-8">
 
-            {/* Badge */}
-            <Badge variant="outline" className="py-2 px-4 sm:px-6 text-primary border-primary/20 bg-white rounded-full text-xs sm:text-sm font-medium shadow-sm hover:bg-white transition-colors gap-2">
-              <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>مرکز تخصصی مهندسی پزشکی نوین تجهیز</span>
-            </Badge>
-
-            {/* Title */}
-            <h1 className="text-[1.75rem] sm:text-4xl md:text-6xl lg:text-[3.4rem] xl:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.25] md:leading-[1.2] w-full text-balance">
-              تجربه خوابی آرام با{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-600 to-primary">
-                تکنولوژی‌های پیشرفته پزشکی
-              </span>
-            </h1>
-
-            {/* Description */}
-            <p className="max-w-2xl text-slate-600 text-sm sm:text-base md:text-xl leading-relaxed mx-auto lg:mx-0 text-pretty">
-              مرجع تخصصی فروش، اجاره و تعمیرات دستگاه‌های <span className="font-bold text-slate-800">CPAP</span> و <span className="font-bold text-slate-800">BiPAP</span> و تجهیزات پلی‌سومنوگرافی در شرق کشور.
-            </p>
-
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start items-center pt-2">
-              <Button asChild size="lg" className="h-13 sm:h-14 px-8 sm:px-10 text-base sm:text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/40 md:hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto gap-2">
-                <Link href="/products">
-                  مشاهده محصولات
-                  <ArrowLeft className="w-5 h-5" />
-                </Link>
-              </Button>
-
-              <Button asChild variant="outline" size="lg" className="h-13 sm:h-14 px-8 sm:px-10 text-base sm:text-lg rounded-full border-slate-300 bg-white/60 backdrop-blur-sm hover:bg-white text-slate-700 md:hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto gap-2">
-                <Link href="/contact">
-                  <Wrench className="w-5 h-5 text-slate-500" />
-                  درخواست تعمیرات
-                </Link>
-              </Button>
-            </div>
-
-            {/* Features List */}
-            <div className="flex flex-wrap justify-center lg:justify-start items-center gap-2 sm:gap-4 md:gap-6 text-xs sm:text-sm font-medium text-slate-500 pt-2 md:pt-4 opacity-90 w-full">
-                {["تامین قطعات اورجینال", "مشاوره تخصصی رایگان", "گارانتی معتبر"].map((item) => (
-                    <div
-                        key={item}
-                        className="flex items-center gap-1.5 sm:gap-2 bg-white/60 px-2.5 sm:px-3 py-1.5 rounded-full border border-slate-200/60 shadow-sm"
-                    >
-                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
-                        <span>{item}</span>
-                    </div>
-                ))}
-            </div>
+          {/* نشان — روی زمینه تیره شیشه‌ای می‌شود */}
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 py-1.5 ps-1.5 pe-4 backdrop-blur-md">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-white sm:h-8 sm:w-8">
+              <ShieldCheck className="h-4 w-4" />
+            </span>
+            <span className="text-xs font-bold text-white sm:text-sm">
+              مرکز تخصصی مهندسی پزشکی نوین تجهیز
+            </span>
           </div>
 
-          {/* ----------------------------- تصویر ----------------------------- */}
-          <div className="relative w-full">
-            <Image
-              src="/images/sleep.jpg"
-              alt="دستگاه تخصصی خواب"
-              width={800}
-              height={600}
-              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
-              className="mx-auto w-full max-w-[560px] rounded-[20px] sm:rounded-[32px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)]"
-              priority
-            />
+          <h1 className="w-full text-[1.9rem] leading-[1.25] font-extrabold tracking-tight text-balance text-white sm:text-5xl md:text-6xl md:leading-[1.15] lg:text-7xl">
+            تجربه خوابی آرام با{" "}
+            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-300 bg-clip-text text-transparent">
+              تکنولوژی‌های پیشرفته پزشکی
+            </span>
+          </h1>
+
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-pretty text-white/75 sm:text-base md:text-xl">
+            مرجع تخصصی فروش، اجاره و تعمیرات دستگاه‌های{" "}
+            <span className="font-bold text-white">CPAP</span> و{" "}
+            <span className="font-bold text-white">BiPAP</span> و تجهیزات
+            پلی‌سومنوگرافی در شرق کشور.
+          </p>
+
+          {/* اقدام */}
+          <div className="flex w-full flex-col items-center justify-center gap-4 pt-2 sm:w-auto sm:flex-row">
+            <Button
+              asChild
+              size="lg"
+              className="h-13 w-full gap-2 rounded-full px-8 text-base shadow-xl shadow-primary/25 transition-all duration-300 sm:h-14 sm:w-auto sm:px-10 sm:text-lg md:hover:-translate-y-1"
+            >
+              <Link href="/products">
+                مشاهده محصولات
+                <ArrowLeft className="h-5 w-5" />
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-13 w-full gap-2 rounded-full border-white/25 bg-white/10 px-8 text-base text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-slate-900 sm:h-14 sm:w-auto sm:px-10 sm:text-lg md:hover:-translate-y-1"
+            >
+              <a href={`tel:${primaryPhone.tel}`}>
+                <Phone className="h-5 w-5" />
+                <span className="dir-ltr tabular-nums tracking-wide">
+                  {primaryPhone.number}
+                </span>
+              </a>
+            </Button>
           </div>
 
+          {/* مزیت‌ها */}
+          <div className="flex w-full flex-wrap items-center justify-center gap-2 pt-2 text-xs font-medium text-white/80 sm:gap-4 sm:text-sm md:gap-6 md:pt-4">
+            {["تامین قطعات اورجینال", "مشاوره تخصصی رایگان", "گارانتی معتبر"].map(
+              (item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1.5 backdrop-blur-md sm:gap-2 sm:px-3"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-400 sm:h-4 sm:w-4" />
+                  <span>{item}</span>
+                </div>
+              ),
+            )}
+          </div>
         </div>
 
         {/* ردیف مراکز همکار، بدون خط جداکننده — بخشی از خود هیرو. */}
         <div className="mt-14 md:mt-20">
-          <TrustBand />
+          <TrustBand tone="dark" />
         </div>
       </div>
     </section>

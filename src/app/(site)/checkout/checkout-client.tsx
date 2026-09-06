@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowLeft, ArrowRight, Check, CreditCard, Loader2,
-  MapPin, ReceiptText, ShoppingBag, Info,
+  MapPin, ReceiptText, ShoppingBag, Info, AlertCircle,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { FormField } from "@/components/shared/form-field";
 import { useCart } from "@/context/cart-context";
 import { checkoutShippingSchema, type CheckoutFormValues } from "@/lib/validation";
-import { submitForm } from "@/lib/submit";
+import { placeOrderAction } from "@/app/(site)/checkout/actions";
 import { formatPrice, toPersianDigits } from "@/lib/format";
 import {
   checkoutSteps,
@@ -103,22 +103,29 @@ export function CheckoutClient() {
     window.scrollTo({ top: 120, behavior: "smooth" });
   };
 
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
+
   const onSubmit = async (values: CheckoutFormValues) => {
-    const { reference } = await submitForm("checkout", {
-      ...values,
-      items: lines.map((l) => ({
-        sku: l.product.sku,
-        name: l.product.name,
-        quantity: l.quantity,
-      })),
-      total,
-      // فقط متادیتای فیش ارسال می‌شود؛ خود فایل تا آماده شدن بک‌اند
-      // آپلود جایی فرستاده نمی‌شود.
-      receipt,
-    });
+    setSubmitError(null);
+
+    /*
+      فقط شناسه و تعداد فرستاده می‌شود. مبلغ سفارش سمت سرور از روی دیتابیس
+      محاسبه می‌شود، وگرنه هر کسی می‌توانست با دستکاری درخواست قیمت را عوض کند.
+    */
+    const result = await placeOrderAction(
+      values,
+      lines.map((l) => ({ productId: l.productId, quantity: l.quantity })),
+    );
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      window.scrollTo({ top: 120, behavior: "smooth" });
+      return;
+    }
+
     clear();
     const paid = values.paymentMethod === "transfer" ? "1" : "0";
-    router.push(`/checkout/success?ref=${reference}&transfer=${paid}`);
+    router.push(`/checkout/success?ref=${result.reference}&transfer=${paid}`);
   };
 
   /* --------------------------- حالت سبد خالی --------------------------- */
@@ -188,6 +195,15 @@ export function CheckoutClient() {
         </ol>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          {submitError && (
+            <p
+              role="alert"
+              className="mb-6 flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3.5 text-sm font-medium text-rose-700 ring-1 ring-rose-200 ring-inset"
+            >
+              <AlertCircle size={17} className="mt-0.5 shrink-0" />
+              {submitError}
+            </p>
+          )}
           <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-3">
             <div className="space-y-6 lg:col-span-2">
               {/* ------------------------ گام ۱: بازبینی ------------------------ */}

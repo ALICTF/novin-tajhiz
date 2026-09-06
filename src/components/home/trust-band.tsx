@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { enamad, partners } from "@/lib/data/site";
+import { cn } from "@/lib/utils";
 
 /**
  * ردیف مراکز همکار — داخل خود هیرو رندر می‌شود، نه به‌عنوان یک بخش جدا.
@@ -9,19 +10,29 @@ import { enamad, partners } from "@/lib/data/site";
  * می‌دهد. عمداً هیچ کادر، خط جداکننده یا پس‌زمینه‌ای ندارد تا با هیرو یکپارچه
  * دیده شود. (کادرهای آمار حذف شده‌اند؛ همان داده هنوز در صفحه «درباره ما» هست.)
  */
-export function TrustBand() {
+export function TrustBand({ tone = "light" }: { tone?: "light" | "dark" }) {
+  const isDark = tone === "dark";
+
   return (
     <div className="w-full">
       <div className="mx-auto w-full max-w-7xl">
-        <p className="mb-8 text-center text-xs font-medium text-slate-500 sm:text-sm">
-          مورد اعتماد مراکز درمانی و کلینیک‌های خواب کشور
+        <p
+          className={cn(
+            "mb-8 text-center text-xs font-medium sm:text-sm",
+            isDark ? "text-white/70" : "text-slate-500",
+          )}
+        >
+          تأمین‌کننده تجهیزات مراکز درمانی و کلینیک‌های خواب کشور
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 sm:gap-x-12 md:gap-x-16">
           {partners.map((partner) => (
             <div
               key={partner.name}
-              className="group flex flex-col items-center gap-2.5 opacity-70 transition-opacity duration-500 hover:opacity-100"
+              className={cn(
+                "group flex flex-col items-center gap-2.5 transition-opacity duration-500 hover:opacity-100",
+                isDark ? "opacity-60" : "opacity-70",
+              )}
               title={partner.name}
             >
               <div className="relative h-12 w-20 sm:h-14 sm:w-24">
@@ -30,10 +41,21 @@ export function TrustBand() {
                   alt={partner.name}
                   fill
                   sizes="96px"
-                  className="object-contain grayscale transition-all duration-500 group-hover:grayscale-0"
+                  className={cn(
+                    "object-contain transition-all duration-500",
+                    // لوگوها تیره‌اند؛ روی زمینه تیره باید سفید شوند وگرنه محو می‌شوند.
+                    isDark
+                      ? "brightness-0 invert"
+                      : "grayscale group-hover:grayscale-0",
+                  )}
                 />
               </div>
-              <span className="max-w-[8rem] text-center text-[10px] leading-snug text-slate-500 sm:text-[11px]">
+              <span
+                className={cn(
+                  "max-w-[8rem] text-center text-[10px] leading-snug sm:text-[11px]",
+                  isDark ? "text-white/60" : "text-slate-500",
+                )}
+              >
                 {partner.name}
               </span>
             </div>

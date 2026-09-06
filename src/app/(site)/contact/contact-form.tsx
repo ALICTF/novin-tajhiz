@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "@/components/shared/form-field";
 import { contactSchema, type ContactFormValues } from "@/lib/validation";
-import { submitForm } from "@/lib/submit";
+import { submitContactAction } from "@/app/(site)/contact/actions";
 
 export function ContactForm() {
   const [reference, setReference] = React.useState<string | null>(null);
@@ -27,7 +27,7 @@ export function ContactForm() {
   });
 
   const onSubmit = async (values: ContactFormValues) => {
-    const result = await submitForm("contact", values);
+    const result = await submitContactAction(values);
     setReference(result.reference);
     toast.success("پیام شما ارسال شد", {
       description: `کد پیگیری: ${result.reference}`,

@@ -94,6 +94,23 @@ export function Header() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  /*
+    فقط صفحه اصلی هیروی تیره تمام‌عرض دارد. آنجا و پیش از اسکرول، هدر شفاف
+    می‌شود تا روی تصویر ننشیند. در بقیه صفحات — که بالایشان روشن است — همیشه
+    حالت جامد فعال است، وگرنه متن سفید روی زمینه روشن نامرئی می‌شد.
+  */
+  const transparent = pathname === "/" && !isScrolled;
+
+  const navItemClass = cn(
+    "h-9 rounded-full bg-transparent",
+    transparent
+      ? "text-white/85 hover:bg-white/15 hover:text-white"
+      : "text-slate-600 hover:bg-white hover:text-primary",
+  );
+  const navItemActiveClass = transparent
+    ? "bg-white/20 text-white"
+    : "bg-white text-primary";
+
   return (
     <>
       <div
@@ -105,12 +122,19 @@ export function Header() {
         <header
           className={cn(
             "relative flex w-full items-center justify-between rounded-2xl border px-4 transition-all duration-500 md:px-6",
-            // هدر fixed است: backdrop-blur روی عنصر ثابت باعث می‌شود مرورگر در
-            // *هر فریم اسکرول* پس‌زمینه پشت آن را دوباره محو کند — سنگین‌ترین
-            // علت لگ اسکرول روی موبایل. زیر md پس‌زمینه مات می‌شود و blur فقط
-            // روی دسکتاپ می‌ماند.
-            "border-white/40 bg-white shadow-lg md:bg-white/80 md:backdrop-blur-xl md:supports-[backdrop-filter]:bg-white/60",
-            isScrolled ? "h-16 md:bg-white/90 shadow-xl" : "h-20",
+            transparent
+              ? // روی هیروی تیره: بدون پس‌زمینه، بدون سایه، بدون blur.
+                // حذف blur اینجا مزیت جانبی هم دارد — بالای صفحه که بیشترین
+                // اسکرول اتفاق می‌افتد، مرورگر هیچ محاسبه‌ای برای هدر ندارد.
+                "h-20 border-transparent bg-transparent shadow-none"
+              : cn(
+                  // هدر fixed است: backdrop-blur روی عنصر ثابت باعث می‌شود مرورگر در
+                  // *هر فریم اسکرول* پس‌زمینه پشت آن را دوباره محو کند — سنگین‌ترین
+                  // علت لگ اسکرول روی موبایل. زیر md پس‌زمینه مات می‌شود و blur فقط
+                  // روی دسکتاپ می‌ماند.
+                  "border-white/40 bg-white shadow-lg md:bg-white/80 md:backdrop-blur-xl md:supports-[backdrop-filter]:bg-white/60",
+                  isScrolled ? "h-16 shadow-xl md:bg-white/90" : "h-20",
+                ),
           )}
         >
           {/* ------------------------------ لوگو ------------------------------ */}
@@ -128,9 +152,16 @@ export function Header() {
               className={cn(
                 "w-auto object-contain transition-all duration-500 group-hover:scale-105",
                 isScrolled ? "h-9" : "h-11 md:h-12",
+                // لوگو تیره است؛ روی هیروی تیره باید سفید شود وگرنه گم می‌شود.
+                transparent && "brightness-0 invert",
               )}
             />
-            <span className="mt-0.5 hidden text-[10px] leading-tight font-medium tracking-wide text-slate-500 opacity-80 xl:block">
+            <span
+              className={cn(
+                "mt-0.5 hidden text-[10px] leading-tight font-medium tracking-wide opacity-80 xl:block",
+                transparent ? "text-white" : "text-slate-500",
+              )}
+            >
               مرجع تخصصی
               <br />
               پلی‌سومنوگرافی
@@ -140,14 +171,21 @@ export function Header() {
           {/* ------------------------- منوی دسکتاپ ------------------------- */}
           <div className="hidden flex-1 items-center justify-center lg:flex">
             <NavigationMenu dir="rtl">
-              <NavigationMenuList className="gap-1 rounded-full border border-slate-200/50 bg-slate-100/50 p-1">
+              <NavigationMenuList
+                className={cn(
+                  "gap-1 rounded-full border p-1",
+                  transparent
+                    ? "border-white/15 bg-white/10 backdrop-blur-md"
+                    : "border-slate-200/50 bg-slate-100/50",
+                )}
+              >
                 <NavigationMenuItem>
                   <Link
                     href="/"
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "h-9 rounded-full bg-transparent text-slate-600 hover:bg-white hover:text-primary",
-                      isActive("/") && "bg-white text-primary",
+                      navItemClass,
+                      isActive("/") && navItemActiveClass,
                     )}
                   >
                     صفحه اصلی
@@ -157,8 +195,12 @@ export function Header() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     className={cn(
-                      "h-9 rounded-full bg-transparent text-slate-600 hover:bg-white hover:text-primary",
-                      isActive("/products") && "bg-white text-primary",
+                      navItemClass,
+                      // حالت باز منو هم باید با تم شفاف بخواند، وگرنه رادیکس
+                      // رنگ پیش‌فرض روشن خودش را اعمال می‌کند.
+                      transparent &&
+                        "data-[state=open]:bg-white/20 data-[state=open]:text-white focus:bg-white/15 focus:text-white",
+                      isActive("/products") && navItemActiveClass,
                     )}
                   >
                     محصولات
@@ -207,8 +249,8 @@ export function Header() {
                       href={link.href}
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        "h-9 rounded-full bg-transparent text-slate-600 hover:bg-white hover:text-primary",
-                        isActive(link.href) && "bg-white text-primary",
+                        navItemClass,
+                        isActive(link.href) && navItemActiveClass,
                       )}
                     >
                       {link.title}
@@ -221,13 +263,21 @@ export function Header() {
 
           {/* ------------------------- بخش سمت چپ ------------------------- */}
           <div className="flex shrink-0 items-center">
-            <div className="hidden items-center gap-3 text-slate-500 xl:flex">
+            <div
+              className={cn(
+                "hidden items-center gap-3 xl:flex",
+                transparent ? "text-white/75" : "text-slate-500",
+              )}
+            >
               <div className="flex flex-col items-end text-[10px] leading-tight font-medium opacity-80 transition-opacity hover:opacity-100">
                 {phones.slice(0, 2).map((p) => (
                   <a
                     key={p.tel}
                     href={`tel:${p.tel}`}
-                    className="dir-ltr tabular-nums tracking-wide hover:text-primary"
+                    className={cn(
+                      "dir-ltr tabular-nums tracking-wide",
+                      transparent ? "hover:text-white" : "hover:text-primary",
+                    )}
                   >
                     {p.number}
                   </a>
@@ -241,7 +291,10 @@ export function Header() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={s.name}
-                    className="transition-colors hover:text-primary"
+                    className={cn(
+                      "transition-colors",
+                      transparent ? "hover:text-white" : "hover:text-primary",
+                    )}
                   >
                     <s.icon size={16} />
                   </a>
@@ -251,7 +304,10 @@ export function Header() {
 
             <Separator
               orientation="vertical"
-              className="mx-6 hidden h-8 bg-slate-300 xl:block"
+              className={cn(
+                "mx-6 hidden h-8 xl:block",
+                transparent ? "bg-white/25" : "bg-slate-300",
+              )}
             />
 
             <div className="flex items-center gap-2 md:gap-3">
@@ -271,7 +327,10 @@ export function Header() {
                   placeholder="جستجوی محصول یا مقاله..."
                   aria-label="جستجو در سایت"
                   className={cn(
-                    "h-9 rounded-full border-slate-200 bg-slate-50 pr-9 pl-2 text-xs transition-all focus:bg-white",
+                    "h-9 rounded-full pr-9 pl-2 text-xs transition-all",
+                    transparent
+                      ? "border-white/20 bg-white/10 text-white backdrop-blur-md placeholder:text-white/50 focus:bg-white/20"
+                      : "border-slate-200 bg-slate-50 focus:bg-white",
                     !searchOpen && "pointer-events-none opacity-0",
                   )}
                 />
@@ -279,7 +338,12 @@ export function Header() {
                   type={searchOpen ? "submit" : "button"}
                   aria-label="جستجو"
                   onClick={() => !searchOpen && setSearchOpen(true)}
-                  className="absolute right-0 z-10 flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100"
+                  className={cn(
+                    "absolute right-0 z-10 flex h-9 w-9 items-center justify-center rounded-full",
+                    transparent
+                      ? "text-white hover:bg-white/15"
+                      : "text-slate-600 hover:bg-slate-100",
+                  )}
                 >
                   <Search size={18} />
                 </button>
@@ -290,7 +354,12 @@ export function Header() {
                 asChild
                 variant="ghost"
                 size="icon"
-                className="relative hidden h-9 w-9 rounded-full text-slate-700 hover:bg-slate-100 sm:flex"
+                className={cn(
+                  "relative hidden h-9 w-9 rounded-full sm:flex",
+                  transparent
+                    ? "text-white hover:bg-white/15 hover:text-white"
+                    : "text-slate-700 hover:bg-slate-100",
+                )}
               >
                 <Link href="/wishlist" aria-label="علاقه‌مندی‌ها">
                   <Heart size={20} />
@@ -308,7 +377,12 @@ export function Header() {
                 size="icon"
                 aria-label={`سبد خرید (${cartCount} قلم)`}
                 onClick={() => setCartOpen(true)}
-                className="relative h-9 w-9 rounded-full text-slate-700 hover:bg-slate-100"
+                className={cn(
+                  "relative h-9 w-9 rounded-full",
+                  transparent
+                    ? "text-white hover:bg-white/15 hover:text-white"
+                    : "text-slate-700 hover:bg-slate-100",
+                )}
               >
                 <ShoppingBag size={20} />
                 {cartHydrated && cartCount > 0 && (
@@ -326,7 +400,12 @@ export function Header() {
                   variant="ghost"
                   size="icon"
                   aria-label="باز کردن منو"
-                  className="mr-1 -ml-2 text-slate-800 lg:hidden"
+                  className={cn(
+                    "mr-1 -ml-2 lg:hidden",
+                    transparent
+                      ? "text-white hover:bg-white/15 hover:text-white"
+                      : "text-slate-800",
+                  )}
                 >
                   <Menu size={26} />
                 </Button>

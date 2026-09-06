@@ -1,11 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { Providers } from "@/components/providers";
-import { ScrollToTop } from "@/components/shared/scroll-to-top";
-import { CompareBar } from "@/components/shared/compare-bar";
 import { siteConfig } from "@/lib/data/site";
 
 const vazir = Vazirmatn({
@@ -110,24 +105,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${vazir.className} flex min-h-screen flex-col bg-slate-50 antialiased`}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-[100] focus:rounded-xl focus:bg-slate-900 focus:px-5 focus:py-3 focus:text-sm focus:font-bold focus:text-white"
-        >
-          پرش به محتوای اصلی
-        </a>
-
-        <Providers>
-          <Header />
-
-          <main id="main-content" className="flex w-full flex-1 flex-col">
-            {children}
-          </main>
-
-          <Footer />
-          <ScrollToTop />
-          <CompareBar />
-        </Providers>
+        {children}
       </body>
     </html>
   );

@@ -18,6 +18,9 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      // کلاینت Prisma تولید ماشین است و ویرایش نمی‌شود؛ لینت کردنش فقط نویز
+      // می‌سازد و با هر prisma generate دوباره برمی‌گردد.
+      "src/generated/**",
     ],
   },
 ];

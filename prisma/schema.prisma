@@ -1,0 +1,181 @@
+// دیتابیس پنل مدیریت نوین تجهیز.
+//
+// SQLite انتخاب شده چون پنل تک‌کاربره است و روی همین سرور اجرا می‌شود؛ نه
+// سرویس جدا می‌خواهد نه پیکربندی. اگر روزی سایت روی هاست serverless (مثل
+// Vercel) برود، SQLite کار نمی‌کند و باید provider به postgresql تغییر کند —
+// چون همه دسترسی‌ها از لایه src/lib/db رد می‌شوند، بقیه کد دست نمی‌خورد.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// دسته‌بندی محصولات. شناسه‌ها همان CategoryId فعلی کاتالوگ‌اند.
+model Category {
+  id          String    @id
+  name        String
+  shortName   String
+  description String
+  icon        String
+  sortIndex   Int       @default(0)
+  products    Product[]
+}
+
+model Product {
+  id         Int    @id @default(autoincrement())
+  slug       String @unique
+  name       String
+  brand      String
+  categoryId String
+
+  /// null یعنی «تماس بگیرید» — قیمت روی سایت نمایش داده نمی‌شود.
+  price    Int?
+  oldPrice Int?
+
+  shortDescription String
+  /// پاراگراف‌های صفحه محصول، به‌صورت JSON آرایه‌ای از رشته.
+  description      String @default("[]")
+  /// مسیرهای محلی زیر public، به‌صورت JSON آرایه‌ای از رشته.
+  images           String @default("[]")
+  /// برچسب‌های جستجو، به‌صورت JSON آرایه‌ای از رشته.
+  tags             String @default("[]")
+
+  rating       Float @default(0)
+  reviewsCount Int   @default(0)
+  sku          String
+  inStock      Boolean @default(true)
+  isNew        Boolean @default(false)
+  isFeatured   Boolean @default(false)
+  /// ترتیب نمایش؛ مبنای مرتب‌سازی «جدیدترین».
+  sortIndex    Int     @default(0)
+
+  /// پیش‌نویس روی سایت عمومی دیده نمی‌شود.
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category   Category    @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+
+  @@index([categoryId])
+  @@index([published, sortIndex])
+}
+
+model Article {
+  id      Int    @id @default(autoincrement())
+  slug    String @unique
+  title   String
+  excerpt String
+
+  /// تصویر شاخص، مسیر محلی زیر public.
+  image      String @default("")
+  /// نام آیکون از src/lib/icon-map.ts
+  icon       String @default("moon")
+  category   String @default("")
+  author     String @default("")
+  authorRole String @default("")
+  /// تاریخ نمایشی شمسی، همان‌طور که در سایت دیده می‌شود.
+  date       String @default("")
+  readTime   String @default("")
+
+  /// برچسب‌ها، JSON آرایه‌ای از رشته.
+  tags String @default("[]")
+  /// بدنه مقاله؛ JSON آرایه‌ای از ArticleBlock (پاراگراف، تیتر، لیست، نقل‌قول،
+  /// کالاوت). عمداً Markdown نیست تا رندرکننده فعلی سایت دست‌نخورده بماند.
+  body String @default("[]")
+
+  isFeatured  Boolean  @default(false)
+  published   Boolean  @default(true)
+  /// تاریخ میلادی انتشار — مبنای مرتب‌سازی.
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+/// وضعیت سفارش — همان مراحلی که مشتری در صفحه پیگیری می‌بیند.
+/// SQLite در Prisma از enum پشتیبانی نمی‌کند، پس رشته است و مقادیر مجاز در
+/// src/lib/db/orders.ts تعریف و اعتبارسنجی می‌شوند.
+model Order {
+  id        Int    @id @default(autoincrement())
+  /// کد پیگیری که به مشتری نشان داده می‌شود، مثل NT-2609-48213.
+  reference String @unique
+
+  firstName String
+  lastName  String
+  phone     String
+  email     String @default("")
+
+  province   String
+  city       String
+  address    String
+  postalCode String
+  note       String @default("")
+
+  shippingMethod String
+  paymentMethod  String
+
+  /// مبالغ به تومان و به‌صورت عدد صحیح نگهداری می‌شوند تا خطای اعشار نداشته باشیم.
+  subtotal     Int
+  shippingCost Int @default(0)
+  total        Int
+
+  /// pending | confirmed | processing | shipped | delivered | cancelled
+  status String @default("pending")
+  /// مسیر فایل رسید آپلودشده، اگر پرداخت کارت‌به‌کارت بوده باشد.
+  receiptPath String @default("")
+  /// یادداشت داخلی ادمین — به مشتری نشان داده نمی‌شود.
+  adminNote   String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id      Int @id @default(autoincrement())
+  orderId Int
+
+  productId Int?
+  /// نام و قیمت در لحظه ثبت سفارش کپی می‌شوند: اگر بعداً محصول حذف یا گران
+  /// شود، فاکتور قدیمی نباید تغییر کند.
+  name      String
+  brand     String @default("")
+  sku       String @default("")
+  image     String @default("")
+  unitPrice Int?
+  quantity  Int    @default(1)
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+}
+
+/// پیام‌های فرم تماس و درخواست‌های استعلام قیمت.
+model Message {
+  id      Int    @id @default(autoincrement())
+  /// contact | quote | newsletter
+  kind    String @default("contact")
+  name    String @default("")
+  phone   String @default("")
+  email   String @default("")
+  subject String @default("")
+  body    String @default("")
+  /// اگر استعلام قیمت یک محصول خاص باشد.
+  productId Int?
+
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read, createdAt])
+}

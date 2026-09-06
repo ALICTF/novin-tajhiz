@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# نمونه env باید کامیت شود تا بقیه بدانند چه متغیرهایی لازم است
+!.env.example
+
+# دیتابیس محلی پنل و کلاینت تولیدشده Prisma
+/prisma/*.db
+/prisma/*.db-journal
+/src/generated/
