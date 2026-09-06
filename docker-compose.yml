@@ -63,6 +63,30 @@ services:
       # آپلودها بیرون از ایمیج می‌مانند تا با هر استقرار پاک نشوند.
       - uploads:/app/uploads
 
+  # --------------------------- پشتیبان‌گیری ---------------------------
+  # ایمیج پستگرس استفاده می‌شود چون pg_dump را از قبل دارد و نسخه‌اش دقیقاً
+  # با سرور می‌خواند — pg_dump قدیمی‌تر از سرور کار نمی‌کند.
+  backup:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-novin}:${POSTGRES_PASSWORD:-novin}@db:5432/${POSTGRES_DB:-novintajhiz}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+      BACKUP_INTERVAL_HOURS: ${BACKUP_INTERVAL_HOURS:-24}
+      TZ: Asia/Tehran
+    volumes:
+      - ./docker/backup.sh:/backup.sh:ro
+      - ./docker/backup-entrypoint.sh:/backup-entrypoint.sh:ro
+      # فقط‌خواندنی سوار می‌شود: سرویس پشتیبان هیچ دلیلی برای نوشتن در
+      # فایل‌های واقعی ندارد.
+      - uploads:/uploads:ro
+      # نسخه‌ها روی خود سرور می‌مانند تا با docker compose down پاک نشوند.
+      - ./backups:/backups
+    entrypoint: ["/bin/sh", "/backup-entrypoint.sh"]
+
 volumes:
   db-data:
   uploads:

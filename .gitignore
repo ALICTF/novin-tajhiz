@@ -47,3 +47,6 @@ next-env.d.ts
 /prisma/*.db
 /prisma/*.db-journal
 /src/generated/
+
+# نسخه‌های پشتیبان — هرگز نباید در مخزن بروند
+/backups

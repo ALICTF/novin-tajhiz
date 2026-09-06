@@ -90,14 +90,58 @@ server {
 
 ### پشتیبان‌گیری
 
-```bash
-# دیتابیس
-docker compose exec db pg_dump -U novin novintajhiz > backup-$(date +%F).sql
+سرویس `backup` در `docker-compose.yml` خودکار اجرا می‌شود — نیازی به cron روی
+سرور نیست. هر ۲۴ ساعت یک نسخه از دیتابیس و یک نسخه از فایل‌های آپلودی
+می‌گیرد و نسخه‌های قدیمی‌تر از ۱۴ روز را پاک می‌کند.
 
-# فایل‌های آپلودی
-docker run --rm -v novin-tajhiz-main_uploads:/data -v $(pwd):/backup alpine \
-  tar czf /backup/uploads-$(date +%F).tar.gz -C /data .
+نسخه‌ها در پوشه `./backups` کنار پروژه می‌مانند (نه داخل volume داکر)، پس با
+`docker compose down -v` هم پاک نمی‌شوند.
+
 ```
+backups/
+├── db/novintajhiz-2026-09-06_0300.dump
+└── uploads/uploads-2026-09-06_0300.tar.gz
+```
+
+تنظیم فاصله و مدت نگهداری در `.env`:
+
+```dotenv
+BACKUP_INTERVAL_HOURS="24"
+BACKUP_RETENTION_DAYS="14"
+```
+
+گرفتن نسخه دستی، بدون انتظار برای نوبت بعدی:
+
+```bash
+docker compose exec backup /backup.sh
+```
+
+بررسی وضعیت سرویس:
+
+```bash
+docker compose logs -f backup
+```
+
+#### بازیابی
+
+دیتابیس با فرمت custom ذخیره می‌شود، پس `pg_restore` می‌تواند به‌صورت انتخابی
+هم بازیابی کند.
+
+```bash
+# بازیابی کامل روی یک دیتابیس خالی
+docker compose exec -T db psql -U novin -d postgres   -c "DROP DATABASE IF EXISTS novintajhiz;" -c "CREATE DATABASE novintajhiz;"
+
+docker compose exec -T db pg_restore -U novin -d novintajhiz --no-owner   < backups/db/novintajhiz-2026-09-06_0300.dump
+```
+
+فایل‌های آپلودی:
+
+```bash
+docker run --rm -v novin-tajhiz-main_uploads:/data   -v "$(pwd)/backups/uploads:/backup" alpine   tar xzf /backup/uploads-2026-09-06_0300.tar.gz -C /data
+```
+
+> **نسخه پشتیبانی که تستش نکرده باشید، پشتیبان نیست.** ماهی یک‌بار روی یک
+> دیتابیس آزمایشی بازیابی کنید و تعداد رکوردها را با سایت زنده مقایسه کنید.
 
 ---
 
