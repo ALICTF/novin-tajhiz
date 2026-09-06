@@ -92,7 +92,7 @@ export async function CategoriesSection() {
   const total = categories.reduce((sum, c) => sum + (counts[c.id] ?? 0), 0);
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-slate-50 py-16 md:py-24">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="reveal mb-16 flex flex-col items-center space-y-4 text-center md:mb-20">
           <Badge
@@ -127,7 +127,7 @@ export async function CategoriesSection() {
               >
                 {/* ------------------------- عکس ------------------------- */}
                 <div className={flipped ? "lg:order-2" : undefined}>
-                  <div className="group relative overflow-hidden rounded-3xl bg-slate-100 ring-1 ring-slate-200">
+                  <div className="group relative overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200">
                     {intro ? (
                       <Image
                         src={intro.image}

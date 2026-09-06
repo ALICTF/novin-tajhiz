@@ -75,7 +75,7 @@ export function BusinessIntro() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/about"
-                className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800"
+                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
                 داستان کامل مجموعه
                 <ArrowLeft
@@ -85,7 +85,7 @@ export function BusinessIntro() {
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-slate-400 hover:bg-white"
+                className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-6 py-3 text-sm font-bold text-primary transition-colors hover:border-primary/40 hover:bg-primary/10"
               >
                 مشاوره تخصصی رایگان
               </Link>
