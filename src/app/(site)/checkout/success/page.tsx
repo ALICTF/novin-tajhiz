@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Home, Phone, Printer } from "lucide-react";
+import { Home, PackageSearch, Phone, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { primaryPhone } from "@/lib/data/site";
 import { OrderReference } from "./order-reference";
@@ -30,6 +30,12 @@ export default function CheckoutSuccessPage() {
 
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Button asChild className="h-12 gap-2 rounded-xl px-6">
+            <Link href="/track">
+              <PackageSearch size={18} />
+              پیگیری سفارش
+            </Link>
+          </Button>
+          <Button asChild variant="outline" className="h-12 gap-2 rounded-xl px-6">
             <Link href="/products">
               <Home size={18} />
               ادامه خرید

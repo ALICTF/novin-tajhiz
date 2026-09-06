@@ -19,6 +19,7 @@ const TITLES: { prefix: string; title: string; exact?: boolean }[] = [
   { prefix: "/admin/orders", title: "سفارش‌ها" },
   { prefix: "/admin/products", title: "محصولات" },
   { prefix: "/admin/articles", title: "مقالات" },
+  { prefix: "/admin/reviews", title: "دیدگاه‌ها" },
   { prefix: "/admin/messages", title: "پیام‌ها" },
 ];
 

@@ -8,6 +8,7 @@ import {
   FileText,
   LayoutDashboard,
   MessageSquare,
+  MessageSquareQuote,
   Package,
   ShoppingCart,
   X,
@@ -25,6 +26,7 @@ import { toPersianDigits } from "@/lib/format";
 
 export type SidebarCounts = {
   openOrders: number;
+  pendingReviews: number;
   unreadMessages: number;
 };
 
@@ -33,6 +35,12 @@ const links = [
   { href: "/admin/orders", label: "سفارش‌ها", icon: ShoppingCart, badge: "openOrders" },
   { href: "/admin/products", label: "محصولات", icon: Package },
   { href: "/admin/articles", label: "مقالات", icon: FileText },
+  {
+    href: "/admin/reviews",
+    label: "دیدگاه‌ها",
+    icon: MessageSquareQuote,
+    badge: "pendingReviews",
+  },
   { href: "/admin/messages", label: "پیام‌ها", icon: MessageSquare, badge: "unreadMessages" },
 ] as const;
 

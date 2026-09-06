@@ -141,6 +141,7 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
   {
     title: "راهنما و پشتیبانی",
     items: [
+      { title: "پیگیری سفارش", href: "/track" },
       { title: "پرسش‌های متداول", href: "/faq" },
       { title: "ارتباط با ما", href: "/contact" },
       { title: "علاقه‌مندی‌ها", href: "/wishlist" },

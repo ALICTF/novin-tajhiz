@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       // صفحات شخصی و فرآیند خرید ارزش نمایه‌سازی ندارند.
-      disallow: ["/cart", "/checkout", "/wishlist", "/compare", "/search"],
+      disallow: ["/cart", "/checkout", "/wishlist", "/compare", "/search", "/orders", "/admin"],
     },
     sitemap: `${siteConfig.url}/sitemap.xml`,
   };

@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   ArrowLeft,
   FileText,
+  MessageSquareQuote,
   Package,
   PackageX,
   ShoppingCart,
@@ -150,7 +151,7 @@ export default async function AdminOverviewPage() {
       </section>
 
       {/* ---------------------------- میان‌برها ---------------------------- */}
-      <section className="mt-6 grid gap-3 sm:grid-cols-2">
+      <section className="mt-6 grid gap-3 sm:grid-cols-3">
         <Link
           href="/admin/products/new"
           className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-primary/40"
@@ -176,6 +177,37 @@ export default async function AdminOverviewPage() {
               مقالات ({toPersianDigits(stats.articleCount)})
             </p>
             <p className="text-xs text-slate-500">مدیریت محتوای وبلاگ</p>
+          </div>
+        </Link>
+
+        <Link
+          href="/admin/reviews"
+          className={
+            stats.pendingReviews > 0
+              ? "flex items-center gap-3 rounded-2xl border border-amber-300 bg-amber-50/50 p-4 transition-colors hover:border-amber-400"
+              : "flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:border-primary/40"
+          }
+        >
+          <span
+            className={
+              stats.pendingReviews > 0
+                ? "flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700"
+                : "flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+            }
+          >
+            <MessageSquareQuote size={18} />
+          </span>
+          <div>
+            <p className="text-sm font-bold text-slate-900">
+              {stats.pendingReviews > 0
+                ? `${toPersianDigits(stats.pendingReviews)} دیدگاه در انتظار`
+                : "دیدگاه‌ها"}
+            </p>
+            <p className="text-xs text-slate-500">
+              {stats.pendingReviews > 0
+                ? "تا تأیید نشوند روی سایت دیده نمی‌شوند"
+                : "همه دیدگاه‌ها بررسی شده‌اند"}
+            </p>
           </div>
         </Link>
       </section>

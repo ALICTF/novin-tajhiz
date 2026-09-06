@@ -16,12 +16,15 @@ export default async function PanelLayout({
 }) {
   await requireAdmin();
 
-  const [openOrders, unreadMessages] = await Promise.all([
+  const [openOrders, pendingReviews, unreadMessages] = await Promise.all([
     prisma.order.count({ where: { status: { in: OPEN_ORDER_STATUSES } } }),
+    prisma.review.count({ where: { published: false } }),
     prisma.message.count({ where: { read: false } }),
   ]);
 
   return (
-    <AdminShell counts={{ openOrders, unreadMessages }}>{children}</AdminShell>
+    <AdminShell counts={{ openOrders, pendingReviews, unreadMessages }}>
+      {children}
+    </AdminShell>
   );
 }
