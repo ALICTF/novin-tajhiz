@@ -29,6 +29,42 @@ const nextConfig: NextConfig = {
 
   poweredByHeader: false,
 
+  /*
+    هدرهای امنیتی.
+
+    عمداً Content-Security-Policy کامل گذاشته نشده: نکست برای هیدریشن از
+    اسکریپت‌های inline استفاده می‌کند و CSP سخت‌گیرانه بدون nonce سایت را
+    می‌شکند. بقیه هدرها اثر واقعی دارند و هیچ ریسکی ندارند.
+  */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // جلوگیری از نمایش سایت داخل iframe سایت دیگر (کلیک‌دزدی).
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // مرورگر نوع فایل را حدس نزند.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // آدرس کامل صفحه به سایت‌های دیگر نشت نکند.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // سایت به دوربین، میکروفون و موقعیت مکانی کاری ندارد.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+        ],
+      },
+      {
+        // پنل و مسیرهای شخصی هرگز نباید در نتایج جستجو یا کش میانی بمانند.
+        source: "/:path(admin|orders|track)/:rest*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Cache-Control", value: "private, no-store" },
+        ],
+      },
+    ];
+  },
+
   // آیکون‌ها از lucide-react به‌صورت تک‌به‌تک import می‌شوند تا کل کتابخانه
   // وارد باندل نشود.
   experimental: {

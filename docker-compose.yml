@@ -42,6 +42,10 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?رمز پنل مدیریت را در فایل .env تنظیم کنید}
       ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:?کلید امضای نشست را در فایل .env تنظیم کنید}
       UPLOAD_DIR: /app/uploads
+      TZ: Asia/Tehran
+      # آدرس نهایی سایت. در فید ترب، sitemap و تگ‌های اشتراک‌گذاری استفاده
+      # می‌شود، پس اگر اشتباه باشد ترب محصولات را پیدا نمی‌کند.
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://novintajhiz.org}
       # پیامک کاوه‌نگار — خالی بماند تا زمانی که حساب آماده شود.
       KAVENEGAR_API_KEY: ${KAVENEGAR_API_KEY:-}
       KAVENEGAR_SENDER: ${KAVENEGAR_SENDER:-}

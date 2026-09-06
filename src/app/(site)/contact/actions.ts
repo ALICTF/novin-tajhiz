@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db/client";
 import { contactSchema } from "@/lib/validation";
 import { generateReference } from "@/lib/submit";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * ثبت پیام فرم تماس در دیتابیس تا در پنل مدیریت دیده شود.
@@ -12,6 +13,11 @@ import { generateReference } from "@/lib/submit";
 export async function submitContactAction(
   values: unknown,
 ): Promise<{ ok: boolean; error?: string; reference: string }> {
+  const gate = await checkRateLimit("message", LIMITS.message.limit, LIMITS.message.windowMs);
+  if (!gate.ok) {
+    return { ok: false, error: "تعداد پیام‌ها زیاد است. کمی بعد دوباره تلاش کنید.", reference: "" };
+  }
+
   const parsed = contactSchema.safeParse(values);
   if (!parsed.success) {
     return { ok: false, error: "اطلاعات فرم معتبر نیست.", reference: "" };

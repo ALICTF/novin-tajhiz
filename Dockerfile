@@ -48,6 +48,10 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+# کانتینر به‌صورت پیش‌فرض UTC است. تاریخ‌های نمایشی خودشان با Asia/Tehran
+# قالب‌بندی می‌شوند، ولی محاسبات بازه‌ای (مثل «۱۴ روز گذشته» در داشبورد) از
+# ساعت محلی سرور شروع می‌کنند و باید با ساعت کسب‌وکار بخواند.
+ENV TZ=Asia/Tehran
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV UPLOAD_DIR=/app/uploads

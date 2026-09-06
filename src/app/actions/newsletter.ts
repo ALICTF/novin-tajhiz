@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/db/client";
 import { revalidatePath } from "next/cache";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -9,6 +10,15 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export async function subscribeNewsletterAction(
   email: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  const gate = await checkRateLimit(
+    "newsletter",
+    LIMITS.newsletter.limit,
+    LIMITS.newsletter.windowMs,
+  );
+  if (!gate.ok) {
+    return { ok: false, error: "تعداد تلاش‌ها زیاد است. کمی بعد امتحان کنید." };
+  }
+
   const value = email.trim().toLowerCase();
   if (!EMAIL_PATTERN.test(value)) {
     return { ok: false, error: "ایمیل معتبر نیست" };

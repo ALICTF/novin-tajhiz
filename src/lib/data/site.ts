@@ -6,6 +6,20 @@ import { Instagram, Send } from "lucide-react";
  * مقادیر از سایت رسمی novintajhiz.org گرفته شده‌اند.
  */
 
+/*
+  آدرس سایت از متغیر محیطی خوانده می‌شود، نه ثابت.
+
+  این آدرس در فید ترب، sitemap، تگ‌های OpenGraph و داده ساخت‌یافته گوگل
+  به‌کار می‌رود. اگر ثابت بماند، روی هر محیطی غیر از دامنه نهایی — مثل
+  زیردامنه لیارا یا محیط تست — همه این‌ها به آدرس اشتباه اشاره می‌کنند و
+  خزنده ترب هم محصولات را پیدا نمی‌کند.
+
+  NEXT_PUBLIC_ است چون در کامپوننت‌های کلاینت هم لازم می‌شود.
+*/
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://novintajhiz.org"
+).replace(/\/$/, "");
+
 export const siteConfig = {
   name: "نوین تجهیز",
   nameEn: "Novin Tajhiz",
@@ -13,8 +27,8 @@ export const siteConfig = {
   description:
     "مهندسی پزشکی نوین تجهیز، مرجع تخصصی تجهیزات و اکسسوری پلی‌سومنوگرافی (تست خواب)، الکترودهای نوار مغز و قطعات دستگاه‌های کمک تنفسی CPAP و BiPAP در سراسر کشور.",
   shortDescription: "مرجع تخصصی پلی‌سومنوگرافی تست خواب",
-  url: "https://novintajhiz.org",
-  domain: "novintajhiz.org",
+  url: siteUrl,
+  domain: siteUrl.replace(/^https?:\/\//, ""),
   locale: "fa_IR",
   foundedYear: 1393,
   logo: "/images/logo.png",

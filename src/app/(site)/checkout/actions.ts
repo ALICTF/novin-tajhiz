@@ -8,6 +8,7 @@ import { shippingMethods, FREE_SHIPPING_THRESHOLD } from "@/lib/data/checkout";
 import { generateReference } from "@/lib/submit";
 import { isOwnUploadUrl } from "@/lib/storage";
 import { notifyAdminNewOrder } from "@/lib/sms/notify";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * ثبت سفارش واقعی.
@@ -34,6 +35,11 @@ export async function placeOrderAction(
   lines: CheckoutLineInput[],
   receiptUrl?: string,
 ): Promise<PlaceOrderResult> {
+  const gate = await checkRateLimit("order", LIMITS.order.limit, LIMITS.order.windowMs);
+  if (!gate.ok) {
+    return { ok: false, error: "تعداد درخواست‌ها زیاد است. کمی بعد دوباره تلاش کنید." };
+  }
+
   const parsed = checkoutShippingSchema.safeParse(values);
   if (!parsed.success) {
     return { ok: false, error: "اطلاعات فرم کامل یا معتبر نیست." };

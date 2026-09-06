@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db/client";
 import { reviewSchema } from "@/lib/validation";
 import { revalidatePath } from "next/cache";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * ثبت دیدگاه کاربر.
@@ -14,6 +15,11 @@ export async function submitReviewAction(
   productId: number,
   values: unknown,
 ): Promise<{ ok: boolean; error?: string }> {
+  const gate = await checkRateLimit("message", LIMITS.message.limit, LIMITS.message.windowMs);
+  if (!gate.ok) {
+    return { ok: false, error: "تعداد دیدگاه‌ها زیاد است. کمی بعد دوباره تلاش کنید." };
+  }
+
   const parsed = reviewSchema.safeParse(values);
   if (!parsed.success) return { ok: false, error: "اطلاعات فرم معتبر نیست." };
 

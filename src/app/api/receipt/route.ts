@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { storeUpload } from "@/lib/storage";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * آپلود فیش واریزی توسط مشتری، هنگام تسویه‌حساب.
@@ -12,6 +13,14 @@ import { storeUpload } from "@/lib/storage";
  *  • فایل تا وقتی به یک سفارش وصل نشود در پنل دیده نمی‌شود.
  */
 export async function POST(request: Request) {
+  const gate = await checkRateLimit("receipt", LIMITS.receipt.limit, LIMITS.receipt.windowMs);
+  if (!gate.ok) {
+    return NextResponse.json(
+      { error: "تعداد تلاش‌ها زیاد است. کمی بعد دوباره امتحان کنید." },
+      { status: 429, headers: { "retry-after": String(gate.retryAfterSeconds) } },
+    );
+  }
+
   const form = await request.formData();
   const file = form.get("file");
 

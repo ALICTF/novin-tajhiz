@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db/client";
 import { startCustomerSession, endCustomerSession } from "@/lib/customer/session";
 import { toLatinDigits } from "@/lib/format";
+import { checkRateLimit, LIMITS } from "@/lib/rate-limit";
 
 /**
  * ورود مشتری به بخش پیگیری سفارش.
@@ -23,6 +24,12 @@ export async function trackOrderAction(
   _prev: TrackState,
   formData: FormData,
 ): Promise<TrackState> {
+  // بدون این سقف، می‌شد با امتحان کردن کدهای پیگیری به سفارش دیگران رسید.
+  const gate = await checkRateLimit("track", LIMITS.track.limit, LIMITS.track.windowMs);
+  if (!gate.ok) {
+    return { error: "تعداد تلاش‌ها زیاد است. چند دقیقه دیگر دوباره امتحان کنید." };
+  }
+
   const reference = String(formData.get("reference") ?? "").trim().toUpperCase();
   const phone = normalizePhone(String(formData.get("phone") ?? ""));
 
