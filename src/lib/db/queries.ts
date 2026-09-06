@@ -368,50 +368,8 @@ export async function getDashboardStats() {
   };
 }
 
-/**
- * روزِ تقویمی یک زمان، به وقت تهران.
- *
- * toISOString() تاریخ را به UTC می‌دهد و ایران +۳:۳۰ است؛ یعنی سفارشی که
- * ساعت ۲ بامداد تهران ثبت شده، در UTC هنوز «دیروز» است. اگر کلیدهای نمودار
- * را با toISOString بسازیم، ستون‌ها یک روز جابه‌جا می‌شوند و سفارش‌های امروز
- * در هیچ ستونی نمی‌نشینند.
- */
-const TEHRAN_DAY = new Intl.DateTimeFormat("en-CA", {
-  timeZone: "Asia/Tehran",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
-
-function tehranDay(date: Date): string {
-  return TEHRAN_DAY.format(date);
-}
-
-/** درآمد و تعداد سفارش هر روز در بازه اخیر — برای نمودار داشبورد. */
-export async function getRevenueSeries(days = 14) {
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
-  start.setDate(start.getDate() - (days - 1));
-
-  const rows = await prisma.order.findMany({
-    where: { status: { not: "cancelled" }, createdAt: { gte: start } },
-    select: { createdAt: true, total: true },
-  });
-
-  const buckets = new Map<string, { total: number; count: number }>();
-  for (let i = 0; i < days; i++) {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    buckets.set(tehranDay(d), { total: 0, count: 0 });
-  }
-
-  for (const row of rows) {
-    const bucket = buckets.get(tehranDay(row.createdAt));
-    if (bucket) {
-      bucket.total += row.total;
-      bucket.count += 1;
-    }
-  }
-
-  return [...buckets.entries()].map(([date, v]) => ({ date, ...v }));
-}
+/*
+  getRevenueSeries به src/lib/db/analytics.ts منتقل شد تا نمودار داشبورد و
+  صفحه گزارش‌ها از یک منبع بخوانند و منطق بازه زمانی دو جا تکرار نشود.
+*/
+export { getRevenueSeries } from "@/lib/db/analytics";

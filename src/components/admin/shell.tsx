@@ -16,6 +16,7 @@ import { signOutAction } from "@/app/admin/actions";
 
 const TITLES: { prefix: string; title: string; exact?: boolean }[] = [
   { prefix: "/admin", title: "نمای کلی", exact: true },
+  { prefix: "/admin/analytics", title: "گزارش‌ها" },
   { prefix: "/admin/orders", title: "سفارش‌ها" },
   { prefix: "/admin/products", title: "محصولات" },
   { prefix: "/admin/articles", title: "مقالات" },

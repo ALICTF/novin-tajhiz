@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   ExternalLink,
   FileText,
+  ChartColumn,
   LayoutDashboard,
   MessageSquare,
   MessageSquareQuote,
@@ -33,6 +34,7 @@ export type SidebarCounts = {
 
 const links = [
   { href: "/admin", label: "نمای کلی", icon: LayoutDashboard, exact: true },
+  { href: "/admin/analytics", label: "گزارش‌ها", icon: ChartColumn },
   { href: "/admin/orders", label: "سفارش‌ها", icon: ShoppingCart, badge: "openOrders" },
   { href: "/admin/products", label: "محصولات", icon: Package },
   { href: "/admin/articles", label: "مقالات", icon: FileText },
