@@ -105,6 +105,29 @@ function looksLikeDeclaredType(bytes: Buffer, ext: string): boolean {
   }
 }
 
+/**
+ * آیا این آدرس واقعاً به فایلی اشاره می‌کند که خودمان ذخیره کرده‌ایم؟
+ *
+ * آدرس فیش از سمت کلاینت به سرور برمی‌گردد و بدون این بررسی می‌شد هر لینکی
+ * را جای فیش نشاند؛ آن‌وقت ادمین با کلیک روی «مشاهده رسید» به سایت دیگری
+ * می‌رفت. هر دو حالت ذخیره‌سازی پوشش داده می‌شود.
+ */
+export function isOwnUploadUrl(
+  url: string,
+  prefix: "products" | "receipts",
+): boolean {
+  if (!url) return false;
+
+  // حالت دیسک محلی: مسیر نسبی.
+  if (url.startsWith(`/uploads/${prefix}/`)) return true;
+
+  // حالت S3: باید دقیقاً زیر دامنه عمومی همان باکت باشد.
+  const publicBase = process.env.S3_PUBLIC_URL?.replace(/\/$/, "");
+  if (publicBase && url.startsWith(`${publicBase}/${prefix}/`)) return true;
+
+  return false;
+}
+
 /* ------------------------------ S3 سازگار ------------------------------ */
 
 /**

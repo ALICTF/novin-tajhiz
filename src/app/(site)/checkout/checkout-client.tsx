@@ -115,6 +115,7 @@ export function CheckoutClient() {
     const result = await placeOrderAction(
       values,
       lines.map((l) => ({ productId: l.productId, quantity: l.quantity })),
+      receipt?.url,
     );
 
     if (!result.ok) {

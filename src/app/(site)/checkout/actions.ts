@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db/client";
 import { checkoutShippingSchema } from "@/lib/validation";
 import { shippingMethods, FREE_SHIPPING_THRESHOLD } from "@/lib/data/checkout";
 import { generateReference } from "@/lib/submit";
+import { isOwnUploadUrl } from "@/lib/storage";
 
 /**
  * ثبت سفارش واقعی.
@@ -29,6 +30,7 @@ const MAX_QTY_PER_LINE = 20;
 export async function placeOrderAction(
   values: unknown,
   lines: CheckoutLineInput[],
+  receiptUrl?: string,
 ): Promise<PlaceOrderResult> {
   const parsed = checkoutShippingSchema.safeParse(values);
   if (!parsed.success) {
@@ -112,6 +114,10 @@ export async function placeOrderAction(
       shippingCost,
       total: subtotal + shippingCost,
       status: "pending",
+      // آدرس فیش از کلاینت می‌آید، پس فقط وقتی ذخیره می‌شود که واقعاً به
+      // فضای آپلود خودمان اشاره کند.
+      receiptPath:
+        receiptUrl && isOwnUploadUrl(receiptUrl, "receipts") ? receiptUrl : "",
       items: { create: items },
     },
   });

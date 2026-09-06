@@ -103,34 +103,29 @@ docker run --rm -v novin-tajhiz-main_uploads:/data -v $(pwd):/backup alpine \
 
 ## ۳. استقرار روی لیارا
 
-لیارا فایل‌سیستم ماندگار ندارد؛ پس **دو نکته حیاتی**:
+لیارا برای پلتفرم Docker **دیسک ماندگار** می‌دهد، پس نیازی به خرید فضای ابری
+جداگانه ندارید. فقط دو چیز لازم است:
 
-1. دیتابیس را از خود لیارا بگیرید (سرویس PostgreSQL) و `DATABASE_URL` را در
-   متغیرهای محیطی برنامه ست کنید.
-2. برای آپلودها **حتماً** فضای ابری لیارا (S3-سازگار) را وصل کنید، وگرنه هر
-   تصویری که آپلود می‌کنید با استقرار بعدی پاک می‌شود.
+۱. **دیتابیس** را از خود لیارا بگیرید (سرویس PostgreSQL) و `DATABASE_URL` را در
+   متغیرهای محیطی برنامه بگذارید.
 
-`liara.json`:
+۲. یک **دیسک به نام `uploads`** بسازید. فایل `liara.json` از قبل آن را روی مسیر
+   `/app/uploads` سوار می‌کند:
 
 ```json
-{
-  "platform": "docker",
-  "port": 3000,
-  "healthCheck": { "command": "curl -f http://localhost:3000/api/health" }
-}
+"disks": [{ "name": "uploads", "mountTo": "/app/uploads" }]
 ```
+
+بدون این دیسک، فایل‌سیستم برنامه بعد از هر استقرار برمی‌گردد به حالت اول و هر
+تصویر یا فیشی که آپلود شده پاک می‌شود.
 
 متغیرهای محیطی در پنل لیارا:
 
 ```
-DATABASE_URL=postgresql://...        # از سرویس دیتابیس لیارا
+DATABASE_URL=postgresql://...   # از سرویس دیتابیس لیارا
 ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
-S3_ENDPOINT=https://storage.iran.liara.space
-S3_BUCKET=novin-uploads
-S3_ACCESS_KEY=...
-S3_SECRET_KEY=...
-S3_PUBLIC_URL=https://novin-uploads.storage.iran.liara.space
+UPLOAD_DIR=/app/uploads
 ```
 
 سپس:
@@ -139,7 +134,28 @@ S3_PUBLIC_URL=https://novin-uploads.storage.iran.liara.space
 liara deploy
 ```
 
----
+### چه وقت به فضای ابری (S3) نیاز پیدا می‌کنید؟
+
+دیسک برای یک نمونه از برنامه کافی است. اگر روزی یکی از این‌ها پیش آمد، سراغ
+فضای ابری بروید:
+
+- برنامه را روی **بیش از یک نمونه** اجرا کنید (دیسک بین نمونه‌ها مشترک نیست).
+- حجم فایل‌ها از اندازه دیسک بیشتر شود.
+- بخواهید تصاویر از **CDN** سرو شوند و بار از روی سرور برداشته شود.
+
+در آن صورت فقط این متغیرها را پر کنید؛ هیچ تغییری در کد لازم نیست و آپلودهای
+جدید خودکار به فضای ابری می‌روند:
+
+```
+S3_ENDPOINT=https://storage.iran.liara.space
+S3_BUCKET=novin-uploads
+S3_ACCESS_KEY=...
+S3_SECRET_KEY=...
+S3_PUBLIC_URL=https://novin-uploads.storage.iran.liara.space
+```
+
+> فایل‌هایی که قبلاً روی دیسک بوده‌اند خودکار منتقل نمی‌شوند؛ باید یک‌بار
+> دستی کپی شوند.
 
 ## ۴. متغیرهای محیطی
 
@@ -148,7 +164,7 @@ liara deploy
 | `DATABASE_URL` | بله | رشته اتصال PostgreSQL |
 | `ADMIN_PASSWORD` | بله | رمز ورود پنل |
 | `ADMIN_SESSION_SECRET` | بله | کلید امضای کوکی، حداقل ۱۶ نویسه |
-| `UPLOAD_DIR` | خیر | مسیر آپلود روی دیسک (پیش‌فرض `./uploads`) |
+| `UPLOAD_DIR` | خیر | مسیر آپلود روی دیسک (پیش‌فرض `./uploads`). روی سرور باید به یک volume یا دیسک ماندگار اشاره کند. |
 | `S3_ENDPOINT` | خیر | اگر پر باشد آپلودها به فضای ابری می‌روند |
 | `S3_BUCKET` | خیر | نام باکت |
 | `S3_REGION` | خیر | پیش‌فرض `us-east-1` |

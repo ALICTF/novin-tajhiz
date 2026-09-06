@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FileText, Info, Send, TriangleAlert, Upload, X } from "lucide-react";
+import { FileText, Info, Loader2, Send, TriangleAlert, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { contactInfo, socialLinks } from "@/lib/data/site";
 import { toPersianDigits } from "@/lib/format";
@@ -10,7 +10,13 @@ import { toPersianDigits } from "@/lib/format";
 const MAX_BYTES = 5 * 1024 * 1024; // ۵ مگابایت
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
 
-export type ReceiptFile = { name: string; size: number; type: string };
+export type ReceiptFile = {
+  name: string;
+  size: number;
+  type: string;
+  /** مسیر فایل روی سرور بعد از آپلود موفق. */
+  url: string;
+};
 
 /** اندازه بایت را به متن فارسی خوانا تبدیل می‌کند. */
 function formatSize(bytes: number): string {
@@ -22,12 +28,13 @@ function formatSize(bytes: number): string {
 export function ReceiptUpload({
   onChange,
 }: {
-  /** متادیتای فایل انتخاب‌شده را به فرم والد می‌دهد (خود فایل ارسال نمی‌شود). */
+  /** بعد از آپلود موفق، مشخصات فایل به‌همراه مسیرش به فرم والد داده می‌شود. */
   onChange: (file: ReceiptFile | null) => void;
 }) {
   const [file, setFile] = React.useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [uploading, setUploading] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // آدرس پیش‌نمایش یک blob URL است و باید هنگام تعویض یا unmount آزاد شود،
@@ -42,7 +49,7 @@ export function ReceiptUpload({
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
-  const accept = (picked: File | undefined) => {
+  const accept = async (picked: File | undefined) => {
     if (!picked) return;
 
     if (!ACCEPTED.includes(picked.type)) {
@@ -56,7 +63,39 @@ export function ReceiptUpload({
 
     setError(null);
     setFile(picked);
-    onChange({ name: picked.name, size: picked.size, type: picked.type });
+    setUploading(true);
+
+    /*
+      فایل همین‌جا آپلود می‌شود، نه هنگام ثبت سفارش. اگر تا لحظه آخر صبر
+      می‌کردیم، مشتری بعد از پر کردن کل فرم تازه می‌فهمید آپلود شکست خورده.
+    */
+    try {
+      const body = new FormData();
+      body.append("file", picked);
+
+      const response = await fetch("/api/receipt", { method: "POST", body });
+      const data = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !data.url) {
+        setError(data.error ?? "آپلود فیش انجام نشد. دوباره تلاش کنید.");
+        setFile(null);
+        onChange(null);
+        return;
+      }
+
+      onChange({
+        name: picked.name,
+        size: picked.size,
+        type: picked.type,
+        url: data.url,
+      });
+    } catch {
+      setError("ارتباط با سرور برقرار نشد. دوباره تلاش کنید.");
+      setFile(null);
+      onChange(null);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const remove = () => {
@@ -79,7 +118,14 @@ export function ReceiptUpload({
         onChange={(e) => accept(e.target.files?.[0])}
       />
 
-      {!file ? (
+      {uploading ? (
+        <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 px-4 py-8 text-center">
+          <Loader2 size={26} className="animate-spin text-primary" />
+          <span className="text-sm font-bold text-slate-700">
+            در حال آپلود فیش...
+          </span>
+        </div>
+      ) : !file ? (
         <label
           htmlFor="receipt-input"
           className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-4 py-8 text-center transition-colors hover:border-primary hover:bg-primary/5"
