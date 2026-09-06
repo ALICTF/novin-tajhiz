@@ -1,9 +1,12 @@
-// دیتابیس پنل مدیریت نوین تجهیز.
+// دیتابیس نوین تجهیز.
 //
-// SQLite انتخاب شده چون پنل تک‌کاربره است و روی همین سرور اجرا می‌شود؛ نه
-// سرویس جدا می‌خواهد نه پیکربندی. اگر روزی سایت روی هاست serverless (مثل
-// Vercel) برود، SQLite کار نمی‌کند و باید provider به postgresql تغییر کند —
-// چون همه دسترسی‌ها از لایه src/lib/db رد می‌شوند، بقیه کد دست نمی‌خورد.
+// PostgreSQL انتخاب شده چون هدف استقرار، سرور واقعی (پارس‌پک یا لیارا) است:
+// SQLite یک فایل روی دیسک است و روی هاست‌هایی که فایل‌سیستمشان با هر استقرار
+// پاک می‌شود داده را از دست می‌دهد، ضمن اینکه چند پروسه هم‌زمان نمی‌توانند
+// همزمان رویش بنویسند.
+//
+// همه دسترسی‌ها از لایه src/lib/db رد می‌شوند، پس تعویض دیتابیس هیچ‌کدام از
+// کامپوننت‌ها را دست نمی‌زند.
 
 generator client {
   provider = "prisma-client-js"
@@ -11,7 +14,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 /// دسته‌بندی محصولات. شناسه‌ها همان CategoryId فعلی کاتالوگ‌اند.
@@ -60,6 +63,7 @@ model Product {
 
   category   Category    @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
+  reviews    Review[]
 
   @@index([categoryId])
   @@index([published, sortIndex])
@@ -99,8 +103,8 @@ model Article {
 }
 
 /// وضعیت سفارش — همان مراحلی که مشتری در صفحه پیگیری می‌بیند.
-/// SQLite در Prisma از enum پشتیبانی نمی‌کند، پس رشته است و مقادیر مجاز در
-/// src/lib/db/orders.ts تعریف و اعتبارسنجی می‌شوند.
+/// عمداً رشته است نه enum: افزودن یک وضعیت جدید نباید مهاجرت دیتابیس لازم
+/// داشته باشد. مقادیر مجاز در src/lib/db/types.ts تعریف و اعتبارسنجی می‌شوند.
 model Order {
   id        Int    @id @default(autoincrement())
   /// کد پیگیری که به مشتری نشان داده می‌شود، مثل NT-2609-48213.
@@ -159,6 +163,28 @@ model OrderItem {
   product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 
   @@index([orderId])
+}
+
+/// دیدگاه‌های کاربران روی محصول.
+/// نظر تازه منتشرنشده ثبت می‌شود تا ادمین قبل از نمایش تأییدش کند.
+model Review {
+  id        Int    @id @default(autoincrement())
+  productId Int
+  user      String
+  rating    Int
+  text      String
+
+  /// خرید تأییدشده — نشان «خریدار واقعی» کنار نظر.
+  verified  Boolean @default(false)
+  helpful   Int     @default(0)
+  published Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, published])
+  @@index([published, createdAt])
 }
 
 /// پیام‌های فرم تماس و درخواست‌های استعلام قیمت.

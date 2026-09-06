@@ -3,10 +3,12 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArticleCard } from "@/components/shared/article-card";
-import { getLatestArticles } from "@/lib/data/articles";
+import { getPublishedArticles } from "@/lib/db/public";
+import { getLatestArticles } from "@/lib/catalog/articles";
 
-export function BlogSection() {
-  const articles = getLatestArticles(3);
+export async function BlogSection() {
+  const all = await getPublishedArticles();
+  const articles = getLatestArticles(all, 3);
 
   return (
     <section className="border-none bg-slate-50 py-16 md:py-24">

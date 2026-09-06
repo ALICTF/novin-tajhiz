@@ -1,16 +1,21 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "shortName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
-    "sortIndex" INTEGER NOT NULL DEFAULT 0
+    "sortIndex" INTEGER NOT NULL DEFAULT 0,
+
+    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "brand" TEXT NOT NULL,
@@ -21,7 +26,7 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL DEFAULT '[]',
     "images" TEXT NOT NULL DEFAULT '[]',
     "tags" TEXT NOT NULL DEFAULT '[]',
-    "rating" REAL NOT NULL DEFAULT 0,
+    "rating" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "reviewsCount" INTEGER NOT NULL DEFAULT 0,
     "sku" TEXT NOT NULL,
     "inStock" BOOLEAN NOT NULL DEFAULT true,
@@ -29,32 +34,39 @@ CREATE TABLE "Product" (
     "isFeatured" BOOLEAN NOT NULL DEFAULT false,
     "sortIndex" INTEGER NOT NULL DEFAULT 0,
     "published" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Article" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "excerpt" TEXT NOT NULL,
-    "body" TEXT NOT NULL DEFAULT '',
-    "cover" TEXT NOT NULL DEFAULT '',
-    "author" TEXT NOT NULL DEFAULT '',
+    "image" TEXT NOT NULL DEFAULT '',
+    "icon" TEXT NOT NULL DEFAULT 'moon',
     "category" TEXT NOT NULL DEFAULT '',
+    "author" TEXT NOT NULL DEFAULT '',
+    "authorRole" TEXT NOT NULL DEFAULT '',
+    "date" TEXT NOT NULL DEFAULT '',
+    "readTime" TEXT NOT NULL DEFAULT '',
     "tags" TEXT NOT NULL DEFAULT '[]',
-    "readingMinutes" INTEGER NOT NULL DEFAULT 5,
+    "body" TEXT NOT NULL DEFAULT '[]',
+    "isFeatured" BOOLEAN NOT NULL DEFAULT false,
     "published" BOOLEAN NOT NULL DEFAULT true,
-    "publishedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "reference" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
@@ -73,13 +85,15 @@ CREATE TABLE "Order" (
     "status" TEXT NOT NULL DEFAULT 'pending',
     "receiptPath" TEXT NOT NULL DEFAULT '',
     "adminNote" TEXT NOT NULL DEFAULT '',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "OrderItem" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "orderId" INTEGER NOT NULL,
     "productId" INTEGER,
     "name" TEXT NOT NULL,
@@ -88,13 +102,28 @@ CREATE TABLE "OrderItem" (
     "image" TEXT NOT NULL DEFAULT '',
     "unitPrice" INTEGER,
     "quantity" INTEGER NOT NULL DEFAULT 1,
-    CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+
+    CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Review" (
+    "id" SERIAL NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "user" TEXT NOT NULL,
+    "rating" INTEGER NOT NULL,
+    "text" TEXT NOT NULL,
+    "verified" BOOLEAN NOT NULL DEFAULT false,
+    "helpful" INTEGER NOT NULL DEFAULT 0,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Message" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" SERIAL NOT NULL,
     "kind" TEXT NOT NULL DEFAULT 'contact',
     "name" TEXT NOT NULL DEFAULT '',
     "phone" TEXT NOT NULL DEFAULT '',
@@ -103,7 +132,9 @@ CREATE TABLE "Message" (
     "body" TEXT NOT NULL DEFAULT '',
     "productId" INTEGER,
     "read" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -134,4 +165,22 @@ CREATE INDEX "Order_createdAt_idx" ON "Order"("createdAt");
 CREATE INDEX "OrderItem_orderId_idx" ON "OrderItem"("orderId");
 
 -- CreateIndex
+CREATE INDEX "Review_productId_published_idx" ON "Review"("productId", "published");
+
+-- CreateIndex
+CREATE INDEX "Review_published_createdAt_idx" ON "Review"("published", "createdAt");
+
+-- CreateIndex
 CREATE INDEX "Message_read_createdAt_idx" ON "Message"("read", "createdAt");
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;

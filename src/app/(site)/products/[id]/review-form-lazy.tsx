@@ -23,6 +23,12 @@ const ReviewForm = dynamic(
   },
 );
 
-export function ReviewFormLazy({ productName }: { productName: string }) {
-  return <ReviewForm productName={productName} />;
+export function ReviewFormLazy({
+  productId,
+  productName,
+}: {
+  productId: number;
+  productName: string;
+}) {
+  return <ReviewForm productId={productId} productName={productName} />;
 }

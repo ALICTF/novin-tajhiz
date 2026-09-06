@@ -18,10 +18,16 @@ import {
 } from "@/components/ui/sheet";
 import { FormField } from "@/components/shared/form-field";
 import { reviewSchema, type ReviewFormValues } from "@/lib/validation";
-import { submitForm } from "@/lib/submit";
+import { submitReviewAction } from "./actions";
 import { cn } from "@/lib/utils";
 
-export function ReviewForm({ productName }: { productName: string }) {
+export function ReviewForm({
+  productId,
+  productName,
+}: {
+  productId: number;
+  productName: string;
+}) {
   const [open, setOpen] = React.useState(false);
 
   const {
@@ -36,7 +42,7 @@ export function ReviewForm({ productName }: { productName: string }) {
   });
 
   const onSubmit = async (values: ReviewFormValues) => {
-    await submitForm("product-review", { productName, ...values });
+    await submitReviewAction(productId, values);
     toast.success("دیدگاه شما ثبت شد", {
       description: "پس از بررسی توسط کارشناسان ما منتشر خواهد شد.",
     });

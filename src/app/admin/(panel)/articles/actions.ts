@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db/client";
 import { requireAdmin } from "@/lib/admin/guard";
+import { revalidateArticles } from "@/lib/db/tags";
 
 export type ArticleFormState = { error?: string };
 
@@ -25,6 +26,7 @@ export async function toggleArticlePublishedAction(formData: FormData) {
   });
 
   revalidatePath("/admin/articles");
+  revalidateArticles();
 }
 
 /**
@@ -68,5 +70,6 @@ export async function saveArticleAction(
   });
 
   revalidatePath("/admin/articles");
+  revalidateArticles();
   redirect(`/admin/articles/${id}?saved=1`);
 }

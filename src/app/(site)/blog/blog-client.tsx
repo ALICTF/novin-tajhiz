@@ -11,33 +11,34 @@ import { ArticleCard } from "@/components/shared/article-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { NewsletterForm } from "@/components/shared/newsletter-form";
+import { articleCategories, type Article } from "@/lib/data/article-meta";
 import {
-  articleCategories,
   getArticleCategoryCounts,
   getFeaturedArticle,
   searchArticles,
-} from "@/lib/data/articles";
+} from "@/lib/catalog/articles";
 import { toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const PER_PAGE = 6;
-const categoryCounts = getArticleCategoryCounts();
 
-export function BlogClient() {
+export function BlogClient({ articles }: { articles: Article[] }) {
+  const categoryCounts = getArticleCategoryCounts(articles);
   const [activeCategory, setActiveCategory] = React.useState<string>("همه مطالب");
   const [query, setQuery] = React.useState("");
   const [page, setPage] = React.useState(1);
 
-  const featured = getFeaturedArticle();
+  const featured = getFeaturedArticle(articles);
 
   const results = React.useMemo(
-    () => searchArticles(query, activeCategory),
-    [query, activeCategory],
+    () => searchArticles(articles, query, activeCategory),
+    [articles, query, activeCategory],
   );
 
   // مقاله شاخص فقط وقتی جدا نمایش داده می‌شود که فیلتری فعال نباشد.
   const noFilters = !query && activeCategory === "همه مطالب";
-  const listed = noFilters ? results.filter((a) => a.id !== featured.id) : results;
+  const listed =
+    noFilters && featured ? results.filter((a) => a.id !== featured.id) : results;
 
   const totalPages = Math.max(1, Math.ceil(listed.length / PER_PAGE));
   const currentPage = Math.min(page, totalPages);
@@ -120,7 +121,7 @@ export function BlogClient() {
 
       <div className="container mx-auto mt-12 max-w-7xl px-4 md:px-6">
         {/* --------------------------- مقاله شاخص --------------------------- */}
-        {noFilters && (
+        {noFilters && featured && (
           <Link href={`/blog/${featured.slug}`} className="group relative mb-16 block">
             <div className="relative aspect-[21/9] w-full overflow-hidden rounded-[40px] shadow-2xl md:aspect-[21/8]">
               <Image

@@ -6,7 +6,7 @@ import { Minus, Phone, Plus, RotateCcw, ShieldCheck, ShoppingCart, Truck } from 
 import { Button } from "@/components/ui/button";
 import { WishlistButton, CompareButton } from "@/components/shared/product-actions";
 import { useCart } from "@/context/cart-context";
-import type { Product } from "@/lib/data/products";
+import type { Product } from "@/lib/data/catalog-meta";
 import { discountPercent, formatPrice, toPersianDigits } from "@/lib/format";
 import { primaryPhone, warrantyStatement } from "@/lib/data/site";
 

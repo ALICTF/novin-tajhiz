@@ -1,9 +1,10 @@
 "use client";
 
+import * as React from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
-import { AlertCircle, Loader2, Save, Trash2 } from "lucide-react";
+import { AlertCircle, Loader2, Save, Trash2, Upload } from "lucide-react";
 import {
   saveProductAction,
   deleteProductAction,
@@ -61,6 +62,98 @@ function Toggle({
       />
       <span className="text-xs font-medium text-slate-700">{label}</span>
     </label>
+  );
+}
+
+/**
+ * فیلد تصاویر با آپلود.
+ *
+ * مسیرها همچنان قابل ویرایش دستی‌اند (برای تصاویری که از قبل در public
+ * هستند)، ولی دکمه آپلود فایل را به سرور می‌فرستد و مسیر برگشتی را به
+ * انتهای همان textarea اضافه می‌کند. عمداً state سنگین ندارد.
+ */
+function ImagesField({ defaultValue }: { defaultValue: string[] }) {
+  const areaRef = React.useRef<HTMLTextAreaElement>(null);
+  const [uploading, setUploading] = React.useState(false);
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
+
+  const onPick = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      for (const file of files) {
+        const body = new FormData();
+        body.append("file", file);
+
+        const response = await fetch("/api/admin/upload", { method: "POST", body });
+        const data = (await response.json()) as { url?: string; error?: string };
+
+        if (!response.ok || !data.url) {
+          setUploadError(data.error ?? "آپلود انجام نشد");
+          break;
+        }
+
+        const area = areaRef.current;
+        if (area) {
+          const current = area.value.trim();
+          area.value = current ? current + "\n" + data.url : data.url;
+        }
+      }
+    } finally {
+      setUploading(false);
+      // ورودی خالی می‌شود تا انتخاب دوباره همان فایل هم رویداد بدهد.
+      event.target.value = "";
+    }
+  };
+
+  return (
+    <section className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-sm font-bold text-slate-900">تصاویر</h3>
+
+        <label className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 text-[11px] font-bold text-slate-700 transition-colors hover:bg-slate-200">
+          {uploading ? (
+            <Loader2 size={14} className="animate-spin" />
+          ) : (
+            <Upload size={14} />
+          )}
+          {uploading ? "در حال آپلود..." : "آپلود تصویر"}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/avif"
+            multiple
+            hidden
+            disabled={uploading}
+            onChange={onPick}
+          />
+        </label>
+      </div>
+
+      {uploadError && (
+        <p role="alert" className="text-[11px] font-medium text-rose-600">
+          {uploadError}
+        </p>
+      )}
+
+      <Field
+        label="مسیر تصاویر"
+        hint="هر خط یک مسیر. با دکمه بالا آپلود کنید یا مسیر فایل موجود را دستی بنویسید."
+      >
+        <textarea
+          ref={areaRef}
+          name="images"
+          rows={3}
+          dir="ltr"
+          defaultValue={defaultValue.join("\n")}
+          placeholder="/images/products/example.jpg"
+          className={`${areaClass} text-left`}
+        />
+      </Field>
+    </section>
   );
 }
 
@@ -161,22 +254,7 @@ export function ProductForm({
               </Field>
             </section>
 
-            <section className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
-              <h3 className="text-sm font-bold text-slate-900">تصاویر</h3>
-              <Field
-                label="مسیر تصاویر"
-                hint="هر خط یک مسیر، مثل ‎/images/products/p1341-1.jpg — فایل باید از قبل در پوشه public باشد."
-              >
-                <textarea
-                  name="images"
-                  rows={3}
-                  dir="ltr"
-                  defaultValue={product?.images.join("\n")}
-                  placeholder="/images/products/example.jpg"
-                  className={`${areaClass} text-left`}
-                />
-              </Field>
-            </section>
+            <ImagesField defaultValue={product?.images ?? []} />
           </div>
 
           {/* ------------------------ ستون کناری ------------------------ */}

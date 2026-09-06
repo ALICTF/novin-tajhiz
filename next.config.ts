@@ -20,6 +20,13 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2678400,
   },
 
+  /*
+    خروجی standalone فقط فایل‌های واقعاً لازم را کنار سرور می‌گذارد و
+    node_modules را ردیابی می‌کند. ایمیج داکر به‌جای چند صد مگابایت، حدود
+    ۱۵۰ مگابایت می‌شود و بالا آمدن کانتینر هم سریع‌تر است.
+  */
+  output: "standalone",
+
   poweredByHeader: false,
 
   // آیکون‌ها از lucide-react به‌صورت تک‌به‌تک import می‌شوند تا کل کتابخانه

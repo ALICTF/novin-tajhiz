@@ -28,23 +28,34 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import {
-  brands,
-  categories,
-  filterProducts,
-  getBrandCounts,
-  getCategoryCounts,
-  priceBounds,
   sortOptions,
+  type Category,
+  type ProductSummary,
   type SortOption,
-} from "@/lib/data/products";
+} from "@/lib/data/catalog-meta";
+import { filterProducts } from "@/lib/catalog/filter";
 import { formatNumber, toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const ITEMS_PER_PAGE = 9;
-const categoryCounts = getCategoryCounts();
-const brandCounts = getBrandCounts();
 
-export function ProductsClient() {
+export type ProductsClientProps = {
+  products: ProductSummary[];
+  categories: Category[];
+  brands: string[];
+  categoryCounts: Record<string, number>;
+  brandCounts: Record<string, number>;
+  priceBounds: { min: number; max: number };
+};
+
+export function ProductsClient({
+  products,
+  categories,
+  brands,
+  categoryCounts,
+  brandCounts,
+  priceBounds,
+}: ProductsClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -112,7 +123,7 @@ export function ProductsClient() {
 
   const filtered = React.useMemo(
     () =>
-      filterProducts({
+      filterProducts(products, {
         query,
         categories: selectedCategories,
         brands: selectedBrands,
@@ -122,7 +133,7 @@ export function ProductsClient() {
         sort,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query, selectedCategories.join(), selectedBrands.join(), minPrice, maxPrice, inStockOnly, sort],
+    [products, query, selectedCategories.join(), selectedBrands.join(), minPrice, maxPrice, inStockOnly, sort],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));

@@ -6,6 +6,14 @@ import { AboutSummary } from "@/components/home/about-summary";
 import { BlogSection } from "@/components/home/blog-section";
 import { contactInfo, phones, siteConfig, socialLinks } from "@/lib/data/site";
 
+/*
+  صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
+  هر ویرایش برچسب را باطل می‌کنند، پس معمولاً همین که ادمین ذخیره کند صفحه
+  تازه می‌شود. این revalidate فقط تور ایمنی است: اگر ایمیج بدون دیتابیس ساخته
+  شده باشد (حالت داکر) صفحه خالی build می‌شود و باید خودش را بسازد.
+*/
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };

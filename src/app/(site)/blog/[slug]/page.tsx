@@ -11,25 +11,33 @@ import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { ArticleCard } from "@/components/shared/article-card";
 import { NewsletterForm } from "@/components/shared/newsletter-form";
+import { getArticleHeadings, getRelatedArticles } from "@/lib/catalog/articles";
 import {
-  articles,
-  getArticle,
-  getArticleHeadings,
-  getRelatedArticles,
-} from "@/lib/data/articles";
+  getArticleBySlug,
+  getArticleSlugs,
+  getPublishedArticles,
+} from "@/lib/db/public";
 import { ShareButtons } from "./share-buttons";
 import { decodeParam } from "@/lib/utils";
 
+/*
+  صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
+  هر ویرایش برچسب را باطل می‌کنند، پس معمولاً همین که ادمین ذخیره کند صفحه
+  تازه می‌شود. این revalidate فقط تور ایمنی است: اگر ایمیج بدون دیتابیس ساخته
+  شده باشد (حالت داکر) صفحه خالی build می‌شود و باید خودش را بسازد.
+*/
+export const revalidate = 3600;
+
 type Params = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+export async function generateStaticParams() {
+  return (await getArticleSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug: rawSlug } = await params;
   const slug = decodeParam(rawSlug);
-  const article = getArticle(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) return { title: "مقاله یافت نشد" };
 
   return {
@@ -52,11 +60,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ArticlePage({ params }: Params) {
   const { slug: rawSlug } = await params;
   const slug = decodeParam(rawSlug);
-  const article = getArticle(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
   const headings = getArticleHeadings(article);
-  const related = getRelatedArticles(article);
+  const related = getRelatedArticles(await getPublishedArticles(), article);
 
   return (
     <article className="min-h-screen bg-slate-50 pt-32 pb-20">

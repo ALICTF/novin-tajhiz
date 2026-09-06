@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db/client";
 import { requireAdmin } from "@/lib/admin/guard";
 import { toLatinDigits } from "@/lib/format";
+import { revalidateProducts } from "@/lib/db/tags";
 
 /**
  * اکشن‌های نوشتن محصول.
@@ -122,6 +123,7 @@ export async function saveProductAction(
 
   revalidatePath("/admin/products");
   revalidatePath("/admin");
+  revalidateProducts();
   redirect(`/admin/products/${productId}?saved=1`);
 }
 
@@ -137,6 +139,7 @@ export async function deleteProductAction(formData: FormData) {
 
   revalidatePath("/admin/products");
   revalidatePath("/admin");
+  revalidateProducts();
   redirect("/admin/products");
 }
 
@@ -159,4 +162,5 @@ export async function toggleProductPublishedAction(formData: FormData) {
   });
 
   revalidatePath("/admin/products");
+  revalidateProducts();
 }

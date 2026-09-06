@@ -11,13 +11,21 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ProductCard } from "@/components/shared/product-card";
 import { ArticleCard } from "@/components/shared/article-card";
-import { filterProducts } from "@/lib/data/products";
-import { searchArticles } from "@/lib/data/articles";
+import { filterProducts } from "@/lib/catalog/filter";
+import { searchArticles } from "@/lib/catalog/articles";
+import type { ProductSummary } from "@/lib/data/catalog-meta";
+import type { Article } from "@/lib/data/article-meta";
 import { toPersianDigits } from "@/lib/format";
 
 const SUGGESTIONS = ["CPAP", "ماسک", "الکترود", "اکسیژن‌ساز", "فیلتر", "آپنه خواب"];
 
-export function SearchClient() {
+export function SearchClient({
+  products,
+  articles,
+}: {
+  products: ProductSummary[];
+  articles: Article[];
+}) {
   const router = useRouter();
   const query = (useSearchParams().get("q") ?? "").trim();
   const [input, setInput] = React.useState(query);
@@ -31,12 +39,12 @@ export function SearchClient() {
   };
 
   const productResults = React.useMemo(
-    () => (query ? filterProducts({ query, sort: "available" }) : []),
-    [query],
+    () => (query ? filterProducts(products, { query, sort: "available" }) : []),
+    [products, query],
   );
   const articleResults = React.useMemo(
-    () => (query ? searchArticles(query) : []),
-    [query],
+    () => (query ? searchArticles(articles, query) : []),
+    [articles, query],
   );
   const total = productResults.length + articleResults.length;
 

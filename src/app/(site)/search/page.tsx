@@ -1,6 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { SearchClient } from "./search-client";
+import { getPublishedArticles, getPublishedProducts } from "@/lib/db/public";
+
+/*
+  صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
+  هر ویرایش برچسب را باطل می‌کنند، پس معمولاً همین که ادمین ذخیره کند صفحه
+  تازه می‌شود. این revalidate فقط تور ایمنی است: اگر ایمیج بدون دیتابیس ساخته
+  شده باشد (حالت داکر) صفحه خالی build می‌شود و باید خودش را بسازد.
+*/
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "جستجو",
@@ -8,7 +17,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function SearchPage() {
+export default async function SearchPage() {
+  const [products, articles] = await Promise.all([
+    getPublishedProducts(),
+    getPublishedArticles(),
+  ]);
+
   return (
     <Suspense
       fallback={
@@ -19,7 +33,7 @@ export default function SearchPage() {
         </div>
       }
     >
-      <SearchClient />
+      <SearchClient products={products} articles={articles} />
     </Suspense>
   );
 }

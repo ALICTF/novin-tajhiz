@@ -1,5 +1,5 @@
 import { PrismaClient } from "../src/generated/prisma";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { categories } from "../src/lib/data/catalog-meta";
 import { products } from "../src/lib/data/products";
 import { articles } from "../src/lib/data/articles";
@@ -15,8 +15,10 @@ import { articles } from "../src/lib/data/articles";
  * نمی‌خورند چون داده واقعی کاربران‌اند.
  */
 
-const url = process.env.DATABASE_URL ?? "file:./prisma/dev.db";
-const prisma = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url }) });
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error("DATABASE_URL تنظیم نشده است.");
+
+const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 
 async function main() {
   console.log("→ دسته‌بندی‌ها");

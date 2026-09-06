@@ -2,11 +2,14 @@ import Link from "next/link";
 import { ArrowLeft, LayoutGrid } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getIcon } from "@/lib/icon-map";
-import { categories, getCategoryCounts } from "@/lib/data/products";
+import { getCategories, getCategoryCounts } from "@/lib/db/public";
 import { toPersianDigits } from "@/lib/format";
 
-export function CategoriesSection() {
-  const counts = getCategoryCounts();
+export async function CategoriesSection() {
+  const [categories, counts] = await Promise.all([
+    getCategories(),
+    getCategoryCounts(),
+  ]);
 
   return (
     <section className="w-full bg-white py-16 md:py-24">

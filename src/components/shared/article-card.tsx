@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Calendar, Clock } from "lucide-react";
-import type { Article } from "@/lib/data/articles";
+import type { Article } from "@/lib/data/article-meta";
 import { cn } from "@/lib/utils";
 
 export function ArticleCard({

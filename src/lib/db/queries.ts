@@ -13,9 +13,13 @@ import {
 /**
  * همه خواندن‌های پنل از اینجا رد می‌شوند.
  *
- * چند فیلد در دیتابیس JSON رشته‌ای‌اند (تصاویر، برچسب‌ها، بدنه مقاله) چون
- * SQLite آرایه ندارد. تبدیل آن‌ها فقط در همین فایل انجام می‌شود تا بقیه کد با
- * آرایه واقعی کار کند و هیچ‌جای دیگری JSON.parse نبیند.
+ * چند فیلد در دیتابیس به‌صورت رشته JSON نگهداری می‌شوند (تصاویر، برچسب‌ها،
+ * بدنه مقاله). تبدیلشان فقط در همین فایل انجام می‌شود تا بقیه کد با آرایه
+ * واقعی کار کند و هیچ‌جای دیگری JSON.parse نبیند.
+ *
+ * نکته: در PostgreSQL عملگر contains حساس به بزرگی و کوچکی حروف است (برخلاف
+ * SQLite). برای همین همه جستجوها mode: "insensitive" دارند، وگرنه جستجوی
+ * «philips» برند «Philips» را پیدا نمی‌کرد.
  */
 
 /** JSON.parse امن — رکورد خراب نباید کل صفحه را بیندازد. */
@@ -80,9 +84,9 @@ export async function listProducts(query: ProductQuery = {}) {
     ...(search
       ? {
           OR: [
-            { name: { contains: search } },
-            { brand: { contains: search } },
-            { sku: { contains: search } },
+            { name: { contains: search, mode: "insensitive" as const } },
+            { brand: { contains: search, mode: "insensitive" as const } },
+            { sku: { contains: search, mode: "insensitive" as const } },
           ],
         }
       : {}),
@@ -136,8 +140,8 @@ export async function listArticles(query: { search?: string } = {}) {
     where: query.search
       ? {
           OR: [
-            { title: { contains: query.search } },
-            { excerpt: { contains: query.search } },
+            { title: { contains: query.search, mode: "insensitive" as const } },
+            { excerpt: { contains: query.search, mode: "insensitive" as const } },
           ],
         }
       : undefined,
@@ -246,9 +250,9 @@ export async function listOrders(query: OrderQuery = {}) {
     ...(search
       ? {
           OR: [
-            { reference: { contains: search } },
-            { firstName: { contains: search } },
-            { lastName: { contains: search } },
+            { reference: { contains: search, mode: "insensitive" as const } },
+            { firstName: { contains: search, mode: "insensitive" as const } },
+            { lastName: { contains: search, mode: "insensitive" as const } },
             { phone: { contains: search } },
           ],
         }
@@ -361,6 +365,25 @@ export async function getDashboardStats() {
   };
 }
 
+/**
+ * روزِ تقویمی یک زمان، به وقت تهران.
+ *
+ * toISOString() تاریخ را به UTC می‌دهد و ایران +۳:۳۰ است؛ یعنی سفارشی که
+ * ساعت ۲ بامداد تهران ثبت شده، در UTC هنوز «دیروز» است. اگر کلیدهای نمودار
+ * را با toISOString بسازیم، ستون‌ها یک روز جابه‌جا می‌شوند و سفارش‌های امروز
+ * در هیچ ستونی نمی‌نشینند.
+ */
+const TEHRAN_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Tehran",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function tehranDay(date: Date): string {
+  return TEHRAN_DAY.format(date);
+}
+
 /** درآمد و تعداد سفارش هر روز در بازه اخیر — برای نمودار داشبورد. */
 export async function getRevenueSeries(days = 14) {
   const start = new Date();
@@ -376,12 +399,11 @@ export async function getRevenueSeries(days = 14) {
   for (let i = 0; i < days; i++) {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
-    buckets.set(d.toISOString().slice(0, 10), { total: 0, count: 0 });
+    buckets.set(tehranDay(d), { total: 0, count: 0 });
   }
 
   for (const row of rows) {
-    const key = row.createdAt.toISOString().slice(0, 10);
-    const bucket = buckets.get(key);
+    const bucket = buckets.get(tehranDay(row.createdAt));
     if (bucket) {
       bucket.total += row.total;
       bucket.count += 1;

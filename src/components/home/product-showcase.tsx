@@ -3,15 +3,17 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/shared/product-card";
-import { getFeaturedProducts, products } from "@/lib/data/products";
+import { getPublishedProducts } from "@/lib/db/public";
+import { getFeaturedProducts } from "@/lib/catalog/filter";
 import { toPersianDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 /** تعداد کارت داخل ریل افقی موبایل؛ بقیه فقط از عرض sm به بعد دیده می‌شوند. */
 const MOBILE_VISIBLE = 6;
 
-export function ProductShowcase() {
-  const featured = getFeaturedProducts(8);
+export async function ProductShowcase() {
+  const products = await getPublishedProducts();
+  const featured = getFeaturedProducts(products, 8);
 
   return (
     <section className="relative flex w-full flex-col items-center overflow-hidden border-t border-white bg-slate-50 py-16 md:py-24">

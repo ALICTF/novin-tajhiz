@@ -13,13 +13,14 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { StarRating } from "@/components/shared/star-rating";
 import { ProductCard } from "@/components/shared/product-card";
 import { getIcon } from "@/lib/icon-map";
+import { getCategory } from "@/lib/data/catalog-meta";
+import { getRelatedProducts } from "@/lib/catalog/filter";
 import {
-  getCategory,
-  getProduct,
-  getRelatedProducts,
-  products,
-} from "@/lib/data/products";
-import { getProductReviews } from "@/lib/data/reviews";
+  getProductBySlug,
+  getProductReviews,
+  getProductSlugs,
+  getPublishedProducts,
+} from "@/lib/db/public";
 import { formatPrice, toPersianDigits } from "@/lib/format";
 import { primaryPhone, siteConfig, warrantyStatement } from "@/lib/data/site";
 import { ProductGallery } from "./product-gallery";
@@ -27,17 +28,25 @@ import { ProductPurchase } from "./product-purchase";
 import { ReviewFormLazy } from "./review-form-lazy";
 import { decodeParam } from "@/lib/utils";
 
+/*
+  صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
+  هر ویرایش برچسب را باطل می‌کنند، پس معمولاً همین که ادمین ذخیره کند صفحه
+  تازه می‌شود. این revalidate فقط تور ایمنی است: اگر ایمیج بدون دیتابیس ساخته
+  شده باشد (حالت داکر) صفحه خالی build می‌شود و باید خودش را بسازد.
+*/
+export const revalidate = 3600;
+
 type Params = { params: Promise<{ id: string }> };
 
 /** همه صفحات محصول در زمان build ساخته می‌شوند. */
-export function generateStaticParams() {
-  return products.map((p) => ({ id: p.slug }));
+export async function generateStaticParams() {
+  return (await getProductSlugs()).map((slug) => ({ id: slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id: rawId } = await params;
   const id = decodeParam(rawId);
-  const product = getProduct(id);
+  const product = await getProductBySlug(id);
   if (!product) return { title: "محصول یافت نشد" };
 
   const description = `${product.shortDescription} — خرید ${product.name} با ${warrantyStatement} از ${siteConfig.name}${
@@ -61,13 +70,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function ProductDetailPage({ params }: Params) {
   const { id: rawId } = await params;
   const id = decodeParam(rawId);
-  const product = getProduct(id);
+  const product = await getProductBySlug(id);
   if (!product) notFound();
 
   const category = getCategory(product.categoryId);
+  const allProducts = await getPublishedProducts();
   const CategoryIcon = getIcon(category?.icon);
-  const related = getRelatedProducts(product);
-  const productReviews = getProductReviews(product.id);
+  const related = getRelatedProducts(allProducts, product);
+  const productReviews = await getProductReviews(product.id);
 
   /** داده ساخت‌یافته محصول برای نتایج جستجوی گوگل. */
   const productJsonLd = {
@@ -375,7 +385,7 @@ export default async function ProductDetailPage({ params }: Params) {
                     اولین نفری باشید که تجربه خود از این محصول را می‌نویسد.
                   </p>
                   <div className="w-full max-w-xs">
-                    <ReviewFormLazy productName={product.name} />
+                    <ReviewFormLazy productId={product.id} productName={product.name} />
                   </div>
                 </div>
               ) : (
@@ -410,7 +420,7 @@ export default async function ProductDetailPage({ params }: Params) {
                       </div>
                     </article>
                   ))}
-                  <ReviewFormLazy productName={product.name} />
+                  <ReviewFormLazy productId={product.id} productName={product.name} />
                 </div>
               )}
             </div>

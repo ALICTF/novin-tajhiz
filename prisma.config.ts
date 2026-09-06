@@ -18,7 +18,7 @@ try {
   // فایل .env وجود ندارد — متغیرها باید از خود محیط بیایند.
 }
 
-const url = process.env.DATABASE_URL ?? "file:./prisma/dev.db";
+const url = process.env.DATABASE_URL ?? "";
 
 export default defineConfig({
   schema: path.join("prisma", "schema.prisma"),

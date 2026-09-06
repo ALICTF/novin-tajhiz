@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { StarRating } from "@/components/shared/star-rating";
 import { AddToCartButton } from "@/components/shared/product-actions";
 import { useCompare } from "@/context/compare-context";
-import { getCategoryName } from "@/lib/data/products";
+import { getCategoryName } from "@/lib/data/catalog-meta";
 import { warrantyStatement } from "@/lib/data/site";
 import { formatPrice } from "@/lib/format";
 

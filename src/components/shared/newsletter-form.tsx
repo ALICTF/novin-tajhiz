@@ -5,7 +5,7 @@ import { Loader2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { submitForm } from "@/lib/submit";
+import { subscribeNewsletterAction } from "@/app/actions/newsletter";
 import { cn } from "@/lib/utils";
 
 /**
@@ -51,7 +51,11 @@ export function NewsletterForm({
     setError(null);
     setSubmitting(true);
     try {
-      await submitForm("newsletter", { email });
+      const result = await subscribeNewsletterAction(email);
+      if (!result.ok) {
+        setError(result.error ?? "ثبت عضویت انجام نشد");
+        return;
+      }
       toast.success("عضویت شما ثبت شد", {
         description: "از این پس جدیدترین مطالب برای شما ارسال می‌شود.",
       });
