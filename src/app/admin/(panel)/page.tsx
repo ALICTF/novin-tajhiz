@@ -19,7 +19,7 @@ import {
   Td,
   Th,
 } from "@/components/admin/ui";
-import { RevenueChart } from "@/components/admin/revenue-chart";
+import { RevenueAreaChart } from "@/components/admin/charts";
 import { formatOrderDate } from "@/lib/admin/format";
 
 export default async function AdminOverviewPage() {
@@ -81,7 +81,7 @@ export default async function AdminOverviewPage() {
             جمع: {formatNumber(series.reduce((s, d) => s + d.total, 0))} تومان
           </span>
         </div>
-        <RevenueChart data={series} />
+        <RevenueAreaChart data={series} />
       </section>
 
       {/* -------------------------- سفارش‌های اخیر -------------------------- */}

@@ -22,18 +22,25 @@ import {
 import { ORDER_STATUS_META } from "@/lib/db/types";
 import { formatNumber, toPersianDigits } from "@/lib/format";
 import { PageHeader, StatCard, TableShell, Td, Th } from "@/components/admin/ui";
-import { RevenueChart } from "@/components/admin/revenue-chart";
-import { BarList, StackedBar } from "@/components/admin/bar-list";
+import {
+  RankedBarChart,
+  RevenueAreaChart,
+  StatusDonut,
+} from "@/components/admin/charts";
 import { cn } from "@/lib/utils";
 
-/** رنگ هر وضعیت در نوار توزیع — هم‌خوان با نشان‌های جدول سفارش‌ها. */
+/**
+ * رنگ هر وضعیت — هم‌خوان با نشان‌های جدول سفارش‌ها.
+ * مقدار خام رنگ است نه کلاس Tailwind، چون Recharts آن را مستقیم روی SVG
+ * می‌گذارد و کلاس CSS به آنجا نمی‌رسد.
+ */
 const STATUS_COLORS: Record<string, string> = {
-  pending: "bg-amber-400",
-  confirmed: "bg-sky-400",
-  processing: "bg-violet-400",
-  shipped: "bg-teal-400",
-  delivered: "bg-emerald-500",
-  cancelled: "bg-rose-400",
+  pending: "#fbbf24",
+  confirmed: "#38bdf8",
+  processing: "#a78bfa",
+  shipped: "#2dd4bf",
+  delivered: "#10b981",
+  cancelled: "#fb7185",
 };
 
 export default async function AdminAnalyticsPage({
@@ -128,7 +135,7 @@ export default async function AdminAnalyticsPage({
             {toPersianDigits(rangeOrders)} سفارش
           </span>
         </div>
-        <RevenueChart data={series} />
+        <RevenueAreaChart data={series} />
       </section>
 
       <div className="mt-6 grid gap-5 lg:grid-cols-2">
@@ -137,11 +144,11 @@ export default async function AdminAnalyticsPage({
           <h3 className="mb-5 text-sm font-bold text-slate-900">
             وضعیت سفارش‌های {range.label} اخیر
           </h3>
-          <StackedBar
-            segments={statuses.map((s) => ({
+          <StatusDonut
+            data={statuses.map((s) => ({
               label: ORDER_STATUS_META[s.status].label,
               value: s.count,
-              className: STATUS_COLORS[s.status] ?? "bg-slate-300",
+              color: STATUS_COLORS[s.status] ?? "#cbd5e1",
             }))}
           />
         </section>
@@ -151,11 +158,11 @@ export default async function AdminAnalyticsPage({
           <h3 className="mb-5 text-sm font-bold text-slate-900">
             فروش بر اساس دسته‌بندی
           </h3>
-          <BarList
-            items={categories.map((c) => ({
+          <RankedBarChart
+            data={categories.map((c) => ({
               label: c.name,
               value: c.revenue,
-              hint: `${toPersianDigits(c.quantity)} عدد`,
+              hint: `${toPersianDigits(c.quantity)} عدد فروخته شده`,
             }))}
             emptyText="در این بازه فروشی ثبت نشده است"
           />
@@ -227,8 +234,8 @@ export default async function AdminAnalyticsPage({
             <MapPin size={15} className="text-slate-400" />
             شهرهای برتر
           </h3>
-          <BarList
-            items={customers.topCities.map((c) => ({
+          <RankedBarChart
+            data={customers.topCities.map((c) => ({
               label: c.name,
               value: c.revenue,
               hint: `${toPersianDigits(c.orders)} سفارش`,
