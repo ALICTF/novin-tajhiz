@@ -1,11 +1,13 @@
 "use server";
 
+import { after } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db/client";
 import { checkoutShippingSchema } from "@/lib/validation";
 import { shippingMethods, FREE_SHIPPING_THRESHOLD } from "@/lib/data/checkout";
 import { generateReference } from "@/lib/submit";
 import { isOwnUploadUrl } from "@/lib/storage";
+import { notifyAdminNewOrder } from "@/lib/sms/notify";
 
 /**
  * ثبت سفارش واقعی.
@@ -124,6 +126,22 @@ export async function placeOrderAction(
 
   revalidatePath("/admin");
   revalidatePath("/admin/orders");
+
+  /*
+    پیامک بعد از ارسال پاسخ به مشتری اجرا می‌شود.
+    اگر اینجا await می‌کردیم، مشتری تا آمدن پاسخ کاوه‌نگار (تا ۸ ثانیه) روی
+    دکمه «ثبت سفارش» منتظر می‌ماند — در حالی که سفارشش همان لحظه ثبت شده.
+    after() تضمین می‌کند کار اجرا شود، ولی خارج از مسیر پاسخ.
+  */
+  after(async () => {
+    await notifyAdminNewOrder({
+      reference: order.reference,
+      customerName: `${form.firstName} ${form.lastName}`.trim(),
+      phone: form.phone,
+      total: subtotal + shippingCost,
+      itemCount: items.reduce((sum, i) => sum + i.quantity, 0),
+    });
+  });
 
   return { ok: true, reference: order.reference };
 }
