@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/data/site";
+import { RouteProgress } from "@/components/shared/route-progress";
 
 const vazir = Vazirmatn({
   subsets: ["arabic", "latin"],
@@ -105,6 +106,9 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${vazir.className} flex min-h-screen flex-col bg-slate-50 antialiased`}
       >
+        {/* نوار پیشرفت ناوبری — در layout ریشه است تا پنل مدیریت را هم بگیرد. */}
+        <RouteProgress />
+
         {children}
       </body>
     </html>

@@ -1,19 +1,19 @@
 /**
- * لودینگ واحد کل سایت.
+ * لودینگ صفحه‌های سایت.
  *
- * مسیرهای محصولات (`/products` و `/products/[id]`) اسکلتون اختصاصی خودشان را
- * دارند و این فایل برای بقیه صفحات استفاده می‌شود.
+ * مسیرهای محصولات اسکلتون اختصاصی خودشان را دارند و این فایل برای بقیه
+ * صفحات است.
  *
- * نکته عملکردی: این کامپوننت عمداً پوشش تمام‌صفحه با backdrop-blur نیست.
- * در App Router محتوای loading جای children داخل <main> می‌نشیند، پس هدر و
- * فوتر سر جایشان می‌مانند و نیازی به لایه شناور روی کل صفحه نیست.
+ * نوار بالای صفحه اینجا نیست: RouteProgress در layout ریشه همان کار را برای
+ * کل سایت انجام می‌دهد و داشتن هر دو یعنی دو نوار روی هم.
+ *
+ * نکته عملکردی: عمداً پوشش تمام‌صفحه با backdrop-blur نیست. در App Router
+ * محتوای loading جای children داخل <main> می‌نشیند، پس هدر و فوتر سر جایشان
+ * می‌مانند.
  */
 export default function Loading() {
   return (
     <>
-      {/* نوار باریک بالای صفحه — انیمیشنش فقط transform است */}
-      <span className="loading-bar" aria-hidden />
-
       <div className="flex min-h-[55vh] w-full flex-col items-center justify-center gap-4 px-4">
         <span
           aria-hidden
