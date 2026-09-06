@@ -1,21 +1,18 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db/client";
 
 /**
- * بررسی سلامت سرویس — برای healthcheck داکر و مانیتورینگ هاست.
- * فقط بالا بودن پروسه کافی نیست؛ اتصال دیتابیس هم بررسی می‌شود، وگرنه
- * کانتینری که دیتابیسش قطع است «سالم» گزارش می‌شد.
+ * بررسی زنده بودن سرویس (liveness).
+ *
+ * عمداً به دیتابیس کاری ندارد. این مسیر همان چیزی است که داکر و لیارا برای
+ * تصمیم به ری‌استارت کانتینر استفاده می‌کنند، و ری‌استارت کردن اپ وقتی
+ * دیتابیس قطع است هیچ چیزی را درست نمی‌کند — فقط حلقه ری‌استارت می‌سازد و
+ * سایت را کاملاً پایین می‌آورد، در حالی که صفحه‌های عمومی می‌توانند با کش
+ * سرپا بمانند.
+ *
+ * برای بررسی وضعیت دیتابیس از /api/health/db استفاده کنید.
  */
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    return NextResponse.json({ status: "ok", database: "up" });
-  } catch {
-    return NextResponse.json(
-      { status: "error", database: "down" },
-      { status: 503 },
-    );
-  }
+  return NextResponse.json({ status: "ok" });
 }

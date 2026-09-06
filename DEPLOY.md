@@ -61,7 +61,8 @@ docker compose up -d --build
 بررسی سلامت:
 
 ```bash
-curl http://localhost:3000/api/health     # {"status":"ok","database":"up"}
+curl http://localhost:3000/api/health      # {"status":"ok"}  ← زنده بودن سرویس
+curl http://localhost:3000/api/health/db   # {"status":"ok","database":"up"}
 docker compose logs -f app
 ```
 
@@ -166,17 +167,34 @@ docker run --rm -v novin-tajhiz-main_uploads:/data   -v "$(pwd)/backups/uploads:
 متغیرهای محیطی در پنل لیارا:
 
 ```
-DATABASE_URL=postgresql://...   # از سرویس دیتابیس لیارا
+DATABASE_URL=postgresql://...          # از سرویس دیتابیس لیارا
+NEXT_PUBLIC_SITE_URL=https://<app>.liara.run
 ADMIN_PASSWORD=...
 ADMIN_SESSION_SECRET=...
 UPLOAD_DIR=/app/uploads
+TZ=Asia/Tehran
 ```
+
+> `NEXT_PUBLIC_SITE_URL` را تا قبل از اتصال دامنه روی زیردامنه لیارا بگذارید و
+> بعد از اتصال دامنه عوضش کنید. فید ترب و sitemap از همین می‌خوانند.
 
 سپس:
 
 ```bash
 liara deploy
 ```
+
+### دو بررسی سلامت
+
+| مسیر | چه چیزی را چک می‌کند | مصرف‌کننده |
+|---|---|---|
+| `/api/health` | فقط زنده بودن پروسه | داکر و لیارا (مبنای ری‌استارت) |
+| `/api/health/db` | اتصال دیتابیس | مانیتورینگ و بررسی دستی |
+
+این جدایی عمدی است. اگر بررسی سلامتِ لیارا دیتابیس را چک می‌کرد، با هر قطعی
+دیتابیس کانتینر ناسالم علامت می‌خورد و ری‌استارت می‌شد — در حالی که ری‌استارت
+کردن اپ دیتابیس را درست نمی‌کند و فقط سایت را کاملاً پایین می‌آورد. با این
+تقسیم، صفحه‌های عمومی با کش سرپا می‌مانند تا دیتابیس برگردد.
 
 ### چه وقت به فضای ابری (S3) نیاز پیدا می‌کنید؟
 
