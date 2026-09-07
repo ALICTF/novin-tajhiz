@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft, CheckCircle2, Layers, MessageCircle, Package,
-  Phone, ShieldCheck, Tag, ThumbsUp, User, XCircle,
+  ArrowLeft, BookOpen, CheckCircle2, Layers, MessageCircle, Package,
+  Phone, RotateCcw, ShieldCheck, Tag, ThumbsUp, User, XCircle,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,10 +20,12 @@ import { ProductCard } from "@/components/shared/product-card";
 import { getIcon } from "@/lib/icon-map";
 import { getCategory } from "@/lib/data/catalog-meta";
 import { getRelatedProducts } from "@/lib/catalog/filter";
+import { articlesForProduct } from "@/lib/catalog/cross-links";
 import {
   getProductBySlug,
   getProductReviews,
   getProductSlugs,
+  getPublishedArticles,
   getPublishedProducts,
 } from "@/lib/db/public";
 import { formatPrice, toPersianDigits } from "@/lib/format";
@@ -82,7 +84,11 @@ export default async function ProductDetailPage({ params }: Params) {
   const allProducts = await getPublishedProducts();
   const CategoryIcon = getIcon(category?.icon);
   const related = getRelatedProducts(allProducts, product);
-  const productReviews = await getProductReviews(product.id);
+  const [productReviews, allArticles] = await Promise.all([
+    getProductReviews(product.id),
+    getPublishedArticles(),
+  ]);
+  const guides = articlesForProduct(product, allArticles);
 
   /** داده ساخت‌یافته محصول برای نتایج جستجوی گوگل. */
   const productJsonLd = {
@@ -196,6 +202,53 @@ export default async function ProductDetailPage({ params }: Params) {
             </div>
 
             <ProductPurchase product={product} />
+
+            {/*
+              رفع نگرانی، دقیقاً کنار دکمه خرید.
+
+              بیشترین ریزش در فروشگاه تجهیزات پزشکی سرِ همین سه پرسش است:
+              «اصل است؟»، «اگر نخورد چه؟»، «مطمئن نیستم کدام را بخواهم».
+              این سه جمله عمداً پایین صفحه یا در تب جدا نیستند — لحظه‌ای که
+              کاربر مردد می‌شود همین‌جاست، و اگر جواب را نبیند، برای پیدا
+              کردنش از سایت بیرون می‌رود.
+            */}
+            <ul className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-5">
+              <li className="flex items-start gap-3 text-sm leading-relaxed text-slate-600">
+                <ShieldCheck size={17} className="mt-0.5 shrink-0 text-emerald-600" />
+                <span>
+                  <strong className="text-slate-900">{warrantyStatement}</strong> —
+                  قطعات اورجینال با ضمانت اصالت.
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-sm leading-relaxed text-slate-600">
+                <RotateCcw size={17} className="mt-0.5 shrink-0 text-emerald-600" />
+                <span>
+                  اگر قطعه با دستگاه شما سازگار نبود، طبق{" "}
+                  <Link
+                    href="/terms"
+                    className="font-bold text-primary hover:underline"
+                  >
+                    شرایط بازگشت کالا
+                  </Link>{" "}
+                  تعویض یا مرجوع می‌شود.
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-sm leading-relaxed text-slate-600">
+                <Phone size={17} className="mt-0.5 shrink-0 text-emerald-600" />
+                <span>
+                  مطمئن نیستید همین قطعه را می‌خواهید؟ مدل دستگاهتان را به{" "}
+                  <a
+                    href={`tel:${primaryPhone.tel}`}
+                    className="font-bold text-primary hover:underline"
+                  >
+                    <span className="dir-ltr tabular-nums">
+                      {primaryPhone.number}
+                    </span>
+                  </a>{" "}
+                  بگویید تا کارشناس بررسی کند — مشاوره رایگان است.
+                </span>
+              </li>
+            </ul>
 
             {/* اطلاعات کلیدی */}
             <div className="grid grid-cols-2 gap-4">
@@ -453,6 +506,46 @@ export default async function ProductDetailPage({ params }: Params) {
                 <ProductCard key={item.id} product={item} />
               ))}
             </div>
+          </section>
+        )}
+
+        {/*
+          راهنمای مطالعه.
+
+          بازدیدکننده‌ای که مطمئن نیست این قطعه به کارش می‌آید، تا قبل از این
+          هیچ مسیری جز برگشتن به گوگل نداشت — صفحه محصول صفر لینک به مقالات
+          داشت. این بخش همان پرسش را داخل سایت نگه می‌دارد.
+        */}
+        {guides.length > 0 && (
+          <section className="mt-20 rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
+            <h2 className="mb-1.5 flex items-center gap-2 text-lg font-black text-slate-900">
+              <BookOpen size={18} className="text-primary" />
+              پیش از خرید بخوانید
+            </h2>
+            <p className="mb-6 text-sm text-slate-500">
+              راهنماهایی که به انتخاب درست همین دسته کمک می‌کنند.
+            </p>
+
+            <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              {guides.map((g) => (
+                <li key={g.id}>
+                  <Link
+                    href={`/blog/${g.slug}`}
+                    className="group flex h-full flex-col gap-1.5 rounded-2xl border border-slate-200 p-5 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+                  >
+                    <span className="text-xs font-bold text-primary">
+                      {g.category}
+                    </span>
+                    <span className="font-bold text-slate-900 transition-colors group-hover:text-primary">
+                      {g.title}
+                    </span>
+                    <span className="line-clamp-2 text-sm leading-relaxed text-slate-500">
+                      {g.excerpt}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
       </div>

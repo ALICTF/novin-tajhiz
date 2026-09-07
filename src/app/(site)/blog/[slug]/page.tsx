@@ -16,7 +16,10 @@ import {
   getArticleBySlug,
   getArticleSlugs,
   getPublishedArticles,
+  getPublishedProducts,
 } from "@/lib/db/public";
+import { productsForArticle } from "@/lib/catalog/cross-links";
+import { ProductCard } from "@/components/shared/product-card";
 import { ShareButtons } from "./share-buttons";
 import { articleJsonLd, breadcrumbJsonLd, JsonLd } from "@/lib/seo/json-ld";
 import { decodeParam } from "@/lib/utils";
@@ -64,8 +67,15 @@ export default async function ArticlePage({ params }: Params) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
+  const [allArticles, allProducts] = await Promise.all([
+    getPublishedArticles(),
+    getPublishedProducts(),
+  ]);
+
   const headings = getArticleHeadings(article);
-  const related = getRelatedArticles(await getPublishedArticles(), article);
+  const related = getRelatedArticles(allArticles, article);
+  // محصولاتی که موضوع همین مقاله‌اند — تنها مسیر خواننده از مقاله به فروشگاه.
+  const suggested = productsForArticle(article, allProducts);
 
   const crumbs = [
     { label: "وبلاگ", href: "/blog" },
@@ -268,6 +278,41 @@ export default async function ArticlePage({ params }: Params) {
             )}
           </aside>
         </div>
+
+        {/*
+          محصولات مرتبط با همین مقاله.
+
+          عمداً *قبل* از «مطالب مرتبط» است. خواننده‌ای که تازه مقاله را تمام
+          کرده، در اوج آمادگی برای قدم بعدی است؛ اگر اول سه مقاله دیگر
+          ببیند، احتمال رسیدنش به فروشگاه کم می‌شود.
+        */}
+        {suggested.length > 0 && (
+          <section className="mt-20 rounded-3xl border border-slate-200 bg-white p-6 md:p-10">
+            <div className="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <h2 className="mb-1.5 text-xl font-black text-slate-900 md:text-2xl">
+                  تجهیزات مرتبط با این مقاله
+                </h2>
+                <p className="text-sm text-slate-500">
+                  اقلامی که در همین حوزه تأمین می‌کنیم — همه موجود و با ضمانت
+                  اصالت.
+                </p>
+              </div>
+              <Link
+                href="/products"
+                className="flex shrink-0 items-center gap-1 text-sm font-bold text-primary transition-all hover:gap-2"
+              >
+                همه محصولات <ArrowLeft size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {suggested.map((item) => (
+                <ProductCard key={item.id} product={item} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* --------------------------- مقالات مرتبط --------------------------- */}
         {related.length > 0 && (
