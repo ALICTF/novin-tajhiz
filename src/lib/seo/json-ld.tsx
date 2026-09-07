@@ -174,3 +174,52 @@ export function clampDescription(text: string, max = 158): string {
   const lastSpace = cut.lastIndexOf(" ");
   return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
 }
+
+/* ------------------------- هویت مؤسس و مجموعه ------------------------- */
+
+/**
+ * مؤسس مجموعه به‌عنوان یک «موجودیت» مستقل.
+ *
+ * چرا جدا از Organization؟
+ *
+ * موتورهای پاسخ‌محور (ChatGPT Search، Perplexity، AI Overviews گوگل) برای
+ * جواب دادن به «نوین تجهیز کیست» یا «مدیر نوین تجهیز کیست» به موجودیت
+ * ساخت‌یافته تکیه می‌کنند نه به پاراگراف‌های پراکنده. تا قبل از این، نام
+ * مؤسس فقط متن ساده داخل HTML بود و هیچ‌جا گفته نشده بود که این رشته یک
+ * *شخص* است، چه تخصصی دارد و چه نسبتی با مجموعه.
+ *
+ * `@id` پایدار است تا هر جای سایت که به این شخص اشاره می‌شود، به همین
+ * موجودیت وصل شود و موتور دو نفر جدا نبیند.
+ */
+export function founderJsonLd(founder: {
+  name: string;
+  role: string;
+  photo: string;
+  intro: string;
+  clinicalSince: number;
+  credentials: readonly { title: string; subtitle: string }[];
+  expertise: readonly string[];
+  affiliations: readonly string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${siteConfig.url}/#founder`,
+    name: founder.name,
+    jobTitle: founder.role,
+    description: founder.intro,
+    image: abs(founder.photo),
+    knowsAbout: [...founder.expertise],
+    knowsLanguage: ["fa-IR", "en"],
+    worksFor: { "@id": ORG_ID },
+    affiliation: founder.affiliations.map((name) => ({
+      "@type": "Organization",
+      name,
+    })),
+    hasCredential: founder.credentials.map((c) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: c.title,
+      description: c.subtitle,
+    })),
+  };
+}

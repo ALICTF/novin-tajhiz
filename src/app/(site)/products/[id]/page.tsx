@@ -91,24 +91,67 @@ export default async function ProductDetailPage({ params }: Params) {
   const guides = articlesForProduct(product, allArticles);
 
   /** داده ساخت‌یافته محصول برای نتایج جستجوی گوگل. */
+  /*
+    امتیاز فقط وقتی اعلام می‌شود که دیدگاه تأییدشده واقعی وجود داشته باشد.
+
+    اضافه کردن aggregateRating ساختگی وسوسه‌انگیز است چون ستاره در نتایج
+    گوگل نشان می‌دهد، ولی جعل داده ساخت‌یافته جریمه دستی دارد و موتورهای
+    پاسخ‌محور هم اعتمادشان را به کل دامنه از دست می‌دهند. کاتالوگ فعلی
+    rating صفر دارد، پس این بخش برای بیشتر محصولات اصلاً ساخته نمی‌شود.
+  */
+  const ratingBlock =
+    productReviews.length > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: (
+              productReviews.reduce((sum, r) => sum + r.rating, 0) /
+              productReviews.length
+            ).toFixed(1),
+            reviewCount: productReviews.length,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {};
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
+    "@id": `${siteConfig.url}/products/${product.slug}#product`,
     name: product.name,
     description: product.shortDescription,
     sku: product.sku,
-    image: [`${siteConfig.url}${product.images[0]}`],
+    mpn: product.sku,
+    image: product.images.map((img) => `${siteConfig.url}${img}`),
     brand: { "@type": "Brand", name: product.brand },
     category: category?.name,
+    inLanguage: "fa-IR",
+    ...ratingBlock,
     offers: {
       "@type": "Offer",
       url: `${siteConfig.url}/products/${product.slug}`,
       priceCurrency: "IRR",
+      // قیمت‌های سایت به تومان است و schema.org واحد رسمی ایران را ریال می‌شناسد.
       ...(product.price ? { price: product.price * 10 } : {}),
+      itemCondition: "https://schema.org/NewCondition",
       availability: product.inStock
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
-      seller: { "@type": "Organization", name: siteConfig.name },
+      seller: { "@id": `${siteConfig.url}/#organization` },
+      areaServed: { "@type": "Country", name: "ایران" },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "IR",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 7,
+        returnMethod: "https://schema.org/ReturnByMail",
+        // طبق بند «بازگشت کالا» در /terms، هزینه ارسال مرجوعی — وقتی ایراد
+        // از کالا نباشد — بر عهده خریدار است. اعلام FreeReturn اینجا خلاف
+        // قوانین خودِ سایت می‌شد.
+        returnFees: "https://schema.org/ReturnShippingFees",
+      },
     },
   };
 

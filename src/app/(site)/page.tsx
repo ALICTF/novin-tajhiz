@@ -6,7 +6,8 @@ import { BrandsSection } from "@/components/home/brands-section";
 import { ProductShowcase } from "@/components/home/product-showcase";
 import { AboutSummary } from "@/components/home/about-summary";
 import { BlogSection } from "@/components/home/blog-section";
-import { contactInfo, phones, siteConfig, socialLinks } from "@/lib/data/site";
+import { contactInfo, founder, phones, siteConfig, socialLinks } from "@/lib/data/site";
+import { founderJsonLd, JsonLd } from "@/lib/seo/json-ld";
 
 /*
   صفحه از دیتابیس می‌خواند. کوئری‌ها با برچسب کش شده‌اند و اکشن‌های پنل بعد از
@@ -60,6 +61,20 @@ const businessJsonLd = {
     "تعمیر و سرویس تجهیزات پزشکی",
   ],
   sameAs: socialLinks.map((s) => s.href),
+  /*
+    اشاره به موجودیت مؤسس، نه تکرار نامش به‌صورت متن.
+    موتورهای پاسخ‌محور با همین ارجاع، «مدیر نوین تجهیز کیست» را جواب می‌دهند.
+  */
+  founder: { "@id": `${siteConfig.url}/#founder` },
+  foundingLocation: {
+    "@type": "Place",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: contactInfo.city,
+      addressRegion: contactInfo.province,
+      addressCountry: "IR",
+    },
+  },
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -106,6 +121,8 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
+
+      <JsonLd data={founderJsonLd(founder)} />
 
       <HeroSection />
       <BusinessIntro />
