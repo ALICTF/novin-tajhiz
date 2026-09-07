@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# نوین تجهیز
 
-## Getting Started
+فروشگاه اینترنتی تجهیزات و قطعات یدکی پلی‌سومنوگرافی (تست خواب)، الکترود
+نوار مغز و دستگاه‌های کمک تنفسی CPAP و BiPAP.
 
-First, run the development server:
+راهنمای کامل استقرار روی لیارا و پارس‌پک در [DEPLOY.md](DEPLOY.md) است.
+
+## استک
+
+| لایه | انتخاب |
+|---|---|
+| فریم‌ورک | Next.js 15 (App Router) + React 19 + TypeScript |
+| ظاهر | Tailwind CSS v4 + shadcn/ui |
+| دیتابیس | PostgreSQL 17 + Prisma 7 |
+| نمودارها | Recharts (فقط در مسیرهای `/admin`) |
+| استقرار | Docker، خروجی `standalone` |
+
+## اجرای محلی
+
+نیاز به Node 22 و یک PostgreSQL در دسترس دارید.
+
+```bash
+cp .env.example .env
+```
+
+مقدارهای `DATABASE_URL`، `ADMIN_PASSWORD` و `ADMIN_SESSION_SECRET` را پر
+کنید، سپس:
+
+```bash
+npm install
+```
+
+```bash
+npx prisma migrate deploy && npm run db:seed
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+سایت روی `http://localhost:3000` و پنل مدیریت روی `/admin` بالا می‌آید.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+اگر داکر دارید، دیتابیس را می‌توانید با یک دستور بگیرید:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker compose up -d db
+```
 
-## Learn More
+## ساختار
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/(site)/      صفحه‌های عمومی — دارای هدر، فوتر و کانتکست‌های سبد خرید
+src/app/admin/       پنل مدیریت — (panel) پشت نگهبان، login بیرون از آن
+src/app/api/         بررسی سلامت، آپلود فیش، فید ترب
+src/lib/db/          دسترسی به دیتابیس؛ خواندن‌های عمومی همه کش‌شده‌اند
+src/lib/seo/         سازنده‌های داده ساخت‌یافته (JSON-LD)
+src/lib/data/        داده ثابت: مشخصات مجموعه، کاتالوگ اولیه، مقالات
+prisma/              اسکیما، مهاجرت‌ها و اسکریپت داده اولیه
+docker/              entrypoint کانتینر و اسکریپت‌های پشتیبان‌گیری
+scripts/             ابزارهای یک‌بارمصرف پردازش تصویر
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## چند تصمیم که ممکن است غیرمنتظره به‌نظر برسند
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**داده ثابت در کنار دیتابیس.** فایل‌های `src/lib/data` منبع اولیه‌اند و
+`prisma/seed.ts` یک‌بار آن‌ها را وارد دیتابیس می‌کند. بعد از آن پنل مدیریت
+مرجع تغییرات است. seed تکرارپذیر است و سفارش‌ها و پیام‌ها را دست نمی‌زند.
 
-## Deploy on Vercel
+**دو بررسی سلامت جدا.** `/api/health` فقط زنده بودن پروسه را می‌گوید و
+عمداً به دیتابیس کاری ندارد، چون مبنای ری‌استارت کانتینر است؛ ری‌استارت
+کردن اپ وقتی دیتابیس قطع است چیزی را درست نمی‌کند. `/api/health/db` برای
+پایش دستی است.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**تحمل قطعی دیتابیس.** خواندن‌های عمومی داخل `safeQuery` هستند و در صورت
+خطا مقدار خالی برمی‌گردانند، پس سایت با کش سرپا می‌ماند. توجه: اگر
+دیتابیس دقیقاً وقتی قطع باشد که ISR در حال بازتولید صفحه است، نسخه خالی
+در کش می‌نشیند تا بازتولید موفق بعدی.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**نمودارها فقط در پنل.** Recharts حدود ۱۰۰ کیلوبایت است و عمداً هیچ‌جای
+سایت عمومی import نمی‌شود تا به باندل مشترک اضافه نشود.
+
+## دستورهای مفید
+
+```bash
+npm run lint && npx tsc --noEmit && npm run build
+```
+
+```bash
+npm run db:studio
+```

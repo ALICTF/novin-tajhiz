@@ -55,8 +55,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // پنل و مسیرهای شخصی هرگز نباید در نتایج جستجو یا کش میانی بمانند.
-        source: "/:path(admin|orders|track)/:rest*",
+        /*
+          پنل و مسیرهای شخصی هرگز نباید در نتایج جستجو یا کش میانی بمانند.
+
+          `track` عمداً از این فهرست بیرون است. آن صفحه یک فرم عمومی است که
+          راهنمای «کد پیگیری کجاست» و شرح وضعیت‌های سفارش را دارد، در
+          sitemap آمده و تگ canonical می‌گیرد؛ اگر همین‌جا noindex هم
+          می‌گرفت، دو سیگنال متناقض به گوگل می‌رفت. داده شخصی روی
+          `/orders/*` نمایش داده می‌شود که همچنان noindex است.
+        */
+        source: "/:path(admin|orders)/:rest*",
         headers: [
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
           { key: "Cache-Control", value: "private, no-store" },
