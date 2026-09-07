@@ -35,7 +35,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 40000000,
     images: [
-      "/images/products/p1341-1-1342.jpg",
+      "/images/products/p1341-1-1342.webp",
     ],
     shortDescription: "ال سی دی دستگاه اتوسیپپ لوون اشتاین تاچ",
     description: [
@@ -59,7 +59,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 50000000,
     images: [
-      "/images/products/p1339-1-1340.jpg",
+      "/images/products/p1339-1-1340.webp",
     ],
     shortDescription: "موتور دستگاه اتو سیپپ لوون اشتاین میکرونلموتور دستگاه اتو سیپپ لوون اشتاین میکرونل",
     description: [
@@ -83,7 +83,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 15000000,
     images: [
-      "/images/products/p1337-1-1338.jpg",
+      "/images/products/p1337-1-1338.webp",
     ],
     shortDescription: "مخزن آب دستگاه اتوسیپپ لوون اشتاین",
     description: [
@@ -114,8 +114,8 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 27000000,
     images: [
-      "/images/products/p1334-1-1335.jpg",
-      "/images/products/p1334-2-1336.jpg",
+      "/images/products/p1334-1-1335.webp",
+      "/images/products/p1334-2-1336.webp",
     ],
     shortDescription: "آداپتور دستگاه اتوسیپپ لوون اشتاین",
     description: [
@@ -139,7 +139,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 60000,
     images: [
-      "/images/products/p1332-1-1331.jpg",
+      "/images/products/p1332-1-1331.webp",
     ],
     shortDescription: "نازال کانولا تست خواب کوتاه سرپیچی مخصوص تست خواب منزل و کپنوگرافی",
     description: [
@@ -162,7 +162,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 80000,
     images: [
-      "/images/products/p1330-1-1331.jpg",
+      "/images/products/p1330-1-1331.webp",
     ],
     shortDescription: "نازال کانولا تست خواب بزرگسال",
     description: [
@@ -185,7 +185,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 35000000,
     images: [
-      "/images/products/p1328-1-1329.jpeg",
+      "/images/products/p1328-1-1329.webp",
     ],
     shortDescription: "مادربورد auto cpap resmed airsense 10",
     description: [
@@ -212,8 +212,8 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1500000,
     images: [
-      "/images/products/p1325-1-1326.jpg",
-      "/images/products/p1325-2-1327.jpg",
+      "/images/products/p1325-1-1326.webp",
+      "/images/products/p1325-2-1327.webp",
     ],
     shortDescription: "سیم رابط CES",
     description: [
@@ -236,7 +236,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 3500000,
     images: [
-      "/images/products/p1323-1-1324.jpg",
+      "/images/products/p1323-1-1324.webp",
     ],
     shortDescription: "گیره گوش CES به همراه سیم",
     description: [
@@ -258,7 +258,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 3500000,
     images: [
-      "/images/products/p1321-1-1322.jpg",
+      "/images/products/p1321-1-1322.webp",
     ],
     shortDescription: "گیره گوش کربنی CES به همراه سیم",
     description: [
@@ -281,7 +281,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1000000,
     images: [
-      "/images/products/p1319-1-1320.jpg",
+      "/images/products/p1319-1-1320.webp",
     ],
     shortDescription: "پد فیزیوتراپی ۹ * ۶",
     description: [
@@ -305,7 +305,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 2000000,
     images: [
-      "/images/products/p1314-1-1317.jpg",
+      "/images/products/p1314-1-1317.webp",
     ],
     shortDescription: "یک جفت تحریکی",
     description: [
@@ -327,7 +327,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 36000000,
     images: [
-      "/images/products/p1306-1-1307.jpg",
+      "/images/products/p1306-1-1307.webp",
     ],
     shortDescription: "برند کامپیومدیکس ساخت محصول مشترک آمریکا و استرالیا",
     description: [
@@ -350,7 +350,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 1000000,
     images: [
-      "/images/products/p1304-1-1305.jpg",
+      "/images/products/p1304-1-1305.webp",
     ],
     shortDescription: "ابریشمی نخ دار",
     description: [
@@ -373,8 +373,8 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 500000,
     images: [
-      "/images/products/p1301-1-1302.jpg",
-      "/images/products/p1301-2-1303.jpg",
+      "/images/products/p1301-1-1302.webp",
+      "/images/products/p1301-2-1303.webp",
     ],
     shortDescription: "هولدر + اورینگ",
     description: [
@@ -396,7 +396,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1000000,
     images: [
-      "/images/products/p1299-1-1300.jpg",
+      "/images/products/p1299-1-1300.webp",
     ],
     shortDescription: "دیسک الکترود کلاه نوار مغز سینترد",
     description: [
@@ -418,7 +418,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 8000000,
     images: [
-      "/images/products/p1294-1-1295.jpeg",
+      "/images/products/p1294-1-1295.webp",
     ],
     shortDescription: "خرطومی دستگاه Cpap ساخت آلمان برند فیلیپس خرطومی دستگاه Cpap",
     description: [
@@ -439,7 +439,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 18000000,
     images: [
-      "/images/products/p1286-1-1287.jpeg",
+      "/images/products/p1286-1-1287.webp",
     ],
     shortDescription: "درجه یک گلد",
     description: [
@@ -466,7 +466,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 18000000,
     images: [
-      "/images/products/p1283-1-1284.jpeg",
+      "/images/products/p1283-1-1284.webp",
     ],
     shortDescription: "پراب پالس اکسیمتر Nonin",
     description: [
@@ -490,7 +490,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 1900000,
     images: [
-      "/images/products/p1281-1-1282.jpg",
+      "/images/products/p1281-1-1282.webp",
     ],
     shortDescription: "Skin Prep Gel 114 mil",
     description: [
@@ -513,8 +513,8 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 2000000,
     images: [
-      "/images/products/p1278-1-1073.png",
-      "/images/products/p1278-2-1074.png",
+      "/images/products/p1278-1-1073.webp",
+      "/images/products/p1278-2-1074.webp",
     ],
     shortDescription: "چست لید دورمو",
     description: [
@@ -557,7 +557,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 1500000,
     images: [
-      "/images/products/p1274-1-1277.jpg",
+      "/images/products/p1274-1-1277.webp",
     ],
     shortDescription: "چست لید SKINTACT مدل F-55 بسته 30 تایی، محصولی با کیفیت از کشور اتریش برای اتصال سیم مانیتورینگ قلب به قفسه سینه است.",
     description: [
@@ -608,8 +608,8 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 4000000,
     images: [
-      "/images/products/p1257-1-1258.jpeg",
-      "/images/products/p1257-2-1258.jpeg",
+      "/images/products/p1257-1-1258.webp",
+      "/images/products/p1257-2-1258.webp",
     ],
     shortDescription: "الکترود رفرنس گوش گیره ای گلد",
     description: [
@@ -652,7 +652,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 2000000,
     images: [
-      "/images/products/p1205-1-1206.jpeg",
+      "/images/products/p1205-1-1206.webp",
     ],
     shortDescription: "الکترود گیره گوش",
     description: [
@@ -673,7 +673,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1000000,
     images: [
-      "/images/products/p1185-1-1189.jpeg",
+      "/images/products/p1185-1-1189.webp",
     ],
     shortDescription: "ساخت ایتالیا کارکرده سیمی مخصوص دستگاه های نوار مغز نوع بریج",
     description: [
@@ -697,8 +697,8 @@ export const products: Product[] = [
     categoryId: "health-care",
     price: 1000000,
     images: [
-      "/images/products/p1180-1-1247.jpg",
-      "/images/products/p1180-2-1247.jpg",
+      "/images/products/p1180-1-1247.webp",
+      "/images/products/p1180-2-1247.webp",
     ],
     shortDescription: "رابط تنس عضلانی مدل گیره گوش مناسب بیوفیدبک و نوروفیدبک &#8211; تحریکی",
     description: [
@@ -721,7 +721,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 5000000,
     images: [
-      "/images/products/p1164-1-1165.jpeg",
+      "/images/products/p1164-1-1165.webp",
     ],
     shortDescription: "Snap electrods respironics 76 cm",
     description: [
@@ -745,8 +745,8 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1900000,
     images: [
-      "/images/products/p1154-1-1157.jpeg",
-      "/images/products/p1154-2-1158.jpeg",
+      "/images/products/p1154-1-1157.webp",
+      "/images/products/p1154-2-1158.webp",
     ],
     shortDescription: "الکتروژل نوار مغز مخصوص EEG EEG CAP",
     description: [
@@ -769,7 +769,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 300000,
     images: [
-      "/images/products/p1152-1-1153.jpg",
+      "/images/products/p1152-1-1153.webp",
     ],
     shortDescription: "گاپ الکترود گلد نوار مغز",
     description: [
@@ -792,9 +792,9 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 2500000,
     images: [
-      "/images/products/p1146-1-1147.jpeg",
-      "/images/products/p1146-2-1148.jpeg",
-      "/images/products/p1146-3-1149.jpeg",
+      "/images/products/p1146-1-1147.webp",
+      "/images/products/p1146-2-1148.webp",
+      "/images/products/p1146-3-1149.webp",
     ],
     shortDescription: "الکتزود نوار مغز ساخت ایتالیا Spes Medica 1/5 m",
     description: [
@@ -819,7 +819,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: null,
     images: [
-      "/images/products/p1142-1-1143.jpeg",
+      "/images/products/p1142-1-1143.webp",
     ],
     shortDescription: "ventmed eeg probe",
     description: [
@@ -844,7 +844,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: null,
     images: [
-      "/images/products/p1140-1-1141.jpeg",
+      "/images/products/p1140-1-1141.webp",
     ],
     shortDescription: "سرنگ EEG CAP QEEG 10cc",
     description: [
@@ -870,7 +870,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: null,
     images: [
-      "/images/products/p1137-1-1138.jpeg",
+      "/images/products/p1137-1-1138.webp",
     ],
     shortDescription: "EEG ADAPTER 23 CH",
     description: [
@@ -896,7 +896,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 3000000,
     images: [
-      "/images/products/p1135-1-1297.jpg",
+      "/images/products/p1135-1-1297.webp",
     ],
     shortDescription: "Quik-Insert, Cap Electrode, 1.5m lead, Sintered, each ساخت آمریکا سایز حدود 1/5 متر سیم نخ دار",
     description: [
@@ -921,7 +921,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 2000000,
     images: [
-      "/images/products/p1132-1-1133.jpeg",
+      "/images/products/p1132-1-1133.webp",
     ],
     shortDescription: "ژل نوار مغز ایرانی ۲۵۰ گرمی",
     description: [
@@ -944,7 +944,7 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: null,
     images: [
-      "/images/products/p1130-1-1131.jpeg",
+      "/images/products/p1130-1-1131.webp",
     ],
     shortDescription: "دستبند نوار قلب ECG ست ۴ عددی",
     description: [
@@ -970,7 +970,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 2000000,
     images: [
-      "/images/products/p745-1-1126.jpeg",
+      "/images/products/p745-1-1126.webp",
     ],
     shortDescription: "اسنپ الکترود emg ecg پنج رنگ درجه یک",
     description: [
@@ -993,7 +993,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 15000000,
     images: [
-      "/images/products/p1122-1-1123.jpeg",
+      "/images/products/p1122-1-1123.webp",
     ],
     shortDescription: "آداپتور دستگاه کمک تنفسی رسمد سی پپ بای پپ",
     description: [
@@ -1022,7 +1022,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 10000000,
     images: [
-      "/images/products/p1120-1-1121.jpeg",
+      "/images/products/p1120-1-1121.webp",
     ],
     shortDescription: "مخزن آب رطوبت ساز دستگاه کمک تنفسی رسمد",
     description: [
@@ -1053,7 +1053,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: null,
     images: [
-      "/images/products/p1116-1-1117.jpeg",
+      "/images/products/p1116-1-1117.webp",
     ],
     shortDescription: "موتور دستگاه کمک تنفسی سی پپ و اتو سی پپ رسمد",
     description: [
@@ -1080,7 +1080,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 35000000,
     images: [
-      "/images/products/p1112-1-1113.jpeg",
+      "/images/products/p1112-1-1113.webp",
     ],
     shortDescription: "مخزن آب رطوبت ساز دستگاه کمک تنفسی فیلیپس",
     description: [
@@ -1108,9 +1108,9 @@ export const products: Product[] = [
     categoryId: "eeg",
     price: 1500000,
     images: [
-      "/images/products/p1093-1-1094.jpg",
-      "/images/products/p1093-2-1094.jpg",
-      "/images/products/p1093-3-1095.jpg",
+      "/images/products/p1093-1-1094.webp",
+      "/images/products/p1093-2-1094.webp",
+      "/images/products/p1093-3-1095.webp",
     ],
     shortDescription: "Bridge Electrodes ساخت ایتالیا کارکرده",
     description: [
@@ -1136,7 +1136,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 30000000,
     images: [
-      "/images/products/p1064-1-1066.jpeg",
+      "/images/products/p1064-1-1066.webp",
     ],
     shortDescription: "Alice pdx flex pcb",
     description: [
@@ -1159,7 +1159,7 @@ export const products: Product[] = [
     categoryId: "health-care",
     price: 350000,
     images: [
-      "/images/products/p1058-1-1059.jpg",
+      "/images/products/p1058-1-1059.webp",
     ],
     shortDescription: "Flter Cpap Bipap",
     description: [
@@ -1181,7 +1181,7 @@ export const products: Product[] = [
     categoryId: "health-care",
     price: 450000,
     images: [
-      "/images/products/p1055-1-1056.jpeg",
+      "/images/products/p1055-1-1056.webp",
     ],
     shortDescription: "فیلتر سی پپ درجه یک وارداتی",
     description: [
@@ -1207,7 +1207,7 @@ export const products: Product[] = [
     categoryId: "health-care",
     price: 7000000,
     images: [
-      "/images/products/p1053-1-1054.jpg",
+      "/images/products/p1053-1-1054.webp",
     ],
     shortDescription: "فیلتر هوا دستگاه Philips Respironics Dream Station CPAP",
     description: [
@@ -1233,7 +1233,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 6000000,
     images: [
-      "/images/products/p845-1-846.jpeg",
+      "/images/products/p845-1-846.webp",
     ],
     shortDescription: "کانکتور سنسور اکسیژن دراگر",
     description: [
@@ -1256,8 +1256,8 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 7000000,
     images: [
-      "/images/products/p842-1-843.jpeg",
-      "/images/products/p842-2-844.jpeg",
+      "/images/products/p842-1-843.webp",
+      "/images/products/p842-2-844.webp",
     ],
     shortDescription: "کانکتور پالس اکسیمتر دستگاه پلی گرافی apnea link resmed",
     description: [
@@ -1280,8 +1280,8 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 850000,
     images: [
-      "/images/products/p839-1-840.jpeg",
-      "/images/products/p839-2-841.jpeg",
+      "/images/products/p839-1-840.webp",
+      "/images/products/p839-2-841.webp",
     ],
     shortDescription: "کانکتور پورت نوار مغز استاندارد",
     description: [
@@ -1304,7 +1304,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: null,
     images: [
-      "/images/products/p837-1-838.jpeg",
+      "/images/products/p837-1-838.webp",
     ],
     shortDescription: "پراب پالمس اکسیمتر",
     description: [
@@ -1327,7 +1327,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 1600000,
     images: [
-      "/images/products/p835-1-836.jpeg",
+      "/images/products/p835-1-836.webp",
     ],
     shortDescription: "دو متری سبز رنگ",
     description: [
@@ -1350,7 +1350,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 3500000,
     images: [
-      "/images/products/p810-1-809.jpeg",
+      "/images/products/p810-1-809.webp",
     ],
     shortDescription: "Effort belt Rip",
     description: [
@@ -1371,7 +1371,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: null,
     images: [
-      "/images/products/p801-1-802.jpg",
+      "/images/products/p801-1-802.webp",
     ],
     shortDescription: "EEG ELECTRODS MADE IN JAPAN",
     description: [
@@ -1395,7 +1395,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 1600000,
     images: [
-      "/images/products/p795-1-796.jpg",
+      "/images/products/p795-1-796.webp",
     ],
     shortDescription: "EEG ELECTRODS GOLD 2 M",
     description: [
@@ -1418,7 +1418,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 3000000,
     images: [
-      "/images/products/p793-1-794.jpg",
+      "/images/products/p793-1-794.webp",
     ],
     shortDescription: "Keyhole wire- Sensor",
     description: [
@@ -1441,7 +1441,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: null,
     images: [
-      "/images/products/p761-1-762.jpg",
+      "/images/products/p761-1-762.webp",
     ],
     shortDescription: "Ventmed Probe",
     description: [
@@ -1463,7 +1463,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 3000000,
     images: [
-      "/images/products/p748-1-747.jpeg",
+      "/images/products/p748-1-747.webp",
     ],
     shortDescription: "اسنپ الکترود نوار قلب دو متری",
     description: [
@@ -1485,7 +1485,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: null,
     images: [
-      "/images/products/p739-1-740.jpg",
+      "/images/products/p739-1-740.webp",
     ],
     shortDescription: "ست 4 عددی",
     description: [
@@ -1506,7 +1506,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 350000,
     images: [
-      "/images/products/p718-1-719.jpeg",
+      "/images/products/p718-1-719.webp",
     ],
     shortDescription: "فیلتر هوا CPAP",
     description: [
@@ -1531,7 +1531,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 65000000,
     images: [
-      "/images/products/p588-1-589.jpg",
+      "/images/products/p588-1-589.webp",
     ],
     shortDescription: "Thermistor Pediatric Protech Sensor",
     description: [
@@ -1552,7 +1552,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 85000,
     images: [
-      "/images/products/p585-1-586.jpg",
+      "/images/products/p585-1-586.webp",
     ],
     shortDescription: "for Sleep Test",
     description: [
@@ -1573,7 +1573,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 3900000,
     images: [
-      "/images/products/p532-1-534.jpg",
+      "/images/products/p532-1-534.webp",
     ],
     shortDescription: "Leg Electrods 4m Dual &#8211; الکترود پا 4 متری ثبت EMG",
     description: [
@@ -1594,7 +1594,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 30000000,
     images: [
-      "/images/products/p521-1-522.jpg",
+      "/images/products/p521-1-522.webp",
     ],
     shortDescription: "Effort Belt",
     description: [
@@ -1615,7 +1615,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: null,
     images: [
-      "/images/products/p507-1-508.jpg",
+      "/images/products/p507-1-508.webp",
     ],
     shortDescription: "مگنت و بندک ماسک Resmed , Yuwell",
     description: [
@@ -1636,7 +1636,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: null,
     images: [
-      "/images/products/p432-1-433.jpg",
+      "/images/products/p432-1-433.webp",
     ],
     shortDescription: "جهت استعلام قیمت تماس بگیرید",
     description: [
@@ -1659,7 +1659,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 1400000,
     images: [
-      "/images/products/p430-1-431.jpg",
+      "/images/products/p430-1-431.webp",
     ],
     shortDescription: "الکترود نوار مغز درجه یک 75 سانتی متری زوج رنگ",
     description: [
@@ -1681,7 +1681,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 1600000,
     images: [
-      "/images/products/p428-1-434.jpg",
+      "/images/products/p428-1-434.webp",
     ],
     shortDescription: "الکترود نوار مغز درجه یک 1/5 متری زوج رنگ",
     description: [
@@ -1706,7 +1706,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 23000,
     images: [
-      "/images/products/p426-1-328.jpeg",
+      "/images/products/p426-1-328.webp",
     ],
     shortDescription: "سرجیفیکس بزرگسالان کشی سی تو",
     description: [
@@ -1728,7 +1728,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: null,
     images: [
-      "/images/products/p424-1-425.jpg",
+      "/images/products/p424-1-425.webp",
     ],
     shortDescription: "سنسور دار",
     description: [
@@ -1749,7 +1749,7 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 9000000,
     images: [
-      "/images/products/p422-1-423.jpg",
+      "/images/products/p422-1-423.webp",
     ],
     shortDescription: "تیوبینگ دستگاه های رسمد بدون سنسور",
     description: [
@@ -1770,7 +1770,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: null,
     images: [
-      "/images/products/p420-1-421.jpg",
+      "/images/products/p420-1-421.webp",
     ],
     shortDescription: "Spo2 Sensor Alice 5 پراب سنسور اکسیژن دستگاه آلیس 5",
     description: [
@@ -1791,7 +1791,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 10000000,
     images: [
-      "/images/products/p418-1-419.jpg",
+      "/images/products/p418-1-419.webp",
     ],
     shortDescription: "پراب سنجش اکسیژن نونین درجه یک مخصوص دستگاه های Alice PDX و پلی گرافی رسمد",
     description: [
@@ -1812,7 +1812,7 @@ export const products: Product[] = [
     categoryId: "consumables",
     price: 10000000,
     images: [
-      "/images/products/p416-1-417.jpg",
+      "/images/products/p416-1-417.webp",
     ],
     shortDescription: "پراب پالس اکسیمتر دستگاه آلیس 6 درجه یک",
     description: [
@@ -1833,8 +1833,8 @@ export const products: Product[] = [
     categoryId: "pap",
     price: 2000000,
     images: [
-      "/images/products/p406-1-415.jpg",
-      "/images/products/p406-2-414.jpg",
+      "/images/products/p406-1-415.webp",
+      "/images/products/p406-2-414.webp",
     ],
     shortDescription: "لوله رابط انتقال هوا از دستگاه تنفسی سی پپ و بای پپ به ماسک",
     description: [
@@ -1855,7 +1855,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 30000000,
     images: [
-      "/images/products/p252-1-56.jpeg",
+      "/images/products/p252-1-56.webp",
     ],
     shortDescription: "Snore فلیپس الیس 5 و 6 &#8211; وای من &#8211; MPR نیتوس",
     description: [
@@ -1876,7 +1876,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 30000000,
     images: [
-      "/images/products/p214-1-200.jpeg",
+      "/images/products/p214-1-200.webp",
     ],
     shortDescription: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
     description: [
@@ -1897,7 +1897,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 100000000,
     images: [
-      "/images/products/p212-1-202.jpeg",
+      "/images/products/p212-1-202.webp",
     ],
     shortDescription: "مبدل DC کمربند تنفسی افوورت های ادومن و تراکس",
     description: [],
@@ -1916,7 +1916,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 1800000,
     images: [
-      "/images/products/p210-1-204.jpeg",
+      "/images/products/p210-1-204.webp",
     ],
     shortDescription: "EEG Electrods درجه یک تزریقی دو متری",
     description: [],
@@ -1937,7 +1937,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 3900000,
     images: [
-      "/images/products/p209-1-205.jpeg",
+      "/images/products/p209-1-205.webp",
     ],
     shortDescription: "90 cm ابراشمی درجه یک 5 رنگ",
     description: [
@@ -1958,7 +1958,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 35000000,
     images: [
-      "/images/products/p207-1-206.jpeg",
+      "/images/products/p207-1-206.webp",
     ],
     shortDescription: "Thermistor Sensorسنسور ترمیستور پلی سومنوگرافی",
     description: [],
@@ -1977,7 +1977,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 50000000,
     images: [
-      "/images/products/p198-1-199.jpeg",
+      "/images/products/p198-1-199.webp",
     ],
     shortDescription: "Body position sensor Alice 5 سنسور موقعیت یاب بدن مخصوص دستگاه های پلی سومنوگرافی فیلیپس آلیس 5 و 6",
     description: [],
@@ -1998,7 +1998,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 60000000,
     images: [
-      "/images/products/p147-1-134.jpeg",
+      "/images/products/p147-1-134.webp",
     ],
     shortDescription: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.",
     description: [
@@ -2019,7 +2019,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: null,
     images: [
-      "/images/products/p144-1-136.jpeg",
+      "/images/products/p144-1-136.webp",
     ],
     shortDescription: "EEG Electrods original الکترود نواز مغز برند گرس اورجینال",
     description: [],
@@ -2038,7 +2038,7 @@ export const products: Product[] = [
     categoryId: "polysomnography",
     price: 3000000,
     images: [
-      "/images/products/p142-1-138.jpeg",
+      "/images/products/p142-1-138.webp",
     ],
     shortDescription: "ECG Electrods الکتور نوار قلب یک و نیم متری",
     description: [],

@@ -12,3 +12,6 @@ src/generated
 npm-debug.log*
 .claude
 README.md
+
+# نسخه اصل تصاویر محصولات — فقط برای برگرداندن محلی، در ایمیج لازم نیست
+public/images/products/_original
