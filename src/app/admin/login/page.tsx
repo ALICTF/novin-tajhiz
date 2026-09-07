@@ -27,7 +27,7 @@ export default async function AdminLoginPage() {
       <div className="relative w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="نوین تجهیز"
             width={64}
             height={64}

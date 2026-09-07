@@ -214,7 +214,7 @@ export function Header() {
                             href="/products"
                           >
                             <Image
-                              src="/images/cpap.png"
+                              src="/images/cpap.webp"
                               alt="تجهیزات تنفسی"
                               fill
                               sizes="340px"

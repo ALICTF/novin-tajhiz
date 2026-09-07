@@ -31,7 +31,7 @@ export const siteConfig = {
   domain: siteUrl.replace(/^https?:\/\//, ""),
   locale: "fa_IR",
   foundedYear: 1393,
-  logo: "/images/logo.png",
+  logo: "/images/logo.webp",
   ogImage: "/images/og-image.jpg",
 } as const;
 
@@ -181,9 +181,9 @@ export const footerNav: { title: string; items: NavItem[] }[] = [
   پس‌زمینه فایل را شفاف کنید.
 */
 export const partners = [
-  { name: "بیمارستان مسیح دانشوری", logo: "/images/site/masih-daneshvari.png" },
+  { name: "بیمارستان مسیح دانشوری", logo: "/images/site/masih-daneshvari.webp" },
   { name: "بیمارستان نجمیه", logo: "/images/site/Najmieh-hospital-mono.png" },
-  { name: "بیمارستان بقیةالله الاعظم", logo: "/images/site/IMG_9023-mono.png" },
+  { name: "بیمارستان بقیةالله الاعظم", logo: "/images/site/IMG_9023-mono.webp" },
   { name: "کلینیک خواب", logo: "/images/site/logo_clinic_sleep_320-1.png" },
 ];
 
@@ -192,7 +192,19 @@ export const founder = {
   name: "مهندس سید محمدرضا حاجی‌میرزایی",
   shortName: "مهندس حاجی‌میرزایی",
   role: "مدیریت و مؤسس",
-  photo: "/images/boss.jpg",
+  /*
+    برش مربعی از اصل ۳۰۲۴×۴۰۳۲، متمرکز روی سر و شانه.
+
+    نسخه قبلی ۶۴۰×۳۳۷ بود — یعنی افقی و کم‌رزولوشن — در حالی که هم در بخش
+    «درباره مدیریت» صفحه اصلی و هم در صفحه «درباره ما» داخل قاب دایره‌ای
+    نمایش داده می‌شود و به‌شدت بریده می‌شد. همین تصویر در داده ساخت‌یافته
+    Person هم می‌رود، یعنی چیزی که گوگل و موتورهای پاسخ‌محور برای معرفی
+    مدیریت مجموعه برمی‌دارند.
+
+    اصل فایل در public/images/_source نگه داشته شده تا اگر روزی برش دیگری
+    لازم شد، از همان رزولوشن کامل ساخته شود.
+  */
+  photo: "/images/boss.webp",
   /** سال شروع فعالیت بالینی در حوزه پلی‌سومنوگرافی. */
   clinicalSince: 1390,
   intro:

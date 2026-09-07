@@ -82,7 +82,7 @@ export function Sidebar({
         <div className="flex h-20 shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-5">
           <Link href="/admin" className="flex items-center gap-3">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.webp"
               alt="نوین تجهیز"
               width={44}
               height={44}

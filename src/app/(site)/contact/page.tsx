@@ -205,7 +205,7 @@ export default function ContactPage() {
             {/* تصویر محلی دفتر — هیچ منبع بیرونی بارگذاری نمی‌شود.
                 مسیریابی از طریق دکمه‌های نشان و بلد در کارت زیر انجام می‌گیرد. */}
             <Image
-              src="/images/site/IMG_0323-rotated-1.jpeg"
+              src="/images/site/IMG_0323-rotated-1.webp"
               alt="دفتر مرکزی نوین تجهیز در مشهد"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

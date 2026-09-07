@@ -39,7 +39,7 @@ const INTROS: Record<CategoryId, Intro> = {
       "قطعات یدکی آلیس، ونتمد و رزمد",
     ],
     cta: "مشاهده تجهیزات پلی‌سومنوگرافی",
-    image: "/images/categories/polysomnography.jpg",
+    image: "/images/categories/polysomnography.webp",
   },
   consumables: {
     lead: "اقلامی که هر شب مصرف می‌شوند و تمام شدنشان یعنی تعطیلی تست. کلینیک‌های خواب سراسر کشور موجودی مصرفی‌شان را از ما تأمین می‌کنند تا هیچ شبی بدون تست نماند.",
@@ -49,7 +49,7 @@ const INTROS: Record<CategoryId, Intro> = {
       "ژل اسکراب، الکترود و لوازم یک‌بارمصرف",
     ],
     cta: "سفارش اقلام مصرفی",
-    image: "/images/categories/consumables.jpg",
+    image: "/images/categories/consumables.webp",
   },
   eeg: {
     lead: "الکترود، کلاه، ژل و اکسسوری ثبت EEG با کیفیت آزمایشگاهی — به‌همراه تجهیزات نوروفیدبک و CES برای مراکز درمانی و مطب‌های تخصصی.",
@@ -59,7 +59,7 @@ const INTROS: Record<CategoryId, Intro> = {
       "پد فیزیوتراپی و سیم‌های رابط",
     ],
     cta: "مشاهده اکسسوری نوار مغز",
-    image: "/images/categories/eeg.jpg",
+    image: "/images/categories/eeg.webp",
   },
   pap: {
     lead: "وقتی CPAP یا BiPAP بیمار از کار می‌افتد، درمانش متوقف می‌شود. قطعات یدکی و مصرفی دستگاه‌های لوون‌اشتاین، رزمد و فیلیپس را موجود داریم تا دستگاه سریع به چرخه برگردد.",
@@ -69,7 +69,7 @@ const INTROS: Record<CategoryId, Intro> = {
       "ال‌سی‌دی، آداپتور و برد تغذیه",
     ],
     cta: "مشاهده قطعات CPAP و BiPAP",
-    image: "/images/categories/pap.jpg",
+    image: "/images/categories/pap.webp",
   },
   "health-care": {
     lead: "اقلام پایش بیمار و مراقبت سلامت برای استفاده خانگی و درمانگاهی، از فیلتر دستگاه تا سنسور تلاش تنفسی.",
@@ -79,7 +79,7 @@ const INTROS: Record<CategoryId, Intro> = {
       "الکترود گیره‌ای و اقلام پایش",
     ],
     cta: "مشاهده محصولات مراقبت سلامت",
-    image: "/images/categories/health-care.jpg",
+    image: "/images/categories/health-care.webp",
   },
 };
 

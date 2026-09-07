@@ -14,7 +14,7 @@ export function HeroSection() {
           priority دارد و هیچ انیمیشن ورودی رویش گذاشته نشده تا ثبت LCP عقب نیفتد. */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/sleep.jpg"
+          src="/images/sleep.webp"
           alt="درمان آپنه خواب با دستگاه CPAP"
           fill
           sizes="100vw"
