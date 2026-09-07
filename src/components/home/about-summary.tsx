@@ -38,21 +38,33 @@ export function AboutSummary() {
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
           {/* ------------------------- پرتره دایره‌ای ------------------------- */}
           <div className="order-1 flex justify-center lg:order-2">
-            <div className="relative aspect-square w-full max-w-[21rem]">
+            {/*
+              اندازه پرتره.
+
+              قبلاً کادر روی max-w-[21rem] سقف داشت و تصویر هم با inset-[11%]
+              فقط ۷۸٪ همان کادر را می‌گرفت. نتیجه این بود که در ستونی با ۵۱۲
+              پیکسل فضای موجود، عکس فقط ۲۶۲ پیکسل رندر می‌شد و دورش خالی
+              می‌ماند. حلقه‌های تزئینی هم همان حاشیه را می‌خوردند.
+
+              حالا سقف به ۲۶rem رفته و فاصله‌ها فشرده‌تر شده‌اند: تصویر ۸۸٪
+              کادر را می‌گیرد به‌جای ۷۸٪. حلقه‌ها هم به همان نسبت جمع شده‌اند
+              تا نسبت‌هایشان به هم نخورد.
+            */}
+            <div className="relative aspect-square w-full max-w-[26rem]">
               {/* حلقه بیرونی — چرخش بسیار آرام */}
               <div className="absolute inset-0 animate-spin rounded-full border border-dashed border-white/15 [animation-duration:32s] motion-reduce:animate-none" />
               {/* حلقه میانی ثابت */}
-              <div className="absolute inset-[6%] rounded-full border border-white/10" />
+              <div className="absolute inset-[3%] rounded-full border border-white/10" />
               {/* هاله پشت تصویر */}
-              <div className="absolute inset-[14%] rounded-full glow [--glow-color:rgba(37,99,235,.30)]" />
+              <div className="absolute inset-[9%] rounded-full glow [--glow-color:rgba(37,99,235,.30)]" />
 
               {/* تصویر */}
-              <div className="absolute inset-[11%] overflow-hidden rounded-full ring-1 ring-white/15">
+              <div className="absolute inset-[6%] overflow-hidden rounded-full ring-1 ring-white/15">
                 <Image
                   src={founder.photo}
                   alt={founder.name}
                   fill
-                  sizes="(max-width: 1024px) 80vw, 336px"
+                  sizes="(max-width: 1024px) 80vw, 416px"
                   className="object-cover object-top"
                   priority={false}
                 />
